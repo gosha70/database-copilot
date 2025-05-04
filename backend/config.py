@@ -11,7 +11,7 @@ DOCS_DIR = os.path.join(ROOT_DIR, "docs")
 
 # Model settings
 MODELS_DIR = os.path.join(DATA_DIR, "hf_models")
-DEFAULT_LLM_MODEL = "codellama-7b-instruct"  # This should be the folder name in MODELS_DIR
+DEFAULT_LLM_MODEL = "tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf"  # This should be the file name in MODELS_DIR
 DEFAULT_EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 
 # Vector database settings

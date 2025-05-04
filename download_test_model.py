@@ -138,7 +138,7 @@ def main():
     
     # Install required packages
     logger.info("Installing required packages")
-    run_command(f"{sys.executable} -m pip install huggingface_hub")
+    run_command(f"{sys.executable} -m pip install -r requirements.txt")
     
     # Download LLM model
     if download_model(args.model, args.model_file, args.output_dir):

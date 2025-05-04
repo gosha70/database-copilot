@@ -6,8 +6,8 @@ import logging
 from typing import List, Dict, Optional, Union
 
 from langchain_core.documents import Document
+from langchain_core.embeddings import Embeddings
 from langchain_chroma import Chroma
-from langchain_community.embeddings.base import Embeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from backend.config import (
@@ -86,7 +86,6 @@ def add_documents_to_vector_store(
     
     # Add documents to vector store
     vector_store.add_documents(split_documents)
-    vector_store.persist()
     
     return vector_store
 

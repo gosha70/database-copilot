@@ -41,13 +41,22 @@ git clone https://github.com/yourusername/database-copilot.git
 cd database-copilot
 ```
 
-2. Run the setup script:
+2. Set up the Python environment:
+```bash
+# Create and activate a virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies (compatible with Python 3.11)
+pip install -r requirements.txt
+```
+
+3. Run the setup script:
 ```bash
 python setup.py
 ```
 This will:
 - Create necessary directories
-- Install Python dependencies
 - Download Liquibase documentation
 - Create example migrations and internal guidelines
 - Ingest documents into the vector database

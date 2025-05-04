@@ -3,8 +3,13 @@ Streamlit application for Database Copilot.
 """
 import os
 import logging
+import sys
 import tempfile
-from typing import Optional
+from typing import Optional, Dict, Any, List, Tuple
+import json
+
+# Add the parent directory to the Python path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import streamlit as st
 from streamlit.runtime.uploaded_file_manager import UploadedFile

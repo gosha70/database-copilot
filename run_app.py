@@ -6,6 +6,9 @@ import logging
 import subprocess
 import sys
 
+# Add the current directory to the Python path
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -22,6 +25,12 @@ def run_streamlit_app():
     # Check if the application is already set up
     if not os.path.exists("data/vector_store") or not os.path.exists("docs/internal"):
         logger.warning("Application is not set up. Running setup script first.")
+        logger.info("Installing dependencies first...")
+        subprocess.run(
+            [sys.executable, "-m", "pip", "install", "-r", "requirements.txt"],
+            check=False
+        )
+        
         setup_result = subprocess.run(
             [sys.executable, "setup.py", "--skip-download"],
             check=False

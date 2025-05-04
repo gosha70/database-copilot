@@ -65,7 +65,7 @@ def install_dependencies() -> bool:
         True if dependencies were installed successfully, False otherwise.
     """
     logger.info("Installing Python dependencies")
-    return run_command(f"{sys.executable} -m pip install -r backend/requirements.txt")
+    return run_command(f"{sys.executable} -m pip install -r requirements.txt")
 
 def download_liquibase_docs() -> bool:
     """

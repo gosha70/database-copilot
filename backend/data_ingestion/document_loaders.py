@@ -13,9 +13,9 @@ from langchain_community.document_loaders import (
     PyPDFLoader,
     BSHTMLLoader,
     UnstructuredMarkdownLoader,
-    UnstructuredXMLLoader,
-    YAMLLoader
+    UnstructuredXMLLoader
 )
+import yaml
 
 logger = logging.getLogger(__name__)
 
@@ -159,6 +159,33 @@ def load_yaml_documents(file_path: str) -> List[Document]:
     Returns:
         A list of Document objects.
     """
+    def _load_yaml_file(yaml_file_path: str) -> List[Document]:
+        """
+        Load a single YAML file and convert it to Document objects.
+        
+        Args:
+            yaml_file_path: Path to a YAML file.
+            
+        Returns:
+            A list of Document objects.
+        """
+        try:
+            with open(yaml_file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+                
+            # Parse YAML content
+            yaml_data = yaml.safe_load(content)
+            
+            # Convert to string for storage in Document
+            yaml_str = yaml.dump(yaml_data, default_flow_style=False)
+            
+            # Create Document object
+            metadata = {"source": yaml_file_path}
+            return [Document(page_content=yaml_str, metadata=metadata)]
+        except Exception as e:
+            logger.error(f"Error loading YAML file {yaml_file_path}: {e}")
+            return []
+    
     if os.path.isdir(file_path):
         logger.info(f"Loading YAML documents from directory: {file_path}")
         yaml_files = []
@@ -167,21 +194,12 @@ def load_yaml_documents(file_path: str) -> List[Document]:
         
         documents = []
         for yaml_file in yaml_files:
-            try:
-                loader = YAMLLoader(yaml_file)
-                documents.extend(loader.load())
-            except Exception as e:
-                logger.error(f"Error loading YAML file {yaml_file}: {e}")
+            documents.extend(_load_yaml_file(yaml_file))
         
         return documents
     elif os.path.isfile(file_path) and (file_path.endswith(".yaml") or file_path.endswith(".yml")):
         logger.info(f"Loading YAML document: {file_path}")
-        try:
-            loader = YAMLLoader(file_path)
-            return loader.load()
-        except Exception as e:
-            logger.error(f"Error loading YAML file {file_path}: {e}")
-            return []
+        return _load_yaml_file(file_path)
     else:
         logger.warning(f"Invalid YAML file path: {file_path}")
         return []

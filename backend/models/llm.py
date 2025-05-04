@@ -3,8 +3,9 @@ LLM and embedding model initialization and utilities.
 """
 import os
 import logging
-from typing import Optional
+from typing import Optional, Union, Any
 
+# Import HuggingFacePipeline which is always available
 from langchain_community.llms import HuggingFacePipeline
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from transformers import (
@@ -14,6 +15,18 @@ from transformers import (
     BitsAndBytesConfig
 )
 import torch
+
+# Import FakeListLLM which is always available
+from langchain_community.llms.fake import FakeListLLM
+
+# Try to import LlamaCpp, but don't fail if it's not available
+LLAMACPP_AVAILABLE = False
+try:
+    import llama_cpp
+    from langchain_community.llms import LlamaCpp
+    LLAMACPP_AVAILABLE = True
+except ImportError:
+    logging.warning("llama-cpp-python is not installed. GGUF models will not be available.")
 
 from backend.config import (
     MODELS_DIR,
@@ -58,15 +71,15 @@ def get_embedding_model(model_name: Optional[str] = None) -> HuggingFaceEmbeddin
             model_kwargs=model_kwargs
         )
 
-def get_llm(model_name: Optional[str] = None) -> HuggingFacePipeline:
+def get_llm(model_name: Optional[str] = None) -> Union[HuggingFacePipeline, FakeListLLM]:
     """
-    Initialize and return a HuggingFace LLM pipeline.
+    Initialize and return an LLM.
     
     Args:
         model_name: Name of the LLM model to use. If None, uses the default model.
     
     Returns:
-        An initialized HuggingFacePipeline instance.
+        An initialized LLM instance (either HuggingFacePipeline or FakeListLLM).
     """
     model_name = model_name or DEFAULT_LLM_MODEL
     logger.info(f"Loading LLM model: {model_name}")
@@ -76,10 +89,42 @@ def get_llm(model_name: Optional[str] = None) -> HuggingFacePipeline:
     if os.path.exists(model_path):
         logger.info(f"Using local LLM model from: {model_path}")
         model_location = model_path
+        
+        # Check if the model is a GGUF file
+        if model_path.endswith(".gguf"):
+            if LLAMACPP_AVAILABLE:
+                logger.info("Loading GGUF model with LlamaCpp")
+                return LlamaCpp(
+                    model_path=model_path,
+                    temperature=TEMPERATURE,
+                    max_tokens=MAX_NEW_TOKENS,
+                    top_p=TOP_P,
+                    top_k=TOP_K,
+                    repeat_penalty=REPETITION_PENALTY,
+                    n_ctx=2048,  # Context window size
+                    n_gpu_layers=-1,  # Use all available GPU layers
+                    verbose=True,
+                )
+            else:
+                logger.warning("GGUF model detected but llama-cpp-python is not installed.")
+                logger.warning("Falling back to a mock LLM for testing purposes.")
+                # Create a simple mock LLM using HuggingFacePipeline with a small model
+                # This is just for testing and won't provide good results
+                from langchain_community.llms.fake import FakeListLLM
+                return FakeListLLM(
+                    responses=[
+                        "This is a mock response from the LLM. The llama-cpp-python package is not installed, so we're using a fake LLM for testing purposes.",
+                        "Another mock response. Please install llama-cpp-python to use GGUF models.",
+                        "Mock response: Your Liquibase migration looks good!",
+                        "Mock response: Here's a generated Liquibase migration based on your description."
+                    ],
+                    sequential=True
+                )
     else:
         logger.info(f"Using LLM model from HuggingFace Hub: {model_name}")
         model_location = model_name
     
+    # For standard Hugging Face models
     # Configure quantization if GPU is available
     if torch.cuda.is_available():
         logger.info("CUDA is available. Using quantized model.")
