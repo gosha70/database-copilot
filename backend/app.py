@@ -18,6 +18,9 @@ from backend.config import STREAMLIT_PORT
 from backend.models.liquibase_parser import LiquibaseParser
 from backend.models.liquibase_reviewer import LiquibaseReviewer
 from backend.models.liquibase_generator import LiquibaseGenerator
+from backend.models.qa_system import QASystem
+from backend.models.entity_generator import EntityGenerator
+from backend.models.test_generator import TestGenerator
 
 # Configure logging
 logging.basicConfig(
@@ -26,10 +29,13 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Initialize parser, reviewer, and generator
+# Initialize parser, reviewer, generator, QA system, entity generator, and test generator
 parser = LiquibaseParser()
 reviewer = LiquibaseReviewer()
 generator = LiquibaseGenerator()
+qa_system = QASystem()
+entity_generator = EntityGenerator()
+test_generator = TestGenerator()
 
 def save_uploaded_file(uploaded_file: UploadedFile) -> Optional[str]:
     """
@@ -132,7 +138,13 @@ def main():
     st.subheader("A RAG-based assistant for database migrations and ORM in Java")
     
     # Create tabs for different functionalities
-    tab1, tab2 = st.tabs(["Review Migration", "Generate Migration"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+        "Review Migration", 
+        "Generate Migration", 
+        "Q/A System", 
+        "Generate Entity", 
+        "Generate Tests"
+    ])
     
     # Tab 1: Review Migration
     with tab1:
@@ -201,6 +213,157 @@ def main():
                     label="Download Migration",
                     data=migration,
                     file_name=f"migration{extension}",
+                    mime="text/plain"
+                )
+    
+    # Tab 3: Q/A System
+    with tab3:
+        st.header("Q/A System for JPA/Hibernate and Liquibase")
+        st.write("Ask questions about JPA/Hibernate, ORM, Liquibase, and general database concepts.")
+        
+        # Input fields
+        question = st.text_area("Question", height=100, placeholder="Ask a question about JPA/Hibernate or Liquibase, e.g., 'What is the difference between @OneToMany and @ManyToMany in JPA?'")
+        
+        # Category selection
+        category = st.selectbox(
+            "Documentation Category",
+            ["all", "jpa", "liquibase", "internal", "examples"],
+            index=0,
+            help="Select the category of documentation to search in."
+        )
+        
+        # Answer button
+        if st.button("Answer Question", key="answer_button"):
+            if not question:
+                st.error("Please provide a question.")
+            else:
+                with st.spinner("Answering question..."):
+                    answer = qa_system.answer_question(question, category)
+                
+                st.subheader("Answer")
+                st.markdown(answer)
+    
+    # Tab 4: Generate Entity
+    with tab4:
+        st.header("Generate JPA Entity from Liquibase Migration")
+        st.write("Generate a JPA entity class from a Liquibase migration file.")
+        
+        # Input fields
+        uploaded_file = st.file_uploader("Choose a file", type=["xml", "yaml", "yml"], key="entity_file")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            package_name = st.text_input("Package Name", value="com.example.entity")
+        with col2:
+            lombok = st.checkbox("Use Lombok", value=True)
+        
+        if uploaded_file is not None:
+            # Display file info
+            st.write(f"Uploaded file: {uploaded_file.name} ({uploaded_file.size} bytes)")
+            
+            # Save the uploaded file
+            file_path = save_uploaded_file(uploaded_file)
+            
+            if file_path:
+                # Display the file content
+                with open(file_path, "r") as f:
+                    migration_content = f.read()
+                
+                st.subheader("Migration Content")
+                st.code(migration_content, language=get_file_format(file_path))
+                
+                # Generate button
+                if st.button("Generate Entity", key="generate_entity_button"):
+                    with st.spinner("Generating entity..."):
+                        entity = entity_generator.generate_entity(
+                            migration_content=migration_content,
+                            format_type=get_file_format(file_path),
+                            package_name=package_name,
+                            lombok=lombok
+                        )
+                    
+                    st.subheader("Generated Entity")
+                    st.code(entity, language="java")
+                    
+                    # Download button
+                    class_name = "Entity"  # Default class name
+                    for line in entity.split("\n"):
+                        if "class" in line and "{" in line:
+                            parts = line.split("class")[1].split("{")[0].strip().split()
+                            if parts:
+                                class_name = parts[0]
+                                break
+                    
+                    st.download_button(
+                        label="Download Entity",
+                        data=entity,
+                        file_name=f"{class_name}.java",
+                        mime="text/plain"
+                    )
+                    
+                    # Store the entity for test generation
+                    st.session_state.entity_content = entity
+                
+                # Clean up the temporary file
+                try:
+                    os.unlink(file_path)
+                except:
+                    pass
+    
+    # Tab 5: Generate Tests
+    with tab5:
+        st.header("Generate Tests for JPA Entity")
+        st.write("Generate test classes for a JPA entity.")
+        
+        # Check if there's an entity from the previous tab
+        entity_content = st.text_area(
+            "Entity Content",
+            value=st.session_state.get("entity_content", ""),
+            height=300,
+            placeholder="Paste your JPA entity class here or generate one in the 'Generate Entity' tab."
+        )
+        
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            test_package_name = st.text_input("Test Package Name", value="com.example.entity.test")
+        with col2:
+            test_framework = st.selectbox(
+                "Test Framework",
+                ["junit5", "junit4", "testng"],
+                index=0
+            )
+        with col3:
+            include_repository_tests = st.checkbox("Include Repository Tests", value=True)
+        
+        # Generate button
+        if st.button("Generate Tests", key="generate_tests_button"):
+            if not entity_content:
+                st.error("Please provide an entity class.")
+            else:
+                with st.spinner("Generating tests..."):
+                    tests = test_generator.generate_test(
+                        entity_content=entity_content,
+                        package_name=test_package_name,
+                        test_framework=test_framework,
+                        include_repository_tests=include_repository_tests
+                    )
+                
+                st.subheader("Generated Tests")
+                st.code(tests, language="java")
+                
+                # Download button
+                class_name = "EntityTest"  # Default class name
+                for line in entity_content.split("\n"):
+                    if "class" in line and "{" in line:
+                        parts = line.split("class")[1].split("{")[0].strip().split()
+                        if parts:
+                            class_name = parts[0] + "Test"
+                            break
+                
+                st.download_button(
+                    label="Download Tests",
+                    data=tests,
+                    file_name=f"{class_name}.java",
                     mime="text/plain"
                 )
 

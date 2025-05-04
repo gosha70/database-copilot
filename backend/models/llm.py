@@ -3,11 +3,12 @@ LLM and embedding model initialization and utilities.
 """
 import os
 import logging
-from typing import Optional, Union, Any
+from typing import Optional, Union, Any, Dict, List
 
 # Import HuggingFacePipeline which is always available
 from langchain_community.llms import HuggingFacePipeline
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings as BaseHuggingFaceEmbeddings
+from langchain_community.embeddings import FakeEmbeddings
 from transformers import (
     AutoTokenizer, 
     AutoModelForCausalLM, 
@@ -41,35 +42,40 @@ from backend.config import (
 
 logger = logging.getLogger(__name__)
 
-def get_embedding_model(model_name: Optional[str] = None) -> HuggingFaceEmbeddings:
+def get_embedding_model(model_name: Optional[str] = None) -> Union[BaseHuggingFaceEmbeddings, FakeEmbeddings]:
     """
-    Initialize and return a HuggingFace embedding model.
+    Initialize and return an embedding model.
     
     Args:
         model_name: Name of the embedding model to use. If None, uses the default model.
     
     Returns:
-        An initialized HuggingFaceEmbeddings instance.
+        An initialized embedding model instance.
     """
     model_name = model_name or DEFAULT_EMBEDDING_MODEL
     logger.info(f"Loading embedding model: {model_name}")
     
-    # Check if model exists locally, otherwise use from HuggingFace
-    model_path = os.path.join(MODELS_DIR, model_name)
-    if os.path.exists(model_path):
-        logger.info(f"Using local embedding model from: {model_path}")
-        model_kwargs = {"device": "cuda" if torch.cuda.is_available() else "cpu"}
-        return HuggingFaceEmbeddings(
-            model_name=model_path,
-            model_kwargs=model_kwargs
+    try:
+        # Check if model exists locally
+        model_path = os.path.join(MODELS_DIR, os.path.basename(model_name))
+        if os.path.exists(model_path):
+            logger.info(f"Using local embedding model from: {model_path}")
+            model_location = model_path
+        else:
+            logger.info(f"Using embedding model from HuggingFace Hub: {model_name}")
+            model_location = model_name
+        
+        # Initialize and return the embedding model
+        return BaseHuggingFaceEmbeddings(
+            model_name=model_location,
+            model_kwargs={"device": "cuda" if torch.cuda.is_available() else "cpu"},
+            encode_kwargs={"normalize_embeddings": True}
         )
-    else:
-        logger.info(f"Using embedding model from HuggingFace Hub: {model_name}")
-        model_kwargs = {"device": "cuda" if torch.cuda.is_available() else "cpu"}
-        return HuggingFaceEmbeddings(
-            model_name=model_name,
-            model_kwargs=model_kwargs
-        )
+    except Exception as e:
+        logger.warning(f"Error loading embedding model: {e}")
+        logger.warning("Using FakeEmbeddings as a fallback")
+        logger.warning("This will allow the application to run, but search results may not be meaningful")
+        return FakeEmbeddings(size=768)
 
 def get_llm(model_name: Optional[str] = None) -> Union[HuggingFacePipeline, FakeListLLM]:
     """
@@ -101,7 +107,7 @@ def get_llm(model_name: Optional[str] = None) -> Union[HuggingFacePipeline, Fake
                     top_p=TOP_P,
                     top_k=TOP_K,
                     repeat_penalty=REPETITION_PENALTY,
-                    n_ctx=2048,  # Context window size
+                    n_ctx=4096,  # Context window size
                     n_gpu_layers=-1,  # Use all available GPU layers
                     verbose=True,
                 )

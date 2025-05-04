@@ -77,6 +77,16 @@ def download_liquibase_docs() -> bool:
     logger.info("Downloading Liquibase documentation")
     return run_command(f"{sys.executable} -m backend.data_ingestion.download_liquibase_docs")
 
+def download_jpa_docs() -> bool:
+    """
+    Download JPA/Hibernate documentation.
+    
+    Returns:
+        True if documentation was downloaded successfully, False otherwise.
+    """
+    logger.info("Downloading JPA/Hibernate documentation")
+    return run_command(f"{sys.executable} -m backend.data_ingestion.download_jpa_docs")
+
 def create_example_migrations() -> bool:
     """
     Create example Liquibase migrations.
@@ -139,10 +149,14 @@ def setup(skip_download: bool = False) -> bool:
         logger.error("Failed to create example migrations")
         return False
     
-    # Download Liquibase documentation
+    # Download documentation
     if not skip_download:
         if not download_liquibase_docs():
             logger.error("Failed to download Liquibase documentation")
+            return False
+        
+        if not download_jpa_docs():
+            logger.error("Failed to download JPA/Hibernate documentation")
             return False
     
     # Ingest documents

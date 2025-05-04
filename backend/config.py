@@ -11,7 +11,7 @@ DOCS_DIR = os.path.join(ROOT_DIR, "docs")
 
 # Model settings
 MODELS_DIR = os.path.join(DATA_DIR, "hf_models")
-DEFAULT_LLM_MODEL = "tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf"  # This should be the file name in MODELS_DIR
+DEFAULT_LLM_MODEL = "mistral-7b-instruct-v0.2.Q4_K_M.gguf"  # This should be the file name in MODELS_DIR
 DEFAULT_EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 
 # Vector database settings
@@ -42,7 +42,7 @@ TOP_K = 50
 REPETITION_PENALTY = 1.1
 
 # RAG settings
-NUM_RETRIEVAL_RESULTS = 5
+NUM_RETRIEVAL_RESULTS = 8
 
 # Logging
 LOG_LEVEL = "INFO"

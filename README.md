@@ -10,15 +10,13 @@ The application runs completely locally, using open-source LLMs and a local vect
 
 ## Features
 
-### Current Features (Increment 1)
+### Features
 - **Code Review of Liquibase Migrations**: Upload your XML or YAML Liquibase migrations and get detailed reviews against best practices and company guidelines.
 - **Generation of Liquibase Migrations**: Generate merge-ready Liquibase migrations from natural language descriptions.
-
-### Planned Features
-- **Q/A about Databases**: Ask questions about JPA/Hibernate, ORM, Liquibase, and general database concepts (Increment 2).
-- **Entity/JPA Generation**: Generate Java entity classes from Liquibase migrations (Increment 3).
-- **Test Generation**: Generate test classes for your entities (Increment 3).
-- **IntelliJ Plugin Integration**: Use Database Copilot directly from IntelliJ IDEA (Increment 4).
+- **Q/A about Databases**: Ask questions about JPA/Hibernate, ORM, Liquibase, and general database concepts.
+- **Entity/JPA Generation**: Generate Java entity classes from Liquibase migrations.
+- **Test Generation**: Generate test classes for your entities.
+- **IntelliJ Plugin Integration**: Use Database Copilot directly from IntelliJ IDEA.
 
 ## Architecture
 
@@ -61,17 +59,24 @@ This will:
 - Create example migrations and internal guidelines
 - Ingest documents into the vector database
 
-3. Download a test model (optional):
+3. Download the LLM model:
 ```bash
+# Download the default Mistral 7B model (recommended for better Q/A performance)
+python download_test_model.py --model "TheBloke/Mistral-7B-Instruct-v0.2-GGUF" --model-file "mistral-7b-instruct-v0.2.Q4_K_M.gguf"
+
+# Or download a smaller test model (faster but less capable)
 python download_test_model.py
 ```
-This will download a small, quantized LLM model for testing purposes.
+The Mistral 7B model provides significantly better performance for the Q/A system, while the default TinyLlama model is smaller and faster but may provide less accurate answers.
 
 4. Run the application:
 ```bash
+# Run the Streamlit UI
 python run_app.py
+# OR run the API server for IntelliJ plugin
+python run_api.py
 ```
-This will start the Streamlit application, which you can access at http://localhost:8501.
+The Streamlit UI will be available at http://localhost:8501, and the API server will be available at http://localhost:8000.
 
 ## Usage
 
@@ -91,6 +96,54 @@ Example migrations are available in the `examples` directory.
 3. Select the format (XML or YAML) and enter an author name.
 4. Click the "Generate Migration" button.
 5. The application will generate a Liquibase migration based on your description.
+
+### Q/A System
+
+1. Navigate to the "Q/A System" tab.
+2. Enter a question about JPA/Hibernate, ORM, Liquibase, or general database concepts.
+3. Select the documentation category to search in.
+4. Click the "Answer Question" button.
+5. The application will provide a detailed answer to your question.
+
+### Generating JPA Entities
+
+1. Navigate to the "Generate Entity" tab.
+2. Upload a Liquibase migration file (XML or YAML).
+3. Enter a package name and select whether to use Lombok annotations.
+4. Click the "Generate Entity" button.
+5. The application will generate a JPA entity class based on the migration.
+
+### Generating Tests
+
+1. Navigate to the "Generate Tests" tab.
+2. Enter or paste the content of a JPA entity class (or generate one in the "Generate Entity" tab).
+3. Enter a package name, select a test framework, and choose whether to include repository tests.
+4. Click the "Generate Tests" button.
+5. The application will generate a test class for the JPA entity.
+
+### IntelliJ Plugin
+
+The IntelliJ plugin provides the same functionality as the web application, but integrated directly into IntelliJ IDEA.
+
+1. Build the plugin:
+```bash
+cd intellij_plugin
+./gradlew buildPlugin
+```
+
+2. Install the plugin in IntelliJ IDEA:
+   - Open IntelliJ IDEA
+   - Go to Settings/Preferences > Plugins
+   - Click on the gear icon and select "Install Plugin from Disk..."
+   - Navigate to the build/distributions directory and select the zip file
+   - Restart IntelliJ IDEA
+
+3. Run the API server:
+```bash
+python run_api.py
+```
+
+4. Use the plugin from the "Database Copilot" menu in the main menu bar or from the context menu in the Project view.
 
 ## Development
 
