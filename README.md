@@ -195,6 +195,10 @@ database-copilot/
 - **Increment 3**: Entity/JPA and Test generation
 - **Increment 4**: IntelliJ plugin integration
 
+### Demo
+<img width="1118" alt="image" src="https://github.com/user-attachments/assets/9b2d45f9-4104-41b3-ad41-8437f4b8e511" />
+
+
 ## License
 
 [MIT License](LICENSE)
