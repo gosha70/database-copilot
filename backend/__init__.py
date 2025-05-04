@@ -1,0 +1,3 @@
+"""
+Database Copilot backend package.
+"""

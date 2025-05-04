@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <!-- Create customers table -->
+    <changeSet id="20250504-1" author="example">
+        <comment>Create customers table with basic fields</comment>
+        <createTable tableName="customers">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(100)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="phone" type="VARCHAR(20)"/>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="city" type="VARCHAR(50)"/>
+            <column name="state" type="VARCHAR(50)"/>
+            <column name="zip_code" type="VARCHAR(20)"/>
+            <column name="country" type="VARCHAR(50)"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Create addresses table with foreign key to customers -->
+    <changeSet id="20250504-2" author="example">
+        <comment>Create addresses table with reference to customers</comment>
+        <createTable tableName="addresses">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="customer_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address_type" type="VARCHAR(20)" defaultValue="SHIPPING">
+                <constraints nullable="false"/>
+            </column>
+            <column name="street_address" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="city" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state" type="VARCHAR(50)"/>
+            <column name="zip_code" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_default" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <addForeignKeyConstraint 
+            baseTableName="addresses" 
+            baseColumnNames="customer_id" 
+            constraintName="fk_addresses_customers" 
+            referencedTableName="customers" 
+            referencedColumnNames="id"
+            onDelete="CASCADE"
+            onUpdate="RESTRICT"/>
+    </changeSet>
+
+    <!-- Create indexes for better performance -->
+    <changeSet id="20250504-3" author="example">
+        <comment>Create indexes for better query performance</comment>
+        
+        <createIndex indexName="idx_customers_email" tableName="customers">
+            <column name="email"/>
+        </createIndex>
+        
+        <createIndex indexName="idx_customers_last_name" tableName="customers">
+            <column name="last_name"/>
+        </createIndex>
+        
+        <createIndex indexName="idx_addresses_customer_id" tableName="addresses">
+            <column name="customer_id"/>
+        </createIndex>
+        
+        <createIndex indexName="idx_addresses_zip_code" tableName="addresses">
+            <column name="zip_code"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>
