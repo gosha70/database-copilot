@@ -145,6 +145,76 @@ python run_api.py
 
 4. Use the plugin from the "Database Copilot" menu in the main menu bar or from the context menu in the Project view.
 
+## Customizing the RAG System
+
+You can enhance the RAG system with your own custom content to improve the quality and relevance of answers, especially for your specific use cases.
+
+### Adding Custom Content
+
+1. **YAML Migrations**:
+   - Place your YAML migration files in `docs/examples/yaml/`
+   - This directory already contains example YAML files (orders.yaml, products.yaml, users.yaml)
+
+2. **XML Migrations**:
+   - Place your XML migration files in `docs/examples/xml/`
+   - This directory already contains example XML files (orders.xml, products.xml, etc.)
+
+3. **Best Practices Documentation**:
+   - Place your best practices documentation in `docs/internal/`
+   - This directory already contains files like `liquibase_best_practices.md`, `migration_patterns.md`, etc.
+   - Use Markdown (.md) format for best readability
+
+4. **Java Entities**:
+   - Create a new directory like `docs/entities/` for your Java entity examples
+   - Alternatively, you could place them in `docs/jpa/` since they're JPA-related
+
+5. **Java Tests**:
+   - Create a new directory like `docs/tests/` for your test examples
+   - Or place them alongside entities if they're closely related
+
+### Updating the RAG System with Your Content
+
+After placing your files in the appropriate directories, follow these steps to ensure the RAG system indexes your content:
+
+1. **Update the configuration** (if you added new directories):
+   - Edit `backend/config.py` to include any new directories you created
+   - Add entries to the `DOC_CATEGORIES` dictionary, for example:
+     ```python
+     DOC_CATEGORIES = {
+         "liquibase_docs": os.path.join(DOCS_DIR, "liquibase"),
+         "internal_guidelines": os.path.join(DOCS_DIR, "internal"),
+         "example_migrations": os.path.join(DOCS_DIR, "examples"),
+         "jpa_docs": os.path.join(DOCS_DIR, "jpa"),
+         "entity_examples": os.path.join(DOCS_DIR, "entities"),  # New directory
+         "test_examples": os.path.join(DOCS_DIR, "tests"),       # New directory
+     }
+     ```
+
+2. **Regenerate the vector store**:
+   - Run the ingest script to process all documents and create embeddings:
+     ```bash
+     python -m backend.data_ingestion.ingest --recreate
+     ```
+   - The `--recreate` flag ensures the vector store is rebuilt from scratch
+   - This will process all documents in the directories specified in `DOC_CATEGORIES`
+
+3. **Verify ingestion**:
+   - Check the logs to ensure all your documents were processed
+   - Look for messages like "Successfully ingested documents into collection [collection_name]"
+
+4. **Test the system**:
+   - After ingestion, restart the application
+   - Try asking questions related to your custom content to verify it's being used
+
+### Troubleshooting
+
+If you encounter issues with the RAG system not using your custom content:
+
+1. **Check embedding model**: Ensure you're not seeing warnings about using `FakeEmbeddings`
+2. **Verify file formats**: Make sure your files are in text-based formats that can be properly indexed
+3. **Check file permissions**: Ensure the files are readable by the application
+4. **Review logs**: Look for any errors during the ingestion process
+
 ## Development
 
 ### Project Structure
