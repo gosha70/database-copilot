@@ -65,7 +65,13 @@ class QASystem:
     
     def _get_relevant_documents(self, question: str, category: str) -> Dict[str, List[str]]:
         """
-        Get relevant documents based on the question and category.
+        Get relevant documents based on the question and category, using a priority system.
+        
+        Priority order:
+        1. Internal Guidelines (highest priority)
+        2. Example Migrations (YAML and XML)
+        3. Liquibase Documentation
+        4. JPA Documentation
         
         Args:
             question: The question to answer.
@@ -74,31 +80,58 @@ class QASystem:
         Returns:
             A dictionary of relevant documents by category.
         """
+        # If a specific category is requested, only use that category
+        if category != "all":
+            relevant_docs = {}
+            if category == "internal":
+                internal_guidelines = self._get_relevant_internal_guidelines(question)
+                if internal_guidelines:
+                    relevant_docs["internal_guidelines"] = internal_guidelines
+            elif category == "examples":
+                example_migrations = self._get_relevant_example_migrations(question)
+                if example_migrations:
+                    relevant_docs["example_migrations"] = example_migrations
+            elif category == "liquibase":
+                liquibase_docs = self._get_relevant_liquibase_docs(question)
+                if liquibase_docs:
+                    relevant_docs["liquibase_docs"] = liquibase_docs
+            elif category == "jpa":
+                jpa_docs = self._get_relevant_jpa_docs(question)
+                if jpa_docs:
+                    relevant_docs["jpa_docs"] = jpa_docs
+            return relevant_docs
+        
+        # For "all" category, implement cascading retrieval with priority
         relevant_docs = {}
+        min_docs_threshold = 3  # Minimum number of relevant documents to consider sufficient
+        total_docs = 0
         
-        # Get relevant documents from JPA docs
-        if category in ["all", "jpa"]:
-            jpa_docs = self._get_relevant_jpa_docs(question)
-            if jpa_docs:
-                relevant_docs["jpa_docs"] = jpa_docs
-        
-        # Get relevant documents from Liquibase docs
-        if category in ["all", "liquibase"]:
-            liquibase_docs = self._get_relevant_liquibase_docs(question)
-            if liquibase_docs:
-                relevant_docs["liquibase_docs"] = liquibase_docs
-        
-        # Get relevant documents from internal guidelines
-        if category in ["all", "internal"]:
+        # 1. First priority: Internal Guidelines
+        if "internal" in [category, "all"]:
             internal_guidelines = self._get_relevant_internal_guidelines(question)
             if internal_guidelines:
                 relevant_docs["internal_guidelines"] = internal_guidelines
+                total_docs += len(internal_guidelines)
         
-        # Get relevant documents from example migrations
-        if category in ["all", "examples"]:
+        # 2. Second priority: Example Migrations (only if we don't have enough from higher priority)
+        if total_docs < min_docs_threshold and "examples" in [category, "all"]:
             example_migrations = self._get_relevant_example_migrations(question)
             if example_migrations:
                 relevant_docs["example_migrations"] = example_migrations
+                total_docs += len(example_migrations)
+        
+        # 3. Third priority: Liquibase Documentation
+        if total_docs < min_docs_threshold and "liquibase" in [category, "all"]:
+            liquibase_docs = self._get_relevant_liquibase_docs(question)
+            if liquibase_docs:
+                relevant_docs["liquibase_docs"] = liquibase_docs
+                total_docs += len(liquibase_docs)
+        
+        # 4. Fourth priority: JPA Documentation
+        if total_docs < min_docs_threshold and "jpa" in [category, "all"]:
+            jpa_docs = self._get_relevant_jpa_docs(question)
+            if jpa_docs:
+                relevant_docs["jpa_docs"] = jpa_docs
         
         return relevant_docs
     
@@ -168,7 +201,13 @@ class QASystem:
     
     def _combine_context(self, relevant_docs: Dict[str, List[str]]) -> str:
         """
-        Combine context from different sources.
+        Combine context from different sources in priority order.
+        
+        Priority order:
+        1. Internal Guidelines (highest priority)
+        2. Example Migrations (YAML and XML)
+        3. Liquibase Documentation
+        4. JPA Documentation
         
         Args:
             relevant_docs: A dictionary of relevant documents by category.
@@ -178,21 +217,21 @@ class QASystem:
         """
         context_parts = []
         
-        # Add JPA documentation
-        if "jpa_docs" in relevant_docs and relevant_docs["jpa_docs"]:
-            context_parts.append("## JPA/Hibernate Documentation\n\n" + "\n\n".join(relevant_docs["jpa_docs"]))
-        
-        # Add Liquibase documentation
-        if "liquibase_docs" in relevant_docs and relevant_docs["liquibase_docs"]:
-            context_parts.append("## Liquibase Documentation\n\n" + "\n\n".join(relevant_docs["liquibase_docs"]))
-        
-        # Add internal guidelines
+        # 1. First priority: Internal Guidelines
         if "internal_guidelines" in relevant_docs and relevant_docs["internal_guidelines"]:
-            context_parts.append("## Internal Guidelines\n\n" + "\n\n".join(relevant_docs["internal_guidelines"]))
+            context_parts.append("## Internal Guidelines (Highest Priority)\n\n" + "\n\n".join(relevant_docs["internal_guidelines"]))
         
-        # Add example migrations
+        # 2. Second priority: Example Migrations
         if "example_migrations" in relevant_docs and relevant_docs["example_migrations"]:
-            context_parts.append("## Example Migrations\n\n" + "\n\n".join(relevant_docs["example_migrations"]))
+            context_parts.append("## Example Migrations (High Priority)\n\n" + "\n\n".join(relevant_docs["example_migrations"]))
+        
+        # 3. Third priority: Liquibase Documentation
+        if "liquibase_docs" in relevant_docs and relevant_docs["liquibase_docs"]:
+            context_parts.append("## Liquibase Documentation (Medium Priority)\n\n" + "\n\n".join(relevant_docs["liquibase_docs"]))
+        
+        # 4. Fourth priority: JPA Documentation
+        if "jpa_docs" in relevant_docs and relevant_docs["jpa_docs"]:
+            context_parts.append("## JPA/Hibernate Documentation (Lower Priority)\n\n" + "\n\n".join(relevant_docs["jpa_docs"]))
         
         return "\n\n".join(context_parts)
     
@@ -206,6 +245,16 @@ class QASystem:
         # Create the prompt template
         prompt = ChatPromptTemplate.from_template("""
         You are a database expert specializing in JPA/Hibernate and Liquibase. Your task is to answer questions about these technologies based on the provided context.
+        
+        # Priority Order for Information Sources
+        When answering, prioritize information in this order:
+        1. Internal Guidelines (highest priority)
+        2. Example Migrations (YAML and XML)
+        3. Liquibase Documentation
+        4. JPA Documentation
+        5. Your general knowledge (lowest priority)
+        
+        Only fall back to lower priority sources if higher priority sources don't contain relevant information.
         
         # Question
         {question}

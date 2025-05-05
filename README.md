@@ -215,6 +215,28 @@ If you encounter issues with the RAG system not using your custom content:
 3. **Check file permissions**: Ensure the files are readable by the application
 4. **Review logs**: Look for any errors during the ingestion process
 
+### Priority System for Information Sources
+
+The Q/A system implements a priority system that ensures internal examples and best practices take precedence over generic documentation. This helps provide more relevant and company-specific answers.
+
+The priority order is:
+
+1. **Internal Guidelines** (Highest Priority) - Your company's best practices and guidelines
+2. **Example Migrations** (High Priority) - Your YAML and XML migration examples
+3. **Liquibase Documentation** (Medium Priority) - Official Liquibase documentation
+4. **JPA Documentation** (Lower Priority) - Official JPA/Hibernate documentation
+5. **General Knowledge** (Lowest Priority) - The LLM's built-in knowledge
+
+The system implements this priority in three ways:
+
+1. **Cascading Retrieval**: The system first checks high-priority sources and only falls back to lower-priority sources if not enough relevant information is found.
+
+2. **Context Ordering**: Information from higher-priority sources is presented first in the context provided to the LLM.
+
+3. **Explicit Instructions**: The prompt explicitly instructs the LLM to prioritize information from higher-priority sources.
+
+This ensures that your internal best practices and examples are given precedence when answering questions, making the system more aligned with your specific needs and standards.
+
 ## Development
 
 ### Project Structure
