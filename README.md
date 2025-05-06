@@ -288,8 +288,12 @@ database-copilot/
 - **Increment 4**: IntelliJ plugin integration
 
 ### Demo
-<img width="1118" alt="image" src="https://github.com/user-attachments/assets/9b2d45f9-4104-41b3-ad41-8437f4b8e511" />
 
+---
+
+[![Reviewing Migration and Liquibase Q/A](https://github.com/user-attachments/assets/9b2d45f9-4104-41b3-ad41-8437f4b8e511)](https://drive.google.com/file/d/1nmyWQZdrgroCWqME8NlXGGRcikTE_sOv/view?usp=drive_link)
+
+---
 
 ## License
 
