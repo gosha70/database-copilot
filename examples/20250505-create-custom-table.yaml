@@ -1,0 +1,77 @@
+databaseChangeLog:
+  # ──────────────────────────────────────────────────────────────
+  #  ChangeSet: create_custom_table
+  #  ▸ Best‑practice notes
+  #    • Use descriptive IDs and include Jira ticket if applicable
+  #    • Add preconditions so the script is re‑entrant
+  #    • Keep constraints inside <changeSet> for visibility
+  # ──────────────────────────────────────────────────────────────
+  - changeSet:
+      id: 20250505-001_create_custom_table          # <‑‑ UPDATE
+      author: george.ivan@egoge.com                 # <‑‑ UPDATE
+      context: ddl
+      logicalFilePath: db/changelog/20250505-create-custom-table.yaml
+
+      preConditions:
+        onFail: MARK_RAN
+        onError: HALT
+        preConditions:
+          - not:
+              tableExists:
+                tableName: custom_table
+
+      changes:
+        - createTable:
+            tableName: custom_table
+            remarks: Master table storing custom domain objects
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValueComputed: gen_random_uuid()
+                  remarks: Primary key
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: name
+                  type: varchar(255)
+                  remarks: Unique human‑readable identifier
+                  constraints:
+                    nullable: false
+                    unique: true
+                    uniqueConstraintName: uq_custom_table_name
+
+              - column:
+                  name: description
+                  type: varchar(1024)
+                  remarks: Optional long description
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  defaultValueComputed: now()
+                  remarks: Row creation timestamp
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: updated_at
+                  type: timestamp with time zone
+                  defaultValueComputed: now()
+                  remarks: Last update timestamp
+                  constraints:
+                    nullable: false
+
+        - addCheckConstraint:
+            tableName: custom_table
+            constraintName: ck_custom_table_name_not_blank
+            checkConstraint: "name <> ''"
+
+      rollback:
+        - dropTable:
+            tableName: custom_table
+            cascadeConstraints: true

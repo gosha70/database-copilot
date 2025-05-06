@@ -177,12 +177,36 @@ class LiquibaseReviewer:
         
         # Extract change types from changesets
         if 'databaseChangeLog' in parsed_migration:
-            for changeset in parsed_migration['databaseChangeLog'].get('changeSet', []):
-                for change in changeset.get('changes', []):
-                    # Each change is a dictionary with a single key (the change type)
-                    change_types.update(change.keys())
+            # Handle both list and dict formats for databaseChangeLog
+            changeset_list = []
+            if isinstance(parsed_migration['databaseChangeLog'], dict):
+                changeset_list = parsed_migration['databaseChangeLog'].get('changeSet', [])
+            elif isinstance(parsed_migration['databaseChangeLog'], list):
+                # If databaseChangeLog is a list, find the changeSet entries
+                for item in parsed_migration['databaseChangeLog']:
+                    if isinstance(item, dict) and 'changeSet' in item:
+                        if isinstance(item['changeSet'], list):
+                            changeset_list.extend(item['changeSet'])
+                        else:
+                            changeset_list.append(item['changeSet'])
+            
+            # Process each changeset
+            for changeset in changeset_list:
+                # Handle both list and dict formats for changes
+                changes_list = []
+                if isinstance(changeset, dict) and 'changes' in changeset:
+                    changes = changeset['changes']
+                    if isinstance(changes, list):
+                        changes_list = changes
+                    elif isinstance(changes, dict):
+                        changes_list = [changes]
+                
+                # Extract change types
+                for change in changes_list:
+                    if isinstance(change, dict):
+                        change_types.update(change.keys())
         
-        return list(change_types)
+        return list(change_types) if change_types else ["unknown"]
     
     def _extract_table_names(self, parsed_migration: Dict[str, Any]) -> List[str]:
         """
@@ -198,10 +222,39 @@ class LiquibaseReviewer:
         
         # Extract table names from changesets
         if 'databaseChangeLog' in parsed_migration:
-            for changeset in parsed_migration['databaseChangeLog'].get('changeSet', []):
-                for change in changeset.get('changes', []):
-                    # Each change is a dictionary with a single key (the change type)
+            # Handle both list and dict formats for databaseChangeLog
+            changeset_list = []
+            if isinstance(parsed_migration['databaseChangeLog'], dict):
+                changeset_list = parsed_migration['databaseChangeLog'].get('changeSet', [])
+            elif isinstance(parsed_migration['databaseChangeLog'], list):
+                # If databaseChangeLog is a list, find the changeSet entries
+                for item in parsed_migration['databaseChangeLog']:
+                    if isinstance(item, dict) and 'changeSet' in item:
+                        if isinstance(item['changeSet'], list):
+                            changeset_list.extend(item['changeSet'])
+                        else:
+                            changeset_list.append(item['changeSet'])
+            
+            # Process each changeset
+            for changeset in changeset_list:
+                # Handle both list and dict formats for changes
+                changes_list = []
+                if isinstance(changeset, dict) and 'changes' in changeset:
+                    changes = changeset['changes']
+                    if isinstance(changes, list):
+                        changes_list = changes
+                    elif isinstance(changes, dict):
+                        changes_list = [changes]
+                
+                # Extract table names from each change
+                for change in changes_list:
+                    if not isinstance(change, dict):
+                        continue
+                    
                     for change_type, change_data in change.items():
+                        if not isinstance(change_data, dict):
+                            continue
+                            
                         # Extract table name based on change type
                         if change_type == 'createTable' and 'tableName' in change_data:
                             table_names.add(change_data['tableName'])
@@ -214,10 +267,12 @@ class LiquibaseReviewer:
                                 table_names.add(change_data['baseTableName'])
                             if 'referencedTableName' in change_data:
                                 table_names.add(change_data['referencedTableName'])
+                        elif change_type == 'addCheckConstraint' and 'tableName' in change_data:
+                            table_names.add(change_data['tableName'])
                         elif change_type in ['addPrimaryKey', 'addUniqueConstraint', 'createIndex'] and 'tableName' in change_data:
                             table_names.add(change_data['tableName'])
         
-        return list(table_names)
+        return list(table_names) if table_names else ["unknown"]
     
     def _combine_context(
         self,

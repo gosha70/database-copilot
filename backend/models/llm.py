@@ -55,6 +55,20 @@ def get_embedding_model(model_name: Optional[str] = None) -> Union[BaseHuggingFa
     model_name = model_name or DEFAULT_EMBEDDING_MODEL
     logger.info(f"Loading embedding model: {model_name}")
     
+    # Models known to produce 768-dimensional embeddings
+    models_768dim = [
+        "sentence-transformers/all-mpnet-base-v2",
+        "sentence-transformers/all-distilroberta-v1",
+        "sentence-transformers/bert-base-nli-mean-tokens"
+    ]
+    
+    # If the vector store was created with 768-dimensional embeddings,
+    # we need to ensure we use a model that produces 768-dimensional embeddings
+    if model_name not in models_768dim and not model_name.startswith("sentence-transformers/all-mpnet-base"):
+        logger.warning(f"Model {model_name} may not produce 768-dimensional embeddings")
+        logger.warning(f"Using all-mpnet-base-v2 instead to match vector store dimensionality")
+        model_name = "sentence-transformers/all-mpnet-base-v2"
+    
     try:
         # Check if model exists locally
         model_path = os.path.join(MODELS_DIR, os.path.basename(model_name))
@@ -107,7 +121,7 @@ def get_llm(model_name: Optional[str] = None) -> Union[HuggingFacePipeline, Fake
                     top_p=TOP_P,
                     top_k=TOP_K,
                     repeat_penalty=REPETITION_PENALTY,
-                    n_ctx=4096,  # Context window size
+                    n_ctx=8192,  # Context window size
                     n_gpu_layers=-1,  # Use all available GPU layers
                     verbose=True,
                 )

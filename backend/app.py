@@ -5,8 +5,8 @@ import os
 import logging
 import sys
 import tempfile
-from typing import Optional, Dict, Any, List, Tuple
-import json
+from typing import Optional
+os.environ["STREAMLIT_SERVER_FILE_WATCHER_TYPE"] = "none"   # safest
 
 # Add the parent directory to the Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -14,7 +14,6 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 import streamlit as st
 from streamlit.runtime.uploaded_file_manager import UploadedFile
 
-from backend.config import STREAMLIT_PORT
 from backend.models.liquibase_parser import LiquibaseParser
 from backend.models.liquibase_reviewer import LiquibaseReviewer
 from backend.models.liquibase_generator import LiquibaseGenerator
@@ -130,7 +129,7 @@ def main():
     """
     st.set_page_config(
         page_title="Database Copilot",
-        page_icon="🛠️",
+        page_icon="🗄️",
         layout="wide"
     )
     
