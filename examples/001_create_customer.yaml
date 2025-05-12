@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/001_create_customer.yaml
+
+  - changeSet:
+      id: 001-create-customer
+      author: goga
+      labels: ddl,initial
+      runInTransaction: true      # keep creation atomic
+      preConditions:
+        onFail: HALT
+        - not:
+            tableExists:
+              tableName: customer
+      changes:
+        - createTable:
+            tableName: customer
+            remarks: Master data for application users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: customer
+            columnNames: email
+            constraintName: uq_customer_email

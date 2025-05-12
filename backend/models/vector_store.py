@@ -16,9 +16,18 @@ from backend.config import (
     CHUNK_OVERLAP,
     NUM_RETRIEVAL_RESULTS
 )
-from backend.models.llm import get_embedding_model
+from backend.models.streamlit_compatibility import get_safe_embedding_model
 
 logger = logging.getLogger(__name__)
+
+def get_embedding_model() -> Embeddings:
+    """
+    Get the embedding model with Streamlit compatibility.
+    
+    Returns:
+        An initialized embedding model.
+    """
+    return get_safe_embedding_model()
 
 def get_vector_store(
     embedding_model: Optional[Embeddings] = None,
@@ -34,7 +43,7 @@ def get_vector_store(
     Returns:
         An initialized Chroma vector store.
     """
-    embedding_model = embedding_model or get_embedding_model()
+    embedding_model = embedding_model or get_safe_embedding_model()
     
     # Create the vector store directory if it doesn't exist
     os.makedirs(VECTOR_DB_DIR, exist_ok=True)

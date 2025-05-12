@@ -1,0 +1,132 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/001_init_full.yaml
+
+  #######################################################################
+  # 001 – create customer table
+  #######################################################################
+  - changeSet:
+      id: 001-create-customer
+      author: goga
+      labels: ddl,initial
+      runInTransaction: true
+      preConditions:
+        onFail: HALT
+        - not:
+            tableExists:
+              tableName: customer
+      changes:
+        - createTable:
+            tableName: customer
+            remarks: Master data for application users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: customer
+            columnNames: email
+            constraintName: uq_customer_email
+
+  #######################################################################
+  # 002 – create order table
+  #######################################################################
+  - changeSet:
+      id: 002-create-order
+      author: goga
+      labels: ddl,initial
+      runInTransaction: true
+      preConditions:
+        onFail: HALT
+        - not:
+            tableExists:
+              tableName: "order"          # ORDER is an SQL keyword
+      changes:
+        - createTable:
+            tableName: "order"
+            remarks: Purchase orders placed by customers
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: customer_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: total_amount
+                  type: DECIMAL(12,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: placed_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: "order"
+            baseColumnNames: customer_id
+            referencedTableName: customer
+            referencedColumnNames: id
+            onDelete: CASCADE
+            constraintName: fk_order_customer
+        - createIndex:
+            tableName: "order"
+            indexName: idx_order_customer_id
+            columns:
+              - column:
+                  name: customer_id
+
+  #######################################################################
+  # 003 – add phone_number to customer
+  #######################################################################
+  - changeSet:
+      id: 003-add-phone-to-customer
+      author: goga
+      labels: ddl,patch
+      runInTransaction: true
+      preConditions:
+        onFail: MARK_RAN       # allow reruns on already-patched DBs
+        - not:
+            columnExists:
+              tableName: customer
+              columnName: phone_number
+      changes:
+        - addColumn:
+            tableName: customer
+            columns:
+              - column:
+                  name: phone_number
+                  type: VARCHAR(25)
+                  remarks: E.164 format preferred
+        - createIndex:
+            tableName: customer
+            indexName: idx_customer_phone
+            columns:
+              - column:
+                  name: phone_number

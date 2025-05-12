@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/002_create_order.yaml
+
+  - changeSet:
+      id: 002-create-order
+      author: goga
+      labels: ddl,initial
+      runInTransaction: true
+      preConditions:
+        onFail: HALT
+        - not:
+            tableExists:
+              tableName: "order"         # quoted because ORDER is a keyword in some DBs
+      changes:
+        - createTable:
+            tableName: "order"
+            remarks: Purchase orders placed by customers
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: customer_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: total_amount
+                  type: DECIMAL(12,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: placed_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: "order"
+            baseColumnNames: customer_id
+            referencedTableName: customer
+            referencedColumnNames: id
+            onDelete: CASCADE
+            constraintName: fk_order_customer
+        - createIndex:
+            tableName: "order"
+            indexName: idx_order_customer_id
+            columns:
+              - column:
+                  name: customer_id

@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/003_modify_customer_add_phone.yaml
+
+  - changeSet:
+      id: 003-add-phone-to-customer
+      author: goga
+      labels: ddl,patch
+      runInTransaction: true
+      preConditions:
+        onFail: MARK_RAN          # allow re-runs on already-patched DBs
+        - not:
+            columnExists:
+              tableName: customer
+              columnName: phone_number
+      changes:
+        - addColumn:
+            tableName: customer
+            columns:
+              - column:
+                  name: phone_number
+                  type: VARCHAR(25)
+                  remarks: E.164 format preferred
+        - createIndex:
+            tableName: customer
+            indexName: idx_customer_phone
+            columns:
+              - column:
+                  name: phone_number
