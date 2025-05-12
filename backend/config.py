@@ -12,7 +12,7 @@ DOCS_DIR = os.path.join(ROOT_DIR, "docs")
 # Model settings
 MODELS_DIR = os.path.join(DATA_DIR, "hf_models")
 DEFAULT_LLM_MODEL = "mistral-7b-instruct-v0.2.Q4_K_M.gguf"  # This should be the file name in MODELS_DIR
-DEFAULT_EMBEDDING_MODEL = "all-MiniLM-L6-v2"
+DEFAULT_EMBEDDING_MODEL = "sentence-transformers/all-mpnet-base-v2"
 
 # Vector database settings
 VECTOR_DB_DIR = os.path.join(DATA_DIR, "vector_store")

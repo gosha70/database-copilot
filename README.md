@@ -59,15 +59,18 @@ This will:
 - Create example migrations and internal guidelines
 - Ingest documents into the vector database
 
-3. Download the LLM model:
+3. Download the required models:
 ```bash
 # Download the default Mistral 7B model (recommended for better Q/A performance)
 python download_test_model.py --model "TheBloke/Mistral-7B-Instruct-v0.2-GGUF" --model-file "mistral-7b-instruct-v0.2.Q4_K_M.gguf"
 
 # Or download a smaller test model (faster but less capable)
 python download_test_model.py
+
+# Download the embedding model (required for vector search functionality)
+python download_embedding_model.py
 ```
-The Mistral 7B model provides significantly better performance for the Q/A system, while the default TinyLlama model is smaller and faster but may provide less accurate answers.
+The Mistral 7B model provides significantly better performance for the Q/A system, while the default TinyLlama model is smaller and faster but may provide less accurate answers. The embedding model (sentence-transformers/all-mpnet-base-v2) is required for proper vector search functionality.
 
 4. Run the application:
 ```bash
@@ -211,9 +214,21 @@ After placing your files in the appropriate directories, follow these steps to e
 If you encounter issues with the RAG system not using your custom content:
 
 1. **Check embedding model**: Ensure you're not seeing warnings about using `FakeEmbeddings`
+   - If you see these warnings, run `python download_embedding_model.py` to download the required embedding model
+   - You can specify a different model with `python download_embedding_model.py --model "sentence-transformers/all-distilroberta-v1"`
+   - The model will be saved to the `data/hf_models` directory by default
+   - **Important**: The embedding model used for creating the vector store and at runtime must have the same dimensions. The default model is `sentence-transformers/all-mpnet-base-v2`, which produces 768-dimensional embeddings. If you change the model, make sure it also produces 768-dimensional embeddings or you'll need to recreate the vector store.
+
 2. **Verify file formats**: Make sure your files are in text-based formats that can be properly indexed
 3. **Check file permissions**: Ensure the files are readable by the application
 4. **Review logs**: Look for any errors during the ingestion process
+
+If you encounter issues with the LLM model:
+
+1. **Check error messages**: The system now provides detailed error messages when models fail to load
+2. **Verify model installation**: Ensure the model files are in the correct location
+3. **Try reinstalling dependencies**: Run `pip install -r requirements.txt` to ensure all dependencies are installed
+4. **Check PyTorch installation**: If you see PyTorch-related errors, try reinstalling with `conda install -c pytorch pytorch`
 
 ### Priority System for Information Sources
 
@@ -255,7 +270,10 @@ database-copilot/
 │   │   ├── vector_store.py   # Vector store utilities
 │   │   ├── liquibase_parser.py  # Liquibase migration parser
 │   │   ├── liquibase_reviewer.py  # Liquibase migration reviewer
-│   │   └── liquibase_generator.py  # Liquibase migration generator
+│   │   ├── liquibase_generator.py  # Liquibase migration generator
+│   │   ├── cascade_retriever.py  # Cascade retriever for prioritized information sources
+│   │   ├── enhanced_liquibase_reviewer.py  # Enhanced reviewer with cascade retrieval
+│   │   └── streamlit_compatibility.py  # Compatibility layer for Streamlit
 │   ├── config.py             # Configuration settings
 │   └── app.py                # Streamlit application
 ├── docs/                     # Reference documents to index
@@ -267,9 +285,16 @@ database-copilot/
 │   ├── vector_store/         # Local vector database
 │   └── hf_models/            # Downloaded LLM and embedding models
 ├── examples/                 # Example files for testing
+├── docs/                     # Documentation and examples
+│   ├── enhancement-plan.md   # Detailed enhancement plan
+│   ├── enhancement-guide.md  # Guide for using enhancements
+│   ├── anaconda-setup-guide.md  # Guide for Anaconda setup
+│   └── cascade_retriever_example.py  # Example implementation of cascade retriever
 ├── setup.py                  # Setup script
 ├── run_app.py                # Script to run the application
 ├── download_test_model.py    # Script to download a test model
+├── download_embedding_model.py  # Script to download the embedding model
+├── install_dependencies.py   # Script to check and install dependencies
 └── README.md                 # This file
 ```
 
