@@ -204,6 +204,32 @@ def load_yaml_documents(file_path: str) -> List[Document]:
         logger.warning(f"Invalid YAML file path: {file_path}")
         return []
 
+def load_java_documents(file_path: str) -> List[Document]:
+    """
+    Load Java documents from a file or directory.
+    
+    Args:
+        file_path: Path to a Java file or directory containing Java files.
+    
+    Returns:
+        A list of Document objects.
+    """
+    if os.path.isdir(file_path):
+        logger.info(f"Loading Java documents from directory: {file_path}")
+        loader = DirectoryLoader(
+            file_path,
+            glob="**/*.java",
+            loader_cls=TextLoader  # Using TextLoader for Java files
+        )
+        return loader.load()
+    elif os.path.isfile(file_path) and file_path.endswith(".java"):
+        logger.info(f"Loading Java document: {file_path}")
+        loader = TextLoader(file_path)
+        return loader.load()
+    else:
+        logger.warning(f"Invalid Java file path: {file_path}")
+        return []
+
 def load_documents(file_path: str) -> List[Document]:
     """
     Load documents from a file or directory based on file extension.
@@ -227,6 +253,7 @@ def load_documents(file_path: str) -> List[Document]:
         documents.extend(load_markdown_documents(file_path))
         documents.extend(load_xml_documents(file_path))
         documents.extend(load_yaml_documents(file_path))
+        documents.extend(load_java_documents(file_path))  # Add Java support
         return documents
     elif os.path.isfile(file_path):
         logger.info(f"Loading document: {file_path}")
@@ -242,6 +269,8 @@ def load_documents(file_path: str) -> List[Document]:
             return load_xml_documents(file_path)
         elif file_path.endswith(".yaml") or file_path.endswith(".yml"):
             return load_yaml_documents(file_path)
+        elif file_path.endswith(".java"):
+            return load_java_documents(file_path)
         else:
             logger.warning(f"Unsupported file type: {file_path}")
             return []

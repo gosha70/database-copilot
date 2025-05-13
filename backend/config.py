@@ -64,6 +64,7 @@ DOC_CATEGORIES = {
     "internal_guidelines": os.path.join(DOCS_DIR, "internal"),
     "example_migrations": os.path.join(DOCS_DIR, "examples"),
     "jpa_docs": os.path.join(DOCS_DIR, "jpa"),
+    "java_files": os.path.join(DOCS_DIR, "java"),  # New category for Java files
 }
 
 # API settings

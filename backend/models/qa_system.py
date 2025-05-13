@@ -29,6 +29,14 @@ class QASystem:
         self.jpa_docs_retriever = get_retriever(collection_name="jpa_docs")
         self.internal_guidelines_retriever = get_retriever(collection_name="internal_guidelines")
         self.example_migrations_retriever = get_retriever(collection_name="example_migrations")
+        
+        # Get retriever for Java files if the collection exists
+        try:
+            self.java_files_retriever = get_retriever(collection_name="java_files")
+            self._java_files_available = True
+        except Exception as e:
+            logger.warning(f"Java files retriever not available: {e}")
+            self._java_files_available = False
     
     def answer_question(self, question: str, category: str = "all") -> str:
         """
@@ -70,12 +78,13 @@ class QASystem:
         Priority order:
         1. Internal Guidelines (highest priority)
         2. Example Migrations (YAML and XML)
-        3. Liquibase Documentation
-        4. JPA Documentation
+        3. Java Files (if available)
+        4. Liquibase Documentation
+        5. JPA Documentation
         
         Args:
             question: The question to answer.
-            category: The category of documentation to search in (all, jpa, liquibase, internal, examples).
+            category: The category of documentation to search in (all, jpa, liquibase, internal, examples, java).
         
         Returns:
             A dictionary of relevant documents by category.
@@ -99,6 +108,10 @@ class QASystem:
                 jpa_docs = self._get_relevant_jpa_docs(question)
                 if jpa_docs:
                     relevant_docs["jpa_docs"] = jpa_docs
+            elif category == "java" and self._java_files_available:
+                java_files = self._get_relevant_java_files(question)
+                if java_files:
+                    relevant_docs["java_files"] = java_files
             return relevant_docs
         
         # For "all" category, implement cascading retrieval with priority
@@ -120,20 +133,46 @@ class QASystem:
                 relevant_docs["example_migrations"] = example_migrations
                 total_docs += len(example_migrations)
         
-        # 3. Third priority: Liquibase Documentation
+        # 3. Third priority: Java Files (if available)
+        if total_docs < min_docs_threshold and self._java_files_available and "java" in [category, "all"]:
+            java_files = self._get_relevant_java_files(question)
+            if java_files:
+                relevant_docs["java_files"] = java_files
+                total_docs += len(java_files)
+        
+        # 4. Fourth priority: Liquibase Documentation
         if total_docs < min_docs_threshold and "liquibase" in [category, "all"]:
             liquibase_docs = self._get_relevant_liquibase_docs(question)
             if liquibase_docs:
                 relevant_docs["liquibase_docs"] = liquibase_docs
                 total_docs += len(liquibase_docs)
         
-        # 4. Fourth priority: JPA Documentation
+        # 5. Fifth priority: JPA Documentation
         if total_docs < min_docs_threshold and "jpa" in [category, "all"]:
             jpa_docs = self._get_relevant_jpa_docs(question)
             if jpa_docs:
                 relevant_docs["jpa_docs"] = jpa_docs
         
         return relevant_docs
+    
+    def _get_relevant_java_files(self, question: str) -> List[str]:
+        """
+        Get relevant Java files.
+        
+        Args:
+            question: The question to answer.
+        
+        Returns:
+            A list of relevant Java files.
+        """
+        if not self._java_files_available:
+            return []
+            
+        # Get relevant documents
+        docs = self.java_files_retriever.get_relevant_documents(question)
+        
+        # Extract the content from the documents
+        return [doc.page_content for doc in docs]
     
     def _get_relevant_jpa_docs(self, question: str) -> List[str]:
         """
@@ -206,8 +245,9 @@ class QASystem:
         Priority order:
         1. Internal Guidelines (highest priority)
         2. Example Migrations (YAML and XML)
-        3. Liquibase Documentation
-        4. JPA Documentation
+        3. Java Files (if available)
+        4. Liquibase Documentation
+        5. JPA Documentation
         
         Args:
             relevant_docs: A dictionary of relevant documents by category.
@@ -225,11 +265,15 @@ class QASystem:
         if "example_migrations" in relevant_docs and relevant_docs["example_migrations"]:
             context_parts.append("## Example Migrations (High Priority)\n\n" + "\n\n".join(relevant_docs["example_migrations"]))
         
-        # 3. Third priority: Liquibase Documentation
+        # 3. Third priority: Java Files
+        if "java_files" in relevant_docs and relevant_docs["java_files"]:
+            context_parts.append("## Java Files (Medium-High Priority)\n\n" + "\n\n".join(relevant_docs["java_files"]))
+        
+        # 4. Fourth priority: Liquibase Documentation
         if "liquibase_docs" in relevant_docs and relevant_docs["liquibase_docs"]:
             context_parts.append("## Liquibase Documentation (Medium Priority)\n\n" + "\n\n".join(relevant_docs["liquibase_docs"]))
         
-        # 4. Fourth priority: JPA Documentation
+        # 5. Fifth priority: JPA Documentation
         if "jpa_docs" in relevant_docs and relevant_docs["jpa_docs"]:
             context_parts.append("## JPA/Hibernate Documentation (Lower Priority)\n\n" + "\n\n".join(relevant_docs["jpa_docs"]))
         
@@ -250,9 +294,10 @@ class QASystem:
         When answering, prioritize information in this order:
         1. Internal Guidelines (highest priority)
         2. Example Migrations (YAML and XML)
-        3. Liquibase Documentation
-        4. JPA Documentation
-        5. Your general knowledge (lowest priority)
+        3. Java Files (medium-high priority)
+        4. Liquibase Documentation
+        5. JPA Documentation
+        6. Your general knowledge (lowest priority)
         
         Only fall back to lower priority sources if higher priority sources don't contain relevant information.
         

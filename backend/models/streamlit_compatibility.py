@@ -29,22 +29,75 @@ def safe_import_torch():
         return torch
     
     try:
-        # Add a custom attribute to avoid Streamlit's problematic inspection
-        # This is a workaround for the "__path__._path" error
+        # Completely bypass the problematic torch._classes module
+        # by creating a fake module structure before importing torch
         import types
+        import sys
         
-        # Create a dummy module to replace torch._classes temporarily
-        dummy_classes = types.ModuleType("_classes")
-        dummy_classes.__getattr__ = lambda attr: None
+        # Create a complete fake module hierarchy
+        fake_torch = types.ModuleType("torch")
+        fake_c = types.ModuleType("_C")
+        fake_classes = types.ModuleType("_classes")
         
-        # Save the original sys.modules state
-        original_modules = dict(sys.modules)
+        # Create a fake cuda module with proper methods
+        class FakeCuda:
+            def __init__(self):
+                pass
+            
+            def is_available(self):
+                return False
+            
+            def device_count(self):
+                return 0
         
-        # Import torch with the dummy _classes module
+        # Add cuda to fake_torch
+        fake_cuda = FakeCuda()
+        fake_torch.cuda = fake_cuda
+        # Also add is_available as a direct attribute for compatibility
+        fake_torch.cuda.is_available = fake_cuda.is_available
+        
+        # Set up the fake path attribute that won't cause issues
+        class FakePath:
+            def __init__(self):
+                self._path = ["/dummy/path"]
+            
+            def __iter__(self):
+                return iter(self._path)
+            
+            def __getattr__(self, name):
+                if name == "_path":
+                    return self._path
+                return None
+        
+        fake_path = FakePath()
+        fake_classes.__path__ = fake_path
+        
+        # Set up a safe __getattr__ that won't try to access custom classes
+        def safe_getattr(self, name):
+            if name == "__path__":
+                return fake_path
+            return None
+        
+        # Apply the safe __getattr__ to the fake classes module
+        fake_classes.__getattr__ = lambda attr: None
+        fake_c.__getattr__ = lambda attr: None
+        
+        # Set up the module hierarchy
+        fake_torch._C = fake_c
+        fake_torch._classes = fake_classes
+        
+        # Register the fake modules in sys.modules
+        sys.modules["torch"] = fake_torch
+        sys.modules["torch._C"] = fake_c
+        sys.modules["torch._classes"] = fake_classes
+        
+        # Now import the real torch, which will replace our fake modules
+        # but keep our safe __getattr__ methods
         import torch
+        
+        # Ensure our safe __getattr__ is still used for _classes
         if hasattr(torch, "_classes"):
-            # Replace the problematic module with our dummy
-            sys.modules["torch._classes"] = dummy_classes
+            torch._classes.__getattr__ = lambda attr: None
         
         # Mark as successfully imported
         _TORCH_IMPORTED = True
@@ -53,8 +106,6 @@ def safe_import_torch():
     
     except Exception as e:
         logger.error(f"Error safely importing PyTorch: {e}")
-        # Restore original sys.modules
-        sys.modules = original_modules
         return None
 
 def safe_import_transformers():
@@ -319,22 +370,26 @@ def get_safe_embedding_model(model_name: Optional[str] = None):
         # Safely import torch
         torch = safe_import_torch()
         if torch is None:
-            logger.warning("Failed to safely import PyTorch. Using FakeEmbeddings instead.")
-            logger.error("PyTorch is required for proper embedding model functionality")
+            logger.error("Failed to safely import PyTorch. Cannot proceed with embedding model.")
             
             # Create a more informative error message for the logs
             error_message = """
-ERROR: Failed to safely import PyTorch for embedding model. Using fake embeddings as fallback.
-This will allow the application to run, but search results will not be accurate.
-To fix this issue:
+ERROR: Failed to safely import PyTorch for embedding model.
+For Apple M1/M2 Mac users:
+1. Install PyTorch with MPS support: pip install torch torchvision torchaudio
+2. Make sure you're using Python 3.9+ for best compatibility
+3. If using Conda: conda install pytorch torchvision torchaudio -c pytorch-nightly
+
+For other users:
 1. Check your PyTorch installation
-2. Try reinstalling PyTorch with 'conda install -c pytorch pytorch' for better compatibility
-3. Check the logs for detailed error information
+2. Try reinstalling PyTorch with the appropriate command for your system
+   - For CUDA support: pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+   - For CPU only: pip install torch torchvision torchaudio
 """
             logger.error(error_message)
             
-            from langchain_community.embeddings import FakeEmbeddings
-            return FakeEmbeddings(size=768)
+            # Raise an exception to stop the application
+            raise ImportError("PyTorch is required for embedding model functionality. See logs for installation instructions.")
         
         # Check if model exists locally
         model_path = os.path.join(MODELS_DIR, os.path.basename(model_name))
@@ -345,6 +400,24 @@ To fix this issue:
             logger.info(f"Using embedding model from HuggingFace Hub: {model_name}")
             model_location = model_name
         
+        # Try to directly import sentence_transformers to diagnose the issue
+        try:
+            import sentence_transformers
+            logger.info(f"Successfully imported sentence_transformers from {sentence_transformers.__file__}")
+        except ImportError as e:
+            logger.error(f"Direct import of sentence_transformers failed: {e}")
+            # Try to find the package in the Python path
+            import subprocess
+            try:
+                result = subprocess.run([sys.executable, "-m", "pip", "show", "sentence-transformers"], 
+                                        capture_output=True, text=True)
+                logger.info(f"Pip show sentence-transformers result:\n{result.stdout}")
+            except Exception as sub_e:
+                logger.error(f"Failed to run pip show: {sub_e}")
+            
+            # Raise the error to stop execution
+            raise ImportError(f"Failed to import sentence_transformers directly: {e}. This is likely a Python environment issue.")
+        
         # Initialize and return the embedding model
         from langchain_community.embeddings import HuggingFaceEmbeddings
         return HuggingFaceEmbeddings(
@@ -353,23 +426,66 @@ To fix this issue:
             encode_kwargs={"normalize_embeddings": True}
         )
     except Exception as e:
-        logger.warning(f"Error loading embedding model: {e}")
-        logger.warning("Using FakeEmbeddings as a fallback")
-        logger.warning("This will allow the application to run, but search results may not be meaningful")
-        logger.error(f"Detailed error loading embedding model: {str(e)}")
+        error_str = str(e)
+        logger.error(f"Error loading embedding model: {error_str}")
         
-        # Create a more informative error message for the logs
-        error_message = f"""
-ERROR: Failed to load embedding model. Using fake embeddings as fallback.
-Error details: {str(e)}
-This will allow the application to run, but search results will not be accurate.
-To fix this issue:
+        # Check for specific error types and provide targeted solutions
+        if "Could not import sentence_transformers" in error_str:
+            # This is a Python path/environment issue
+            import sys
+            import site
+            
+            # Log detailed environment information for debugging
+            logger.error(f"Python executable: {sys.executable}")
+            logger.error(f"Python version: {sys.version}")
+            logger.error(f"Python path: {sys.path}")
+            logger.error(f"Site packages: {site.getsitepackages()}")
+            
+            # Create a more specific error message for sentence_transformers import issues
+            error_message = f"""
+ERROR: Failed to import sentence_transformers package.
+This is likely a Python environment issue, not an installation issue.
+
+Debugging information:
+- Python executable: {sys.executable}
+- Python version: {sys.version.split()[0]}
+
+For Apple M1/M2 Mac users:
+1. Make sure you're running the app with the SAME Python environment where you installed sentence-transformers
+2. Try installing directly in your current environment:
+   {sys.executable} -m pip install --force-reinstall sentence-transformers
+
+3. If using a virtual environment, activate it before running the app:
+   source /path/to/your/venv/bin/activate  # Replace with your actual path
+   
+4. If using Conda, make sure you've activated the correct environment:
+   conda activate your_environment_name
+
+5. Check if the package is installed but in a different location:
+   {sys.executable} -m pip show sentence-transformers
+"""
+            logger.error(error_message)
+            
+            # Raise an exception with the specific guidance
+            raise ImportError(f"Failed to import sentence_transformers. This is a Python environment issue, not an installation issue. Run the app with the same Python environment where you installed the package. See logs for detailed debugging information.")
+        else:
+            # Generic error message for other types of errors
+            error_message = f"""
+ERROR: Failed to load embedding model.
+Error details: {error_str}
+
+For Apple M1/M2 Mac users:
+1. Install PyTorch with MPS support: pip install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1
+2. Make sure you're using Python 3.9+ for best compatibility
+3. If using Conda: conda install pytorch torchvision torchaudio -c pytorch
+
+For other users:
 1. Check your sentence-transformers installation
 2. Try reinstalling with 'pip install sentence-transformers --upgrade'
 3. Ensure PyTorch is properly installed
 4. Check the logs for more detailed error information
 """
-        logger.error(error_message)
-        
-        from langchain_community.embeddings import FakeEmbeddings
-        return FakeEmbeddings(size=768)
+            logger.error(error_message)
+            
+            # Raise an exception to stop the application
+            raise ImportError(f"Failed to load embedding model: {error_str}. See logs for installation instructions.")

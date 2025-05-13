@@ -58,35 +58,105 @@ class LiquibaseReviewer:
         """
         logger.info(f"Reviewing {format_type} migration")
         
-        # Log which LLM is being used
-        if hasattr(self.llm, 'is_external_llm') and self.llm.is_external_llm:
-            logger.info(f"Using external LLM: {self.llm.provider_name} with model {self.llm.model_name}")
-        else:
-            logger.info(f"Using local LLM: {getattr(self.llm, '_llm_type', 'unknown')}")
-        
-        # Parse the migration
-        parsed_migration = self._parse_migration_content(migration_content, format_type)
-        
-        # Get relevant documents from different categories
-        liquibase_docs = self._get_relevant_liquibase_docs(parsed_migration)
-        internal_guidelines = self._get_relevant_internal_guidelines(parsed_migration)
-        example_migrations = self._get_relevant_example_migrations(parsed_migration)
-        
-        # Combine all relevant documents
-        context = self._combine_context(liquibase_docs, internal_guidelines, example_migrations)
-        
-        # Create the review chain
-        review_chain = self._create_review_chain()
-        
-        # Generate the review
-        review = review_chain.invoke({
-            "migration_content": migration_content,
-            "format_type": format_type,
-            "parsed_migration": str(parsed_migration),
-            "context": context
-        })
-        
-        return review
+        try:
+            # Log which LLM is being used
+            if hasattr(self.llm, 'is_external_llm') and self.llm.is_external_llm:
+                logger.info(f"Using external LLM: {self.llm.provider_name} with model {self.llm.model_name}")
+            else:
+                logger.info(f"Using local LLM: {getattr(self.llm, '_llm_type', 'unknown')}")
+            
+            # Parse the migration
+            parsed_migration = self._parse_migration_content(migration_content, format_type)
+            if not parsed_migration or (isinstance(parsed_migration, dict) and "error" in parsed_migration):
+                error_msg = parsed_migration.get("error", "Unknown parsing error") if isinstance(parsed_migration, dict) else "Failed to parse migration"
+                logger.error(f"Error parsing migration: {error_msg}")
+                return f"Error: Failed to parse the migration file. {error_msg}"
+            
+            # Get relevant documents from different categories
+            try:
+                liquibase_docs = self._get_relevant_liquibase_docs(parsed_migration)
+                logger.info(f"Retrieved {len(liquibase_docs)} Liquibase docs")
+            except Exception as e:
+                logger.error(f"Error retrieving Liquibase docs: {e}")
+                liquibase_docs = []
+            
+            try:
+                internal_guidelines = self._get_relevant_internal_guidelines(parsed_migration)
+                logger.info(f"Retrieved {len(internal_guidelines)} internal guidelines")
+            except Exception as e:
+                logger.error(f"Error retrieving internal guidelines: {e}")
+                internal_guidelines = []
+            
+            try:
+                example_migrations = self._get_relevant_example_migrations(parsed_migration)
+                logger.info(f"Retrieved {len(example_migrations)} example migrations")
+            except Exception as e:
+                logger.error(f"Error retrieving example migrations: {e}")
+                example_migrations = []
+            
+            # Check if we have any context
+            if not liquibase_docs and not internal_guidelines and not example_migrations:
+                logger.warning("No context retrieved from any source")
+                # Continue with empty context, but log a warning
+            
+            # Combine all relevant documents
+            context = self._combine_context(liquibase_docs, internal_guidelines, example_migrations)
+            
+            # Create the review chain
+            review_chain = self._create_review_chain()
+            
+            # Generate the review
+            try:
+                # Set up a synchronous environment for the LLM call
+                import asyncio
+                
+                # Check if we're in an event loop
+                try:
+                    loop = asyncio.get_event_loop()
+                    if loop.is_running():
+                        # We're in a running event loop, use it
+                        logger.info("Using existing event loop")
+                    else:
+                        # Loop exists but isn't running, create a new one
+                        logger.info("Creating new event loop")
+                        loop = asyncio.new_event_loop()
+                        asyncio.set_event_loop(loop)
+                except RuntimeError:
+                    # No event loop exists, create a new one
+                    logger.info("No event loop found, creating new one")
+                    loop = asyncio.new_event_loop()
+                    asyncio.set_event_loop(loop)
+                
+                # Run the LLM call
+                review = review_chain.invoke({
+                    "migration_content": migration_content,
+                    "format_type": format_type,
+                    "parsed_migration": str(parsed_migration),
+                    "context": context
+                })
+                
+                # Check if the review contains error messages
+                if review.startswith("ERROR:") or "This is a placeholder response from a fallback system" in review:
+                    logger.error(f"LLM returned an error: {review}")
+                    return f"Error: The LLM returned an error response. Please check the logs for details."
+                
+                # Check if the review contains the DO NOT instructions that should have been removed
+                if "DO NOT include" in review:
+                    logger.warning("Review contains prompt instructions that should have been removed")
+                    # Clean up the review by removing the DO NOT instructions
+                    lines = review.split('\n')
+                    cleaned_lines = [line for line in lines if not line.strip().startswith("DO NOT")]
+                    review = '\n'.join(cleaned_lines)
+                
+                return review
+                
+            except Exception as e:
+                logger.error(f"Error generating review: {e}")
+                return f"Error: Failed to generate review. {str(e)}"
+            
+        except Exception as e:
+            logger.error(f"Error in review_migration: {e}")
+            return f"Error: An unexpected error occurred during the review process. {str(e)}"
     
     def _parse_migration_content(self, migration_content: str, format_type: str) -> Dict[str, Any]:
         """
@@ -351,43 +421,60 @@ class LiquibaseReviewer:
         # Reference Documentation and Guidelines
         {context}
         
-        Your review must include the following sections:
+        Analyze the migration and provide a detailed review with the following sections:
         
-        1. **Summary**: A brief description of what the migration does, including tables created/modified, constraints added, and other significant changes.
+        ## Summary
+        [Provide a brief description of what the migration does, including tables created/modified, constraints added, and other significant changes.]
         
-        2. **Compliance**: Evaluate compliance with Liquibase best practices and company guidelines:
-           - One change type per changeset
-           - Proper author and ID attributes
-           - Rollback sections for each changeset
-           - Proper naming conventions for tables, columns, constraints, and indexes
-           - Appropriate data types and lengths
-           - Required constraints (NOT NULL, primary keys, etc.)
+        ## Compliance
+        [Evaluate compliance with Liquibase best practices and company guidelines, including:]
+        - One change type per changeset: [Compliant/Non-compliant]
+        - Proper author and ID attributes: [Compliant/Non-compliant]
+        - Rollback sections for each changeset: [Compliant/Non-compliant]
+        - Proper naming conventions: [Compliant/Non-compliant]
+        - Appropriate data types and lengths: [Compliant/Non-compliant]
+        - Required constraints: [Compliant/Non-compliant]
         
-        3. **Issues**: Identify specific issues with the migration, including:
-           - Naming convention violations (with exact names that violate conventions)
-           - Missing rollback sections (specify which changesets)
-           - Data type concerns (specify columns with inappropriate types)
-           - Missing constraints (specify which columns should have constraints)
-           - Performance concerns (large tables without indexes, etc.)
-           - Potential data loss risks
-           - Incorrect Liquibase command usage
+        ## Issues
+        [List specific issues with the migration, including exact names, IDs, and line numbers. If no issues are found in a category, state "No issues found."]
         
-        4. **Recommendations**: Provide specific, actionable recommendations with exact code snippets showing how to fix each issue.
+        ### Naming Convention Violations
+        [List specific table, column, constraint names that violate conventions]
         
-        5. **Best Practices**: Highlight any best practices that are followed or should be followed.
+        ### Missing Rollback Sections
+        [List specific changesets missing rollback sections]
         
-        IMPORTANT: Your review must:
-        - Reference actual code from the migration (exact table names, column names, constraint names, etc.)
-        - Include specific line numbers or changeset IDs when identifying issues
-        - Provide concrete, copy-pastable code examples in your recommendations
-        - Be technically precise and actionable
-        - Focus on database design, Liquibase usage, and SQL best practices
+        ### Data Type Concerns
+        [List columns with inappropriate types]
+        
+        ### Missing Constraints
+        [List columns missing required constraints]
+        
+        ### Performance Concerns
+        [List any performance issues like large tables without indexes]
+        
+        ### Data Loss Risks
+        [List operations that could cause data loss]
+        
+        ### Incorrect Liquibase Usage
+        [List any incorrect usage of Liquibase commands or syntax]
+        
+        ## Recommendations
+        [Provide specific, actionable recommendations with exact code snippets showing how to fix each issue]
+        
+        ## Best Practices
+        [Highlight best practices that are followed or should be followed]
+        
+        IMPORTANT: Your review must be based on the actual content of the migration. Do not use placeholders in your final response. Replace all bracketed sections with actual analysis. If you cannot determine something, say so explicitly rather than using a placeholder.
+        
+        You must:
+        1. Reference actual code from the migration (exact table names, column names, constraint names, etc.)
+        2. Include specific changeset IDs when identifying issues
+        3. Provide concrete, copy-pastable code examples in your recommendations
+        4. Be technically precise and actionable
+        5. Focus on database design, Liquibase usage, and SQL best practices
         
         Format your review in Markdown with clear sections and bullet points where appropriate.
-        
-        DO NOT include generic placeholders, signatures, or messages like "Happy reviewing!" or "Remember, your review is a critical part...". Focus ONLY on the technical content of the review.
-        
-        DO NOT include instructions to yourself in the output. DO NOT include phrases like "DO NOT include personal opinions" or "Focus ONLY on the technical content" in your review. These are instructions for you, not part of the review content.
         """)
         
         # Create the chain

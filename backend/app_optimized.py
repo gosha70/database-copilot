@@ -6,6 +6,8 @@ import logging
 import sys
 import tempfile
 import time
+import yaml
+import asyncio
 from typing import Optional, Dict, Any
 from pathlib import Path
 from functools import lru_cache
@@ -15,6 +17,17 @@ os.environ["STREAMLIT_SERVER_FILE_WATCHER_TYPE"] = os.environ.get("STREAMLIT_SER
 
 # Add the parent directory to the Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+# Set up asyncio event loop policy to avoid "no running event loop" errors
+if sys.platform == 'win32':
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+else:
+    # For Unix-based systems, use the default policy but ensure we have a loop
+    try:
+        loop = asyncio.get_event_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
 
 import streamlit as st
 from streamlit.runtime.uploaded_file_manager import UploadedFile
@@ -264,30 +277,269 @@ def main():
         # Apply theme based on selection
         if theme_mode == "Dark":
             st.markdown("""
-            <style>
+            <style id="dark_theme">
+                /* Root variables */
                 :root {
                     --background-color: #121212;
                     --text-color: #E0E0E0;
                     --secondary-background-color: #1E1E1E;
+                    --border-color: #333333;
+                    --widget-background: #2C2C2C;
+                    --widget-border: #444444;
+                    --checkbox-background: #2196F3;
                 }
                 
+                /* Main app background */
                 .stApp {
-                    background-color: var(--background-color);
-                    color: var(--text-color);
+                    background-color: var(--background-color) !important;
+                    color: var(--text-color) !important;
                 }
                 
+                /* Sidebar */
                 .stSidebar {
-                    background-color: var(--secondary-background-color);
+                    background-color: var(--secondary-background-color) !important;
+                    border-right: 1px solid var(--border-color) !important;
                 }
                 
+                /* Text inputs */
                 .stTextInput > div > div > input {
-                    background-color: var(--secondary-background-color);
-                    color: var(--text-color);
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
                 }
                 
+                /* Text areas */
                 .stTextArea > div > div > textarea {
-                    background-color: var(--secondary-background-color);
-                    color: var(--text-color);
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                /* Select boxes */
+                .stSelectbox > div > div {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                /* Dropdowns */
+                .stSelectbox > div > div > div {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                }
+                
+                /* Expanders */
+                .streamlit-expanderHeader {
+                    background-color: var(--secondary-background-color) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                .streamlit-expanderContent {
+                    background-color: var(--background-color) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                /* Code blocks */
+                .stCodeBlock {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                }
+                
+                /* Ensure code text is visible */
+                .stCodeBlock code {
+                    color: white !important;
+                }
+                
+                /* Tabs */
+                .stTabs [data-baseweb="tab-list"] {
+                    background-color: var(--secondary-background-color) !important;
+                    border-bottom: 1px solid var(--widget-border) !important;
+                }
+                
+                .stTabs [data-baseweb="tab"] {
+                    color: var(--text-color) !important;
+                }
+                
+                /* Buttons */
+                .stButton > button {
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                /* Checkboxes */
+                .stCheckbox > div > div > label {
+                    color: var(--text-color) !important;
+                }
+                
+                /* Checkbox background color */
+                .stCheckbox > div > div > div[data-baseweb="checkbox"] > div {
+                    background-color: var(--checkbox-background) !important;
+                }
+                
+                /* File uploader */
+                .stFileUploader > div {
+                    background-color: var(--widget-background) !important;
+                    color: white !important;
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                /* File uploader drop area */
+                .stFileUploader > div > div:first-child {
+                    background-color: var(--widget-background) !important;
+                    color: white !important;
+                    border: 1px dashed var(--widget-border) !important;
+                }
+                
+                /* File uploader text */
+                .stFileUploader p, 
+                .stFileUploader span, 
+                .stFileUploader div {
+                    color: white !important;
+                }
+                
+                /* Dataframes */
+                .stDataFrame {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                }
+                
+                /* Table */
+                .stTable {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                }
+                
+                /* All text */
+                p, h1, h2, h3, h4, h5, h6, li, span, div {
+                    color: var(--text-color) !important;
+                }
+                
+                /* All labels */
+                label {
+                    color: var(--text-color) !important;
+                }
+            </style>
+            """, unsafe_allow_html=True)
+        else:
+            # Light theme - explicitly set light mode styles and remove any dark mode styles
+            st.markdown("""
+            <style id="light_theme">
+                /* Root variables */
+                :root {
+                    --background-color: #FFFFFF;
+                    --text-color: #C5C5C5;
+                    --secondary-background-color: #F0F2F6;
+                    --border-color: #CCCCCC;
+                    --widget-background: #575757;
+                    --widget-border: #DDDDDD;
+                }
+                
+                /* Main app background */
+                .stApp {
+                    background-color: var(--background-color) !important;
+                    color: var(--text-color) !important;
+                }
+                
+                /* Sidebar */
+                .stSidebar {
+                    background-color: var(--secondary-background-color) !important;
+                    border-right: 1px solid var(--border-color) !important;
+                }
+                
+                /* Text inputs */
+                .stTextInput > div > div > input {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                /* Text areas */
+                .stTextArea > div > div > textarea {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                /* Select boxes */
+                .stSelectbox > div > div {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                /* Dropdowns */
+                .stSelectbox > div > div > div {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                }
+                
+                /* Expanders */
+                .streamlit-expanderHeader {
+                    background-color: var(--secondary-background-color) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                .streamlit-expanderContent {
+                    background-color: var(--background-color) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                /* Code blocks */
+                .stCodeBlock {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                }
+                
+                /* Tabs */
+                .stTabs [data-baseweb="tab-list"] {
+                    background-color: var(--secondary-background-color) !important;
+                    border-bottom: 1px solid var(--widget-border) !important;
+                }
+                
+                .stTabs [data-baseweb="tab"] {
+                    color: var(--text-color) !important;
+                }
+                
+                /* Buttons */
+                .stButton > button {
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                /* Checkboxes */
+                .stCheckbox > div > div > label {
+                    color: var(--text-color) !important;
+                }
+                
+                /* File uploader */
+                .stFileUploader > div {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                /* Dataframes */
+                .stDataFrame {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                }
+                
+                /* Table */
+                .stTable {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                }
+                
+                /* All text */
+                p, h1, h2, h3, h4, h5, h6, li, span, div {
+                    color: var(--text-color) !important;
+                }
+                
+                /* All labels */
+                label {
+                    color: var(--text-color) !important;
                 }
             </style>
             """, unsafe_allow_html=True)
@@ -295,6 +547,37 @@ def main():
         # Apply selected colors using custom CSS
         custom_css = f"""
         <style>
+        /* Fix checkbox label highlighting */
+        [data-testid="stCheckbox"] label {{
+            background-color: transparent !important;
+            color: var(--text-color) !important;
+        }}
+        
+        /* Make text in text areas and inputs black for better visibility in light mode */
+        .stTextArea textarea, .stTextInput input {{
+            color: #000000 !important;
+            font-weight: bold !important;
+        }}
+        
+        /* Make dropdown text black for better visibility */
+        .stSelectbox [data-baseweb="select"] div, 
+        .stSelectbox [data-baseweb="popover"] div,
+        [data-baseweb="menu"] ul li,
+        [data-baseweb="popover"] ul li,
+        [data-baseweb="select"] ul li,
+        [role="listbox"] li {{
+            color: #000000 !important;
+            font-weight: bold !important;
+            background-color: {secondary_color} !important;
+        }}
+        
+        /* Make placeholder text more visible */
+        ::placeholder {{
+            color: #686868 !important;
+            opacity: 0.7 !important;
+            font-weight: normal !important;
+        }}
+
         /* Apply primary color to various elements */
         .stButton > button {{
             background-color: {primary_color} !important;
@@ -475,10 +758,27 @@ def main():
                 # Review button
                 if st.button("Review Migration", key="review_button"):
                     with st.spinner("Reviewing migration..."):
-                        review = review_migration_file(file_path)
-                    
-                    with st.expander("Review Results", expanded=True):
-                        st.markdown(review)
+                        # First check if the file can be parsed
+                        try:
+                            # Get the file format
+                            format_type = get_file_format(file_path)
+                            if format_type == "yaml":
+                                # Try to parse the YAML file
+                                with open(file_path, 'r') as f:
+                                    yaml_content = f.read()
+                                try:
+                                    yaml.safe_load(yaml_content)
+                                except yaml.YAMLError as e:
+                                    st.error(f"Invalid YAML file. Please fix the following error and try again:\n\n```\n{str(e)}\n```")
+                                    st.stop()
+                            
+                            # If we get here, the file is valid, so proceed with review
+                            review = review_migration_file(file_path)
+                            
+                            with st.expander("Review Results", expanded=True):
+                                st.markdown(review)
+                        except Exception as e:
+                            st.error(f"Error processing file: {str(e)}")
                 
                 # Clean up the temporary file
                 try:
@@ -531,7 +831,7 @@ def main():
         # Category selection
         category = st.selectbox(
             "Documentation Category",
-            ["all", "jpa", "liquibase", "internal", "examples"],
+            ["all", "jpa", "liquibase", "internal", "examples", "java"],
             index=0,
             help="Select the category of documentation to search in."
         )

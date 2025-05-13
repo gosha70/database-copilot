@@ -102,6 +102,7 @@ def create_cascade_retriever(
     internal_guidelines_retriever,
     example_migrations_retriever,
     liquibase_docs_retriever,
+    java_files_retriever=None,
     min_docs_per_source=3,
     max_docs_total=10
 ):
@@ -112,6 +113,7 @@ def create_cascade_retriever(
         internal_guidelines_retriever: Retriever for internal guidelines
         example_migrations_retriever: Retriever for example migrations
         liquibase_docs_retriever: Retriever for Liquibase documentation
+        java_files_retriever: Retriever for Java files (optional)
         min_docs_per_source: Minimum number of documents to consider sufficient from each source
         max_docs_total: Maximum total number of documents to return
         
@@ -125,12 +127,22 @@ def create_cascade_retriever(
         "liquibase_docs": liquibase_docs_retriever
     }
     
+    # Add Java files retriever if provided
+    if java_files_retriever is not None:
+        retrievers["java_files"] = java_files_retriever
+    
     # Define the priority order
     priority_order = [
         "internal_guidelines",  # Highest priority
         "example_migrations",   # Medium priority
-        "liquibase_docs"        # Lowest priority
     ]
+    
+    # Add Java files to priority order if available
+    if "java_files" in retrievers:
+        priority_order.append("java_files")  # Medium-low priority
+    
+    # Add Liquibase docs as lowest priority
+    priority_order.append("liquibase_docs")  # Lowest priority
     
     # Create and return the cascade retriever
     return CascadeRetriever(
