@@ -8,6 +8,8 @@ import tempfile
 import time
 import yaml
 import asyncio
+import yaml
+import asyncio
 from typing import Optional, Dict, Any
 from pathlib import Path
 from functools import lru_cache
@@ -17,6 +19,17 @@ os.environ["STREAMLIT_SERVER_FILE_WATCHER_TYPE"] = os.environ.get("STREAMLIT_SER
 
 # Add the parent directory to the Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+# Set up asyncio event loop policy to avoid "no running event loop" errors
+if sys.platform == 'win32':
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+else:
+    # For Unix-based systems, use the default policy but ensure we have a loop
+    try:
+        loop = asyncio.get_event_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
 
 # Set up asyncio event loop policy to avoid "no running event loop" errors
 if sys.platform == 'win32':
@@ -45,47 +58,51 @@ logger = logging.getLogger(__name__)
 # Lazy loading of models and components
 _COMPONENTS = {}
 
-def get_component(component_name: str) -> Any:
+def get_component(component_name: str, debug_mode: bool = False) -> Any:
     """
     Lazily load and cache components to reduce startup time and memory usage.
     
     Args:
         component_name: Name of the component to load.
+        debug_mode: Whether to enable debug mode for the component.
         
     Returns:
         The loaded component.
     """
-    if component_name in _COMPONENTS:
-        return _COMPONENTS[component_name]
+    # Create a unique key for the component with debug mode
+    component_key = f"{component_name}_{debug_mode}"
+    
+    if component_key in _COMPONENTS:
+        return _COMPONENTS[component_key]
     
     start_time = time.time()
-    logger.info(f"Loading component: {component_name}")
+    logger.info(f"Loading component: {component_name} (debug_mode={debug_mode})")
     
     if component_name == "parser":
         from backend.models.liquibase_parser import LiquibaseParser
-        _COMPONENTS[component_name] = LiquibaseParser()
+        _COMPONENTS[component_key] = LiquibaseParser()
     elif component_name == "reviewer":
         from backend.models.liquibase_reviewer import LiquibaseReviewer
-        _COMPONENTS[component_name] = LiquibaseReviewer()
+        _COMPONENTS[component_key] = LiquibaseReviewer(debug_mode=debug_mode)
     elif component_name == "generator":
         from backend.models.liquibase_generator import LiquibaseGenerator
-        _COMPONENTS[component_name] = LiquibaseGenerator()
+        _COMPONENTS[component_key] = LiquibaseGenerator(debug_mode=debug_mode)
     elif component_name == "qa_system":
         from backend.models.qa_system import QASystem
-        _COMPONENTS[component_name] = QASystem()
+        _COMPONENTS[component_key] = QASystem()
     elif component_name == "entity_generator":
         from backend.models.entity_generator import EntityGenerator
-        _COMPONENTS[component_name] = EntityGenerator()
+        _COMPONENTS[component_key] = EntityGenerator()
     elif component_name == "test_generator":
         from backend.models.test_generator import TestGenerator
-        _COMPONENTS[component_name] = TestGenerator()
+        _COMPONENTS[component_key] = TestGenerator()
     else:
         raise ValueError(f"Unknown component: {component_name}")
     
     elapsed_time = time.time() - start_time
     logger.info(f"Loaded component {component_name} in {elapsed_time:.2f} seconds")
     
-    return _COMPONENTS[component_name]
+    return _COMPONENTS[component_key]
 
 def save_uploaded_file(uploaded_file: UploadedFile) -> Optional[str]:
     """
@@ -127,12 +144,13 @@ def get_file_format(file_path: str) -> str:
     else:
         return "unknown"
 
-def review_migration_file(file_path: str) -> str:
+def review_migration_file(file_path: str, debug_mode: bool = False) -> str:
     """
     Review a Liquibase migration file.
     
     Args:
         file_path: The path to the migration file.
+        debug_mode: Whether to enable debug mode.
     
     Returns:
         A review of the migration.
@@ -147,8 +165,8 @@ def review_migration_file(file_path: str) -> str:
         with open(file_path, "r") as f:
             migration_content = f.read()
         
-        # Lazy load the reviewer
-        reviewer = get_component("reviewer")
+        # Lazy load the reviewer with debug mode
+        reviewer = get_component("reviewer", debug_mode=debug_mode)
         
         # Review the migration
         review = reviewer.review_migration(migration_content, format_type)
@@ -157,7 +175,7 @@ def review_migration_file(file_path: str) -> str:
         logger.error(f"Error reviewing migration file: {e}")
         return f"Error reviewing migration file: {str(e)}"
 
-def generate_migration(description: str, format_type: str, author: str) -> str:
+def generate_migration(description: str, format_type: str, author: str, debug_mode: bool = False) -> str:
     """
     Generate a Liquibase migration from a natural language description.
     
@@ -165,13 +183,14 @@ def generate_migration(description: str, format_type: str, author: str) -> str:
         description: Natural language description of the migration.
         format_type: The format of the migration file (xml or yaml).
         author: The author of the migration.
+        debug_mode: Whether to enable debug mode.
     
     Returns:
         A Liquibase migration.
     """
     try:
-        # Lazy load the generator
-        generator = get_component("generator")
+        # Lazy load the generator with debug mode
+        generator = get_component("generator", debug_mode=debug_mode)
         
         # Generate the migration
         migration = generator.generate_migration(description, format_type, author)
@@ -249,13 +268,13 @@ def main():
     
     st.set_page_config(
         page_title="Database Copilot",
-        page_icon="🗄️",
+        page_icon="🗃️", 
         layout="wide"
     )
     
     # Apply custom CSS
     st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
-    
+            
     # Create sidebar with appearance settings
     with st.sidebar:
         st.markdown("## Appearance Settings")
@@ -270,13 +289,15 @@ def main():
         
         # Add color pickers
         st.markdown("### Colors")
-        primary_color = st.color_picker("Primary Color", "#4CAF50")
+        primary_color = st.color_picker("Primary Color", "#295ED2")
         secondary_color = st.color_picker("Secondary Color", "#2196F3")
-        text_color = st.color_picker("Text Color", "#333333")
+        text_color = st.color_picker("Text Color", "#77E5FF")
         
         # Apply theme based on selection
         if theme_mode == "Dark":
             st.markdown("""
+            <style id="dark_theme">
+                /* Root variables */
             <style id="dark_theme">
                 /* Root variables */
                 :root {
@@ -284,8 +305,8 @@ def main():
                     --text-color: #E0E0E0;
                     --secondary-background-color: #1E1E1E;
                     --border-color: #333333;
-                    --widget-background: #2C2C2C;
-                    --widget-border: #444444;
+                    --widget-background: #3A3A3A;
+                    --widget-border: #5684EA;
                     --checkbox-background: #2196F3;
                 }
                 
@@ -428,10 +449,10 @@ def main():
                 /* Root variables */
                 :root {
                     --background-color: #FFFFFF;
-                    --text-color: #C5C5C5;
+                    --text-color: #7878AA;
                     --secondary-background-color: #F0F2F6;
                     --border-color: #CCCCCC;
-                    --widget-background: #575757;
+                    --widget-background: #072B7D;
                     --widget-border: #DDDDDD;
                 }
                 
@@ -439,23 +460,117 @@ def main():
                 .stApp {
                     background-color: var(--background-color) !important;
                     color: var(--text-color) !important;
+                    background-color: var(--background-color) !important;
+                    color: var(--text-color) !important;
                 }
                 
                 /* Sidebar */
+                /* Sidebar */
                 .stSidebar {
+                    background-color: var(--secondary-background-color) !important;
+                    border-right: 1px solid var(--border-color) !important;
                     background-color: var(--secondary-background-color) !important;
                     border-right: 1px solid var(--border-color) !important;
                 }
                 
                 /* Text inputs */
+                /* Text inputs */
                 .stTextInput > div > div > input {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
                     background-color: var(--widget-background) !important;
                     color: var(--text-color) !important;
                     border: 1px solid var(--widget-border) !important;
                 }
                 
                 /* Text areas */
+                /* Text areas */
                 .stTextArea > div > div > textarea {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                /* Select boxes */
+                .stSelectbox > div > div {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                /* Dropdowns */
+                .stSelectbox > div > div > div {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                }
+                
+                /* Expanders */
+                .streamlit-expanderHeader {
+                    background-color: var(--secondary-background-color) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                .streamlit-expanderContent {
+                    background-color: var(--background-color) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                /* Code blocks */
+                .stCodeBlock {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                }
+                
+                /* Tabs */
+                .stTabs [data-baseweb="tab-list"] {
+                    background-color: var(--secondary-background-color) !important;
+                    border-bottom: 1px solid var(--widget-border) !important;
+                }
+                
+                .stTabs [data-baseweb="tab"] {
+                    color: var(--text-color) !important;
+                }
+                
+                /* Buttons */
+                .stButton > button {
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                /* Checkboxes */
+                .stCheckbox > div > div > label {
+                    color: var(--text-color) !important;
+                }
+                
+                /* File uploader */
+                .stFileUploader > div {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                /* Dataframes */
+                .stDataFrame {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                }
+                
+                /* Table */
+                .stTable {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                }
+                
+                /* All text */
+                p, h1, h2, h3, h4, h5, h6, li, span, div {
+                    color: var(--text-color) !important;
+                }
+                
+                /* All labels */
+                label {
+                    color: var(--text-color) !important;
                     background-color: var(--widget-background) !important;
                     color: var(--text-color) !important;
                     border: 1px solid var(--widget-border) !important;
@@ -547,6 +662,37 @@ def main():
         # Apply selected colors using custom CSS
         custom_css = f"""
         <style>
+        /* Fix checkbox label highlighting */
+        [data-testid="stCheckbox"] label {{
+            background-color: transparent !important;
+            color: var(--text-color) !important;
+        }}
+        
+        /* Make text in text areas and inputs black for better visibility in light mode */
+        .stTextArea textarea, .stTextInput input {{
+            color: #000000 !important;
+            font-weight: bold !important;
+        }}
+        
+        /* Make dropdown text black for better visibility */
+        .stSelectbox [data-baseweb="select"] div, 
+        .stSelectbox [data-baseweb="popover"] div,
+        [data-baseweb="menu"] ul li,
+        [data-baseweb="popover"] ul li,
+        [data-baseweb="select"] ul li,
+        [role="listbox"] li {{
+            color: #000000 !important;
+            font-weight: bold !important;
+            background-color: {secondary_color} !important;
+        }}
+        
+        /* Make placeholder text more visible */
+        ::placeholder {{
+            color: #686868 !important;
+            opacity: 0.7 !important;
+            font-weight: normal !important;
+        }}
+
         /* Fix checkbox label highlighting */
         [data-testid="stCheckbox"] label {{
             background-color: transparent !important;
@@ -773,7 +919,7 @@ def main():
                                     st.stop()
                             
                             # If we get here, the file is valid, so proceed with review
-                            review = review_migration_file(file_path)
+                            review = review_migration_file(file_path, debug_mode=debug_mode)
                             
                             with st.expander("Review Results", expanded=True):
                                 st.markdown(review)
@@ -806,7 +952,7 @@ def main():
                 st.error("Please provide a migration description.")
             else:
                 with st.spinner("Generating migration..."):
-                    migration = generate_migration(description, format_type, author)
+                    migration = generate_migration(description, format_type, author, debug_mode=debug_mode)
                 
                 with st.expander("Generated Migration", expanded=True):
                     st.code(migration, language=format_type)
@@ -831,6 +977,7 @@ def main():
         # Category selection
         category = st.selectbox(
             "Documentation Category",
+            ["all", "jpa", "liquibase", "internal", "examples", "java"],
             ["all", "jpa", "liquibase", "internal", "examples", "java"],
             index=0,
             help="Select the category of documentation to search in."

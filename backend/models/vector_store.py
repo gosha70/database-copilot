@@ -16,18 +16,52 @@ from backend.config import (
     CHUNK_OVERLAP,
     NUM_RETRIEVAL_RESULTS
 )
+from backend.config import EMBEDDING_TYPE
 from backend.models.streamlit_compatibility import get_safe_embedding_model
 
 logger = logging.getLogger(__name__)
 
 def get_embedding_model() -> Embeddings:
     """
-    Get the embedding model with Streamlit compatibility.
+    Get the embedding model based on configuration.
     
     Returns:
         An initialized embedding model.
     """
-    return get_safe_embedding_model()
+    if EMBEDDING_TYPE == "llama_cpp":
+        # Use llama.cpp embeddings
+        try:
+            from backend.models.embeddings_local import embeddings
+            logger.info("Using llama.cpp embeddings")
+            return embeddings
+        except ImportError as e:
+            logger.error(f"Error importing llama.cpp embeddings: {e}")
+            logger.error("Falling back to safe embedding model")
+            return get_safe_embedding_model()
+    elif EMBEDDING_TYPE == "tensorflow":
+        # Use TensorFlow embeddings
+        try:
+            from backend.models.alternative_embeddings import create_alternative_embeddings
+            logger.info("Using TensorFlow embeddings")
+            return create_alternative_embeddings("tensorflow")
+        except ImportError as e:
+            logger.error(f"Error importing TensorFlow embeddings: {e}")
+            logger.error("Falling back to safe embedding model")
+            return get_safe_embedding_model()
+    elif EMBEDDING_TYPE == "tfidf":
+        # Use TF-IDF embeddings
+        try:
+            from backend.models.alternative_embeddings import create_alternative_embeddings
+            logger.info("Using TF-IDF embeddings")
+            return create_alternative_embeddings("tfidf")
+        except ImportError as e:
+            logger.error(f"Error importing TF-IDF embeddings: {e}")
+            logger.error("Falling back to safe embedding model")
+            return get_safe_embedding_model()
+    else:
+        # Default to sentence-transformers embeddings
+        logger.info("Using sentence-transformers embeddings")
+        return get_safe_embedding_model()
 
 def get_vector_store(
     embedding_model: Optional[Embeddings] = None,

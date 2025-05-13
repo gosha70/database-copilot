@@ -45,6 +45,26 @@ Database Copilot is an AI-powered tool designed to assist developers with databa
    python build_vector_store.py
    ```
 
+### Mac M1/M2 Users
+
+If you encounter "cannot import name 'Tensor' from 'torch'" errors on Mac M1/M2, use our PyTorch-free setup:
+
+```bash
+# Make the script executable (if needed)
+chmod +x run_torch_free.sh
+
+# Run the setup script
+./run_torch_free.sh setup
+```
+
+This script will:
+1. Create a new conda environment (or virtual environment if conda is not available)
+2. Install the necessary dependencies in the clean environment
+3. Download the embedding model
+4. Build the vector store without PyTorch dependencies
+
+After setup completes, follow the instructions displayed to activate the environment and run the application.
+
 ## Usage
 
 ### Running the Application
@@ -53,6 +73,16 @@ Start the Streamlit web application:
 
 ```bash
 python run_app.py
+```
+
+For Mac M1/M2 users with the PyTorch-free setup:
+
+```bash
+# First, activate the environment as instructed by the setup script
+conda activate database_copilot_cpp  # or source database_copilot_cpp_env/bin/activate
+
+# Then run the application
+./run_torch_free.sh run
 ```
 
 The application will be available at http://localhost:8501
@@ -114,6 +144,10 @@ You can add your own documents to the `docs/` directory to customize the knowled
 ### External LLM Configuration
 
 Database Copilot supports various external LLM providers. To configure an external LLM, edit the `.streamlit/secrets.toml` file.
+
+## Advanced Configuration
+
+For detailed information about the PyTorch-free implementation for Mac M1/M2 users, see [PYTORCH_FREE_RAG.md](PYTORCH_FREE_RAG.md).
 
 ## License
 

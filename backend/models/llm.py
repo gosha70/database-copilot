@@ -86,10 +86,13 @@ def get_embedding_model(model_name: Optional[str] = None) -> Union[BaseHuggingFa
             encode_kwargs={"normalize_embeddings": True}
         )
     except Exception as e:
-        logger.warning(f"Error loading embedding model: {e}")
-        logger.warning("Using FakeEmbeddings as a fallback")
-        logger.warning("This will allow the application to run, but search results may not be meaningful")
-        return FakeEmbeddings(size=768)
+        error_message = f"Error loading embedding model: {e}"
+        logger.error(error_message)
+        logger.error("Please ensure the required packages are installed:")
+        logger.error("  - sentence-transformers (for HuggingFace embeddings)")
+        logger.error("  - torch (for PyTorch support)")
+        logger.error("Or use llama.cpp embeddings by setting EMBEDDING_TYPE='llama_cpp'")
+        raise RuntimeError(error_message)
 
 def get_llm(model_name: Optional[str] = None) -> Union[HuggingFacePipeline, FakeListLLM]:
     """
@@ -126,20 +129,13 @@ def get_llm(model_name: Optional[str] = None) -> Union[HuggingFacePipeline, Fake
                     verbose=True,
                 )
             else:
-                logger.warning("GGUF model detected but llama-cpp-python is not installed.")
-                logger.warning("Falling back to a mock LLM for testing purposes.")
-                # Create a simple mock LLM using HuggingFacePipeline with a small model
-                # This is just for testing and won't provide good results
-                from langchain_community.llms.fake import FakeListLLM
-                return FakeListLLM(
-                    responses=[
-                        "This is a mock response from the LLM. The llama-cpp-python package is not installed, so we're using a fake LLM for testing purposes.",
-                        "Another mock response. Please install llama-cpp-python to use GGUF models.",
-                        "Mock response: Your Liquibase migration looks good!",
-                        "Mock response: Here's a generated Liquibase migration based on your description."
-                    ],
-                    sequential=True
+                # Raise a clear error message instead of using a mock LLM
+                error_message = (
+                    "GGUF model detected but llama-cpp-python is not installed. "
+                    "Please install it with: pip install llama-cpp-python"
                 )
+                logger.error(error_message)
+                raise ImportError(error_message)
     else:
         logger.info(f"Using LLM model from HuggingFace Hub: {model_name}")
         model_location = model_name

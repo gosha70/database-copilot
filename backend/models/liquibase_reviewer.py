@@ -19,11 +19,15 @@ class LiquibaseReviewer:
     Reviewer for Liquibase migrations using RAG.
     """
     
-    def __init__(self):
+    def __init__(self, debug_mode=False):
         """
         Initialize the reviewer.
+        
+        Args:
+            debug_mode: Whether to enable debug mode, which logs more information.
         """
         self.parser = LiquibaseParser()
+        self.debug_mode = debug_mode
         
         # Import at the module level to avoid circular imports
         from backend.models.streamlit_compatibility import get_safe_llm
@@ -44,6 +48,9 @@ class LiquibaseReviewer:
         self.liquibase_docs_retriever = get_retriever(collection_name="liquibase_docs")
         self.internal_guidelines_retriever = get_retriever(collection_name="internal_guidelines")
         self.example_migrations_retriever = get_retriever(collection_name="example_migrations")
+        
+        if self.debug_mode:
+            logger.info("Debug mode enabled for LiquibaseReviewer")
     
     def review_migration(self, migration_content: str, format_type: str = "xml") -> str:
         """
@@ -102,6 +109,21 @@ class LiquibaseReviewer:
             # Combine all relevant documents
             context = self._combine_context(liquibase_docs, internal_guidelines, example_migrations)
             
+            # Log the context if debug mode is enabled
+            if self.debug_mode:
+                logger.info("=== DEBUG: RETRIEVED CONTEXT ===")
+                logger.info(f"Context length: {len(context)} characters")
+                logger.info("=== Liquibase Docs ===")
+                for i, doc in enumerate(liquibase_docs):
+                    logger.info(f"Doc {i+1} (length: {len(doc)} chars): {doc[:200]}...")
+                logger.info("=== Internal Guidelines ===")
+                for i, doc in enumerate(internal_guidelines):
+                    logger.info(f"Doc {i+1} (length: {len(doc)} chars): {doc[:200]}...")
+                logger.info("=== Example Migrations ===")
+                for i, doc in enumerate(example_migrations):
+                    logger.info(f"Doc {i+1} (length: {len(doc)} chars): {doc[:200]}...")
+                logger.info("=== END DEBUG: RETRIEVED CONTEXT ===")
+            
             # Create the review chain
             review_chain = self._create_review_chain()
             
@@ -140,13 +162,8 @@ class LiquibaseReviewer:
                     logger.error(f"LLM returned an error: {review}")
                     return f"Error: The LLM returned an error response. Please check the logs for details."
                 
-                # Check if the review contains the DO NOT instructions that should have been removed
-                if "DO NOT include" in review:
-                    logger.warning("Review contains prompt instructions that should have been removed")
-                    # Clean up the review by removing the DO NOT instructions
-                    lines = review.split('\n')
-                    cleaned_lines = [line for line in lines if not line.strip().startswith("DO NOT")]
-                    review = '\n'.join(cleaned_lines)
+                # Post-process the review to remove any template placeholders
+                review = self._post_process_review(review)
                 
                 return review
                 
@@ -157,6 +174,101 @@ class LiquibaseReviewer:
         except Exception as e:
             logger.error(f"Error in review_migration: {e}")
             return f"Error: An unexpected error occurred during the review process. {str(e)}"
+    
+    def _post_process_review(self, review: str) -> str:
+        """
+        Post-process the generated review to remove any unwanted text.
+        
+        Args:
+            review: The generated review.
+        
+        Returns:
+            The post-processed review.
+        """
+        # Check if the review contains the DO NOT instructions that should have been removed
+        if "DO NOT include" in review or "DO NOT RETURN" in review:
+            logger.warning("Review contains prompt instructions that should have been removed")
+            # Clean up the review by removing the DO NOT instructions
+            lines = review.split('\n')
+            cleaned_lines = [line for line in lines if not (line.strip().startswith("DO NOT") or "DO NOT" in line)]
+            review = '\n'.join(cleaned_lines)
+        
+        # Check if the review contains template text
+        template_indicators = [
+            "You may use the following sections as a template",
+            "Remember, the goal is to provide",
+            "Your review should be",
+            "the following sections as a template",
+            "sections as a template",
+            "template for your review"
+        ]
+        
+        for indicator in template_indicators:
+            if indicator.lower() in review.lower():
+                logger.warning(f"Review contains template text: {indicator}")
+                # Return a clear error message
+                return """
+# Error: LLM returned template instructions instead of an actual review
+
+The LLM failed to generate a proper review and instead returned template instructions.
+
+This is likely due to one of the following issues:
+1. The LLM model is not powerful enough to handle the task
+2. The context window is too small for the model to process all the information
+3. The model needs more specific examples to understand the task
+
+Please try one of the following solutions:
+1. Use an external LLM like OpenAI's GPT-4 or Anthropic's Claude (see external_llm_instructions.md)
+2. Provide a simpler migration file to review
+3. Check that the vector store has been properly built with relevant examples
+"""
+        
+        # Remove any lines that contain template placeholders
+        lines = review.split('\n')
+        cleaned_lines = []
+        skip_section = False
+        
+        for line in lines:
+            # Skip lines that contain template placeholders
+            if any(phrase in line.lower() for phrase in ["[list specific", "[provide", "[evaluate", "[highlight", "following sections", "template", "remember,"]):
+                skip_section = True
+                continue
+            
+            # Skip lines that are just placeholders in square brackets
+            if line.strip().startswith("[") and line.strip().endswith("]"):
+                continue
+            
+            # Reset skip_section flag on new section headers
+            if line.strip().startswith("##"):
+                skip_section = False
+            
+            # Skip empty lines after template text
+            if skip_section and not line.strip():
+                continue
+            
+            # Add the line to the cleaned lines if not skipping
+            if not skip_section:
+                cleaned_lines.append(line)
+        
+        # Join the cleaned lines
+        cleaned_review = '\n'.join(cleaned_lines)
+        
+        # Remove any leading/trailing whitespace
+        cleaned_review = cleaned_review.strip()
+        
+        # If the review is empty after cleaning, return an error message
+        if not cleaned_review:
+            logger.error("Review is empty after post-processing")
+            return """
+# Error: Failed to generate a meaningful review
+
+The LLM failed to generate a proper review. Please try one of the following solutions:
+1. Use an external LLM like OpenAI's GPT-4 or Anthropic's Claude (see external_llm_instructions.md)
+2. Provide a simpler migration file to review
+3. Check that the vector store has been properly built with relevant examples
+"""
+        
+        return cleaned_review
     
     def _parse_migration_content(self, migration_content: str, format_type: str) -> Dict[str, Any]:
         """
@@ -395,6 +507,7 @@ class LiquibaseReviewer:
         if example_migrations:
             context_parts.append("## Example Migrations\n\n" + "\n\n".join(example_migrations))
         
+        print(f"=== DEBUG: Combined Context ===\n\n{context_parts}")
         return "\n\n".join(context_parts)
     
     def _create_review_chain(self):
@@ -406,7 +519,7 @@ class LiquibaseReviewer:
         """
         # Create the prompt template with detailed requirements
         prompt = ChatPromptTemplate.from_template("""
-        You are a Liquibase migration reviewer. Your task is to provide a detailed, technical review of a Liquibase migration against best practices and company guidelines.
+        Review this Liquibase migration for best practices and issues:
 
         # Migration to Review
         ```{format_type}
@@ -418,16 +531,12 @@ class LiquibaseReviewer:
         {parsed_migration}
         ```
         
-        # Reference Documentation and Guidelines
-        {context}
-        
-        Analyze the migration and provide a detailed review with the following sections:
+        Provide a review with these sections:
         
         ## Summary
-        [Provide a brief description of what the migration does, including tables created/modified, constraints added, and other significant changes.]
+        Brief description of what the migration does
         
         ## Compliance
-        [Evaluate compliance with Liquibase best practices and company guidelines, including:]
         - One change type per changeset: [Compliant/Non-compliant]
         - Proper author and ID attributes: [Compliant/Non-compliant]
         - Rollback sections for each changeset: [Compliant/Non-compliant]
@@ -436,45 +545,15 @@ class LiquibaseReviewer:
         - Required constraints: [Compliant/Non-compliant]
         
         ## Issues
-        [List specific issues with the migration, including exact names, IDs, and line numbers. If no issues are found in a category, state "No issues found."]
-        
-        ### Naming Convention Violations
-        [List specific table, column, constraint names that violate conventions]
-        
-        ### Missing Rollback Sections
-        [List specific changesets missing rollback sections]
-        
-        ### Data Type Concerns
-        [List columns with inappropriate types]
-        
-        ### Missing Constraints
-        [List columns missing required constraints]
-        
-        ### Performance Concerns
-        [List any performance issues like large tables without indexes]
-        
-        ### Data Loss Risks
-        [List operations that could cause data loss]
-        
-        ### Incorrect Liquibase Usage
-        [List any incorrect usage of Liquibase commands or syntax]
+        List specific issues with exact names, IDs, and line numbers
         
         ## Recommendations
-        [Provide specific, actionable recommendations with exact code snippets showing how to fix each issue]
+        Provide specific code snippets showing how to fix each issue
         
         ## Best Practices
-        [Highlight best practices that are followed or should be followed]
+        Highlight best practices that are followed or should be followed
         
-        IMPORTANT: Your review must be based on the actual content of the migration. Do not use placeholders in your final response. Replace all bracketed sections with actual analysis. If you cannot determine something, say so explicitly rather than using a placeholder.
-        
-        You must:
-        1. Reference actual code from the migration (exact table names, column names, constraint names, etc.)
-        2. Include specific changeset IDs when identifying issues
-        3. Provide concrete, copy-pastable code examples in your recommendations
-        4. Be technically precise and actionable
-        5. Focus on database design, Liquibase usage, and SQL best practices
-        
-        Format your review in Markdown with clear sections and bullet points where appropriate.
+        IMPORTANT: Be specific and reference actual code from the migration.
         """)
         
         # Create the chain

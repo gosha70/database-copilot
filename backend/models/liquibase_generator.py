@@ -18,16 +18,18 @@ class LiquibaseGenerator:
     Generator for Liquibase migrations using RAG.
     """
     
-    def __init__(self):
+    def __init__(self, debug_mode=False):
         """
         Initialize the generator.
+        
+        Args:
+            debug_mode: Whether to enable debug mode, which logs more information.
         """
         self.llm = get_llm()
+        self.debug_mode = debug_mode
         
-        # Get retrievers for different document categories
-        self.liquibase_docs_retriever = get_retriever(collection_name="liquibase_docs")
-        self.internal_guidelines_retriever = get_retriever(collection_name="internal_guidelines")
-        self.example_migrations_retriever = get_retriever(collection_name="example_migrations")
+        if self.debug_mode:
+            logger.info("Debug mode enabled for LiquibaseGenerator")
     
     def generate_migration(
         self,
@@ -37,6 +39,11 @@ class LiquibaseGenerator:
     ) -> str:
         """
         Generate a Liquibase migration from a natural language description.
+        
+        This method creates new retrievers for each request to avoid context reuse
+        between different generation requests. This ensures that each migration
+        is generated based only on the current description, not influenced by
+        previous requests.
         
         Args:
             description: Natural language description of the migration.
@@ -56,8 +63,26 @@ class LiquibaseGenerator:
         # Combine all relevant documents
         context = self._combine_context(liquibase_docs, internal_guidelines, example_migrations)
         
-        # Create the generation chain
+        # Create a new generation chain for each request to avoid context reuse
         generation_chain = self._create_generation_chain()
+        
+        # Log the context if debug mode is enabled
+        if self.debug_mode:
+            logger.info("=== DEBUG: RETRIEVED CONTEXT FOR MIGRATION GENERATION ===")
+            logger.info(f"Description: {description}")
+            logger.info(f"Format: {format_type}")
+            logger.info(f"Author: {author}")
+            logger.info(f"Context length: {len(context)} characters")
+            logger.info("=== Liquibase Docs ===")
+            for i, doc in enumerate(liquibase_docs):
+                logger.info(f"Doc {i+1} (length: {len(doc)} chars): {doc[:200]}...")
+            logger.info("=== Internal Guidelines ===")
+            for i, doc in enumerate(internal_guidelines):
+                logger.info(f"Doc {i+1} (length: {len(doc)} chars): {doc[:200]}...")
+            logger.info("=== Example Migrations ===")
+            for i, doc in enumerate(example_migrations):
+                logger.info(f"Doc {i+1} (length: {len(doc)} chars): {doc[:200]}...")
+            logger.info("=== END DEBUG: RETRIEVED CONTEXT ===")
         
         # Generate the migration
         migration = generation_chain.invoke({
@@ -67,7 +92,142 @@ class LiquibaseGenerator:
             "context": context
         })
         
+        # Log the raw migration if debug mode is enabled
+        if self.debug_mode:
+            logger.info("=== DEBUG: RAW MIGRATION BEFORE POST-PROCESSING ===")
+            logger.info(migration)
+            logger.info("=== END DEBUG: RAW MIGRATION ===")
+        
+        # Post-process the migration to remove any "Example:" text
+        migration = self._post_process_migration(migration)
+        
         return migration
+    
+    def _post_process_migration(self, migration: str) -> str:
+        """
+        Post-process the generated migration to remove any unwanted text.
+        
+        Args:
+            migration: The generated migration.
+        
+        Returns:
+            The post-processed migration.
+        """
+        # Remove any "Example:" text
+        lines = migration.split('\n')
+        cleaned_lines = []
+        skip_next_line = False
+        skip_section = False
+        instruction_count = 0
+        
+        # Check for common instruction patterns
+        instruction_patterns = [
+            "ensure that the generated migration",
+            "if you're generating",
+            "make sure",
+            "remember to",
+            "don't forget",
+            "be sure to",
+            "it's important to",
+            "note that",
+            "please note",
+            "keep in mind",
+            "consider",
+            "you should",
+            "you must",
+            "you need to",
+            "you'll want to",
+            "you'll need to",
+            "you may want to",
+            "you may need to",
+            "you might want to",
+            "you might need to"
+        ]
+        
+        # Check for numbered instructions
+        numbered_instruction_pattern = r'^\s*\d+\.\s+'
+        import re
+        
+        for line in lines:
+            # Skip lines that contain "Example:" or similar text
+            if "example:" in line.lower() or ("example" in line.lower() and ":" in line):
+                skip_next_line = True
+                continue
+            
+            # Skip separator lines that follow "Example:" lines
+            if skip_next_line and (line.strip() == '' or all(c == '-' for c in line.strip()) or all(c == '=' for c in line.strip())):
+                skip_next_line = False
+                continue
+            
+            # Check if line contains instruction patterns
+            is_instruction = False
+            for pattern in instruction_patterns:
+                if pattern in line.lower():
+                    is_instruction = True
+                    instruction_count += 1
+                    break
+            
+            # Check if line is a numbered instruction
+            if re.match(numbered_instruction_pattern, line):
+                is_instruction = True
+                instruction_count += 1
+            
+            # Skip instruction lines
+            if is_instruction:
+                skip_section = True
+                continue
+            
+            # Skip empty lines after instructions
+            if skip_section and not line.strip():
+                continue
+            
+            # Reset skip_section on a line that looks like actual migration content
+            if skip_section and (line.strip().startswith("--") or 
+                                line.strip().startswith("<") or 
+                                line.strip().startswith("databaseChangeLog:") or
+                                "changeSet" in line or
+                                "createTable" in line or
+                                "addColumn" in line):
+                skip_section = False
+            
+            # Reset the skip flag
+            skip_next_line = False
+            
+            # Skip the line if we're in a section to skip
+            if skip_section:
+                continue
+            
+            # Add the line to the cleaned lines
+            cleaned_lines.append(line)
+        
+        # Join the cleaned lines
+        cleaned_migration = '\n'.join(cleaned_lines)
+        
+        # Remove any leading/trailing whitespace
+        cleaned_migration = cleaned_migration.strip()
+        
+        # If we removed a lot of instructions, log a warning
+        if instruction_count > 5:
+            logger.warning(f"Removed {instruction_count} instruction lines from migration")
+        
+        # If the migration is empty after cleaning, return an error message
+        if not cleaned_migration:
+            logger.error("Migration is empty after post-processing")
+            return "Error: The LLM returned instructions instead of a migration. Please try again."
+        
+        # Check if the migration looks valid
+        valid_markers = ["changeSet", "createTable", "addColumn", "databaseChangeLog:", "<?xml", "<databaseChangeLog"]
+        is_valid = any(marker in cleaned_migration for marker in valid_markers)
+        
+        if not is_valid:
+            logger.error("Migration does not contain valid Liquibase syntax")
+            return """Error: The LLM returned invalid content instead of a migration.
+
+Please try again with a more specific description, for example:
+"Create a Liquibase migration to add a table named 'customer' with columns for id (primary key), firstName, and lastName"
+"""
+        
+        return cleaned_migration
     
     def _get_relevant_liquibase_docs(self, description: str) -> List[str]:
         """
@@ -82,8 +242,11 @@ class LiquibaseGenerator:
         # Create a query based on the description
         query = f"Liquibase documentation for: {description}"
         
+        # Create a new retriever for each request to avoid context reuse
+        retriever = get_retriever(collection_name="liquibase_docs")
+        
         # Get relevant documents
-        docs = self.liquibase_docs_retriever.get_relevant_documents(query)
+        docs = retriever.get_relevant_documents(query)
         
         # Extract the content from the documents
         return [doc.page_content for doc in docs]
@@ -101,8 +264,11 @@ class LiquibaseGenerator:
         # Create a query based on the description
         query = f"Internal guidelines for database migrations: {description}"
         
+        # Create a new retriever for each request to avoid context reuse
+        retriever = get_retriever(collection_name="internal_guidelines")
+        
         # Get relevant documents
-        docs = self.internal_guidelines_retriever.get_relevant_documents(query)
+        docs = retriever.get_relevant_documents(query)
         
         # Extract the content from the documents
         return [doc.page_content for doc in docs]
@@ -121,8 +287,11 @@ class LiquibaseGenerator:
         # Create a query based on the description and format type
         query = f"Example {format_type} migrations for: {description}"
         
+        # Create a new retriever for each request to avoid context reuse
+        retriever = get_retriever(collection_name="example_migrations")
+        
         # Get relevant documents
-        docs = self.example_migrations_retriever.get_relevant_documents(query)
+        docs = retriever.get_relevant_documents(query)
         
         # Extract the content from the documents
         return [doc.page_content for doc in docs]
@@ -169,30 +338,19 @@ class LiquibaseGenerator:
         """
         # Create the prompt template
         prompt = ChatPromptTemplate.from_template("""
-        You are a Liquibase migration generator. Your task is to generate a Liquibase migration based on a natural language description.
-        
-        # Migration Description
+        Generate a Liquibase migration in {format_type} format for the following description:
+
         {description}
-        
-        # Format Type
-        {format_type}
-        
-        # Author
-        {author}
-        
-        # Reference Documentation and Guidelines
-        {context}
-        
-        Please generate a complete and valid Liquibase migration in {format_type} format based on the description.
-        
-        Follow these guidelines:
-        1. Use a meaningful changeset ID and include the author.
-        2. Include appropriate comments to explain the purpose of the migration.
-        3. Follow Liquibase best practices and company guidelines.
-        4. Ensure the migration is complete and ready to be executed.
-        5. Include all necessary attributes and constraints.
-        
-        Return ONLY the migration content without any additional explanation.
+
+        Author: {author}
+
+        IMPORTANT: Return ONLY the migration code, no explanations or instructions.
+
+        For XML format, include proper XML headers and namespace declarations.
+        For YAML format, ensure proper indentation and structure.
+
+        Use BIGINT for long IDs and VARCHAR(255) for string fields.
+        Include appropriate constraints (primary key, nullable, etc.).
         """)
         
         # Create the chain

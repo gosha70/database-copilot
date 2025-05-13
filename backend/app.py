@@ -7,12 +7,25 @@ import sys
 import tempfile
 import yaml
 import asyncio
+import yaml
+import asyncio
 from typing import Optional
 from pathlib import Path
 os.environ["STREAMLIT_SERVER_FILE_WATCHER_TYPE"] = "none"   # safest
 
 # Add the parent directory to the Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+# Set up asyncio event loop policy to avoid "no running event loop" errors
+if sys.platform == 'win32':
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+else:
+    # For Unix-based systems, use the default policy but ensure we have a loop
+    try:
+        loop = asyncio.get_event_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
 
 # Set up asyncio event loop policy to avoid "no running event loop" errors
 if sys.platform == 'win32':
@@ -41,13 +54,15 @@ from backend.models.test_generator import TestGenerator
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.StreamHandler(sys.stdout)
+    ]
 )
 logger = logging.getLogger(__name__)
 
-# Initialize parser, reviewer, generator, QA system, entity generator, and test generator
+# Initialize parser, generator, QA system, entity generator, and test generator
 parser = LiquibaseParser()
-reviewer = LiquibaseReviewer()
 generator = LiquibaseGenerator()
 qa_system = QASystem()
 entity_generator = EntityGenerator()
@@ -199,13 +214,13 @@ def main():
     
     st.set_page_config(
         page_title="Database Copilot",
-        page_icon="🗄️",
+        page_icon="🗃️",  
         layout="wide"
     )
     
     # Apply custom CSS
     st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
-    
+            
     # Create sidebar with appearance settings
     with st.sidebar:
         st.markdown("## Appearance Settings")
@@ -220,13 +235,19 @@ def main():
         
         # Add color pickers
         st.markdown("### Colors")
-        primary_color = st.color_picker("Primary Color", "#4CAF50")
+        primary_color = st.color_picker("Primary Color", "#295ED2")
         secondary_color = st.color_picker("Secondary Color", "#2196F3")
-        text_color = st.color_picker("Text Color", "#333333")
+        text_color = st.color_picker("Text Color", "#77E5FF")
+        
+        # Initialize reviewer and generator with debug mode
+        reviewer = LiquibaseReviewer(debug_mode=True)
+        generator = LiquibaseGenerator(debug_mode=True)
         
         # Apply theme based on selection
         if theme_mode == "Dark":
             st.markdown("""
+            <style id="dark_theme">
+                /* Root variables */
             <style id="dark_theme">
                 /* Root variables */
                 :root {
@@ -234,8 +255,8 @@ def main():
                     --text-color: #E0E0E0;
                     --secondary-background-color: #1E1E1E;
                     --border-color: #333333;
-                    --widget-background: #2C2C2C;
-                    --widget-border: #444444;
+                    --widget-background: #3A3A3A;
+                    --widget-border: #5684EA;
                     --checkbox-background: #2196F3;
                 }
                 
@@ -378,10 +399,10 @@ def main():
                 /* Root variables */
                 :root {
                     --background-color: #FFFFFF;
-                    --text-color: #C5C5C5;
+                    --text-color: #7878AA;
                     --secondary-background-color: #F0F2F6;
                     --border-color: #CCCCCC;
-                    --widget-background: #575757;
+                    --widget-background: #072B7D;
                     --widget-border: #DDDDDD;
                 }
                 
@@ -389,23 +410,117 @@ def main():
                 .stApp {
                     background-color: var(--background-color) !important;
                     color: var(--text-color) !important;
+                    background-color: var(--background-color) !important;
+                    color: var(--text-color) !important;
                 }
                 
                 /* Sidebar */
+                /* Sidebar */
                 .stSidebar {
+                    background-color: var(--secondary-background-color) !important;
+                    border-right: 1px solid var(--border-color) !important;
                     background-color: var(--secondary-background-color) !important;
                     border-right: 1px solid var(--border-color) !important;
                 }
                 
                 /* Text inputs */
+                /* Text inputs */
                 .stTextInput > div > div > input {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
                     background-color: var(--widget-background) !important;
                     color: var(--text-color) !important;
                     border: 1px solid var(--widget-border) !important;
                 }
                 
                 /* Text areas */
+                /* Text areas */
                 .stTextArea > div > div > textarea {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                /* Select boxes */
+                .stSelectbox > div > div {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                /* Dropdowns */
+                .stSelectbox > div > div > div {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                }
+                
+                /* Expanders */
+                .streamlit-expanderHeader {
+                    background-color: var(--secondary-background-color) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                .streamlit-expanderContent {
+                    background-color: var(--background-color) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                /* Code blocks */
+                .stCodeBlock {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                }
+                
+                /* Tabs */
+                .stTabs [data-baseweb="tab-list"] {
+                    background-color: var(--secondary-background-color) !important;
+                    border-bottom: 1px solid var(--widget-border) !important;
+                }
+                
+                .stTabs [data-baseweb="tab"] {
+                    color: var(--text-color) !important;
+                }
+                
+                /* Buttons */
+                .stButton > button {
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                /* Checkboxes */
+                .stCheckbox > div > div > label {
+                    color: var(--text-color) !important;
+                }
+                
+                /* File uploader */
+                .stFileUploader > div {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                    border: 1px solid var(--widget-border) !important;
+                }
+                
+                /* Dataframes */
+                .stDataFrame {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                }
+                
+                /* Table */
+                .stTable {
+                    background-color: var(--widget-background) !important;
+                    color: var(--text-color) !important;
+                }
+                
+                /* All text */
+                p, h1, h2, h3, h4, h5, h6, li, span, div {
+                    color: var(--text-color) !important;
+                }
+                
+                /* All labels */
+                label {
+                    color: var(--text-color) !important;
                     background-color: var(--widget-background) !important;
                     color: var(--text-color) !important;
                     border: 1px solid var(--widget-border) !important;
@@ -503,9 +618,9 @@ def main():
             color: var(--text-color) !important;
         }}
         
-        /* Make text in text areas and inputs black for better visibility in light mode */
+        /* Make text in text areas and inputs visible in both light and dark modes */
         .stTextArea textarea, .stTextInput input {{
-            color: #000000 !important;
+            color: #FFFFFF !important;
             font-weight: bold !important;
         }}
         
@@ -702,6 +817,27 @@ def main():
                                 st.markdown(review)
                         except Exception as e:
                             st.error(f"Error processing file: {str(e)}")
+                        # First check if the file can be parsed
+                        try:
+                            # Get the file format
+                            format_type = get_file_format(file_path)
+                            if format_type == "yaml":
+                                # Try to parse the YAML file
+                                with open(file_path, 'r') as f:
+                                    yaml_content = f.read()
+                                try:
+                                    yaml.safe_load(yaml_content)
+                                except yaml.YAMLError as e:
+                                    st.error(f"Invalid YAML file. Please fix the following error and try again:\n\n```\n{str(e)}\n```")
+                                    st.stop()
+                            
+                            # If we get here, the file is valid, so proceed with review
+                            review = review_migration_file(file_path)
+                            
+                            with st.expander("Review Results", expanded=True):
+                                st.markdown(review)
+                        except Exception as e:
+                            st.error(f"Error processing file: {str(e)}")
                 
                 # Clean up the temporary file
                 try:
@@ -754,6 +890,7 @@ def main():
         # Category selection
         category = st.selectbox(
             "Documentation Category",
+            ["all", "jpa", "liquibase", "internal", "examples", "java"],
             ["all", "jpa", "liquibase", "internal", "examples", "java"],
             index=0,
             help="Select the category of documentation to search in."

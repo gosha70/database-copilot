@@ -31,7 +31,58 @@ def safe_import_torch():
     try:
         # Completely bypass the problematic torch._classes module
         # by creating a fake module structure before importing torch
+        # Completely bypass the problematic torch._classes module
+        # by creating a fake module structure before importing torch
         import types
+        import sys
+        
+        # Create a complete fake module hierarchy
+        fake_torch = types.ModuleType("torch")
+        fake_c = types.ModuleType("_C")
+        fake_classes = types.ModuleType("_classes")
+        
+        # Create a fake cuda module with proper methods
+        class FakeCuda:
+            def __init__(self):
+                pass
+            
+            def is_available(self):
+                return False
+            
+            def device_count(self):
+                return 0
+        
+        # Add cuda to fake_torch
+        fake_cuda = FakeCuda()
+        fake_torch.cuda = fake_cuda
+        # Also add is_available as a direct attribute for compatibility
+        fake_torch.cuda.is_available = fake_cuda.is_available
+        
+        # Set up the fake path attribute that won't cause issues
+        class FakePath:
+            def __init__(self):
+                self._path = ["/dummy/path"]
+            
+            def __iter__(self):
+                return iter(self._path)
+            
+            def __getattr__(self, name):
+                if name == "_path":
+                    return self._path
+                return None
+        
+        fake_path = FakePath()
+        fake_classes.__path__ = fake_path
+        
+        # Set up a safe __getattr__ that won't try to access custom classes
+        def safe_getattr(self, name):
+            if name == "__path__":
+                return fake_path
+            return None
+        
+        # Apply the safe __getattr__ to the fake classes module
+        fake_classes.__getattr__ = lambda attr: None
+        fake_c.__getattr__ = lambda attr: None
         import sys
         
         # Create a complete fake module hierarchy
@@ -90,13 +141,26 @@ def safe_import_torch():
         sys.modules["torch"] = fake_torch
         sys.modules["torch._C"] = fake_c
         sys.modules["torch._classes"] = fake_classes
+        # Set up the module hierarchy
+        fake_torch._C = fake_c
+        fake_torch._classes = fake_classes
         
+        # Register the fake modules in sys.modules
+        sys.modules["torch"] = fake_torch
+        sys.modules["torch._C"] = fake_c
+        sys.modules["torch._classes"] = fake_classes
+        
+        # Now import the real torch, which will replace our fake modules
+        # but keep our safe __getattr__ methods
         # Now import the real torch, which will replace our fake modules
         # but keep our safe __getattr__ methods
         import torch
         
         # Ensure our safe __getattr__ is still used for _classes
+        
+        # Ensure our safe __getattr__ is still used for _classes
         if hasattr(torch, "_classes"):
+            torch._classes.__getattr__ = lambda attr: None
             torch._classes.__getattr__ = lambda attr: None
         
         # Mark as successfully imported
@@ -215,19 +279,12 @@ def get_safe_llm(model_name: Optional[str] = None, quantization_level: str = "4b
                     verbose=True,
                 )
             except ImportError:
-                logger.warning("GGUF model detected but llama-cpp-python is not installed.")
-                logger.warning("Falling back to a mock LLM for testing purposes.")
-                # Create a more informative mock LLM
-                from langchain_community.llms.fake import FakeListLLM
-                return FakeListLLM(
-                    responses=[
-                        "ERROR: GGUF model detected but llama-cpp-python is not installed. This is a placeholder response from a fallback system. Please install llama-cpp-python to use GGUF models.",
-                        "ERROR: Missing llama-cpp-python package. This is a placeholder response from a fallback system. Install with 'pip install llama-cpp-python' to use GGUF models.",
-                        "ERROR: Cannot load GGUF model without llama-cpp-python. This is a placeholder response from a fallback system. Please check the installation instructions in the documentation.",
-                        "ERROR: GGUF model requires llama-cpp-python. This is a placeholder response from a fallback system. Install the package and try again."
-                    ],
-                    sequential=True
+                error_message = (
+                    "GGUF model detected but llama-cpp-python is not installed. "
+                    "Please install it with: pip install llama-cpp-python"
                 )
+                logger.error(error_message)
+                raise ImportError(error_message)
     else:
         logger.info(f"Using LLM model from HuggingFace Hub: {model_name}")
         model_location = model_name
@@ -235,31 +292,20 @@ def get_safe_llm(model_name: Optional[str] = None, quantization_level: str = "4b
     # Safely import torch and transformers
     torch = safe_import_torch()
     if torch is None:
-        logger.error("Failed to safely import PyTorch. Using a mock LLM instead.")
-        from langchain_community.llms.fake import FakeListLLM
-        return FakeListLLM(
-            responses=[
-                "ERROR: Failed to safely import PyTorch. This is a placeholder response from a fallback system. Please check your PyTorch installation and ensure it's compatible with your environment.",
-                "ERROR: PyTorch import failed. This is a placeholder response from a fallback system. Try reinstalling PyTorch with 'conda install -c pytorch pytorch' for better compatibility.",
-                "ERROR: PyTorch could not be loaded. This is a placeholder response from a fallback system. Please check the logs for detailed error information.",
-                "ERROR: PyTorch initialization failed. This is a placeholder response from a fallback system. Make sure your environment has the correct dependencies installed."
-            ],
-            sequential=True
-        )
+        error_message = "Failed to safely import PyTorch. Please check your PyTorch installation."
+        logger.error(error_message)
+        logger.error("For Apple M1/M2 Mac users:")
+        logger.error("1. Install PyTorch with MPS support: pip install torch torchvision torchaudio")
+        logger.error("2. Make sure you're using Python 3.9+ for best compatibility")
+        logger.error("3. If using Conda: conda install pytorch torchvision torchaudio -c pytorch-nightly")
+        raise ImportError(error_message)
     
     transformers_modules = safe_import_transformers()
     if transformers_modules is None:
-        logger.error("Failed to safely import transformers. Using a mock LLM instead.")
-        from langchain_community.llms.fake import FakeListLLM
-        return FakeListLLM(
-            responses=[
-                "ERROR: Failed to safely import transformers. This is a placeholder response from a fallback system. Please check your transformers installation and ensure it's compatible with your environment.",
-                "ERROR: Transformers import failed. This is a placeholder response from a fallback system. Try reinstalling transformers with 'pip install transformers --upgrade' for better compatibility.",
-                "ERROR: Transformers library could not be loaded. This is a placeholder response from a fallback system. Please check the logs for detailed error information.",
-                "ERROR: Transformers initialization failed. This is a placeholder response from a fallback system. Make sure your environment has the correct dependencies installed."
-            ],
-            sequential=True
-        )
+        error_message = "Failed to safely import transformers. Please check your transformers installation."
+        logger.error(error_message)
+        logger.error("Try reinstalling with: pip install transformers --upgrade")
+        raise ImportError(error_message)
     
     # Extract transformers modules
     AutoTokenizer = transformers_modules["AutoTokenizer"]
@@ -316,23 +362,11 @@ def get_safe_llm(model_name: Optional[str] = None, quantization_level: str = "4b
         return llm
     
     except Exception as e:
-        logger.error(f"Error loading model: {e}")
-        # Fall back to a mock LLM that provides more useful responses
-        from langchain_community.llms.fake import FakeListLLM
-        
-        # Log the error for debugging
+        error_message = f"Error loading model: {e}"
+        logger.error(error_message)
         logger.error(f"Detailed error loading model: {str(e)}")
-        
-        # Create a more informative mock LLM
-        return FakeListLLM(
-            responses=[
-                f"ERROR: Unable to load LLM model due to: {str(e)}. Please check your model installation and compatibility. This is a placeholder response from a fallback system.",
-                f"ERROR: LLM model failed to load. Error details: {str(e)}. This is a placeholder response from a fallback system.",
-                f"ERROR: Model initialization failed with error: {str(e)}. This is a placeholder response from a fallback system.",
-                f"ERROR: Model loading error: {str(e)}. This is a placeholder response from a fallback system."
-            ],
-            sequential=True
-        )
+        logger.error("Please check your model installation and compatibility.")
+        raise RuntimeError(error_message)
 
 def get_safe_embedding_model(model_name: Optional[str] = None):
     """
@@ -346,9 +380,22 @@ def get_safe_embedding_model(model_name: Optional[str] = None):
     """
     from backend.config import (
         MODELS_DIR,
-        DEFAULT_EMBEDDING_MODEL
+        DEFAULT_EMBEDDING_MODEL,
+        EMBEDDING_TYPE
     )
     
+    # Check if we should use llama.cpp embeddings
+    if EMBEDDING_TYPE == "llama_cpp":
+        try:
+            from backend.models.embeddings_local import embeddings
+            logger.info("Using llama.cpp embeddings")
+            return embeddings
+        except ImportError as e:
+            logger.error(f"Error importing llama.cpp embeddings: {e}")
+            logger.error("Make sure llama-cpp-python is installed")
+            # Continue to try sentence_transformers as fallback
+    
+    # If we're here, we're using sentence_transformers
     model_name = model_name or DEFAULT_EMBEDDING_MODEL
     logger.info(f"Loading embedding model: {model_name}")
     
@@ -370,7 +417,7 @@ def get_safe_embedding_model(model_name: Optional[str] = None):
         # Safely import torch
         torch = safe_import_torch()
         if torch is None:
-            logger.error("Failed to safely import PyTorch. Cannot proceed with embedding model.")
+            logger.error("Failed to safely import PyTorch. Cannot proceed with sentence_transformers embedding model.")
             
             # Create a more informative error message for the logs
             error_message = """
@@ -379,9 +426,13 @@ For Apple M1/M2 Mac users:
 1. Install PyTorch with MPS support: pip install torch torchvision torchaudio
 2. Make sure you're using Python 3.9+ for best compatibility
 3. If using Conda: conda install pytorch torchvision torchaudio -c pytorch-nightly
+4. Alternatively, use the torch-free setup: ./run_torch_free.sh setup
 
 For other users:
 1. Check your PyTorch installation
+2. Try reinstalling PyTorch with the appropriate command for your system
+   - For CUDA support: pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+   - For CPU only: pip install torch torchvision torchaudio
 2. Try reinstalling PyTorch with the appropriate command for your system
    - For CUDA support: pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
    - For CPU only: pip install torch torchvision torchaudio
@@ -389,7 +440,7 @@ For other users:
             logger.error(error_message)
             
             # Raise an exception to stop the application
-            raise ImportError("PyTorch is required for embedding model functionality. See logs for installation instructions.")
+            raise ImportError("PyTorch failed to load. See logs for installation instructions.")
         
         # Check if model exists locally
         model_path = os.path.join(MODELS_DIR, os.path.basename(model_name))
@@ -406,6 +457,15 @@ For other users:
             logger.info(f"Successfully imported sentence_transformers from {sentence_transformers.__file__}")
         except ImportError as e:
             logger.error(f"Direct import of sentence_transformers failed: {e}")
+            
+            # Try to use llama.cpp embeddings as fallback
+            try:
+                from backend.models.embeddings_local import embeddings
+                logger.info("Falling back to llama.cpp embeddings due to sentence_transformers import failure")
+                return embeddings
+            except ImportError as sub_e:
+                logger.error(f"Error importing llama.cpp embeddings: {sub_e}")
+            
             # Try to find the package in the Python path
             import subprocess
             try:
@@ -480,11 +540,69 @@ For Apple M1/M2 Mac users:
 3. If using Conda: conda install pytorch torchvision torchaudio -c pytorch
 
 For other users:
+        error_str = str(e)
+        logger.error(f"Error loading embedding model: {error_str}")
+        
+        # Check for specific error types and provide targeted solutions
+        if "Could not import sentence_transformers" in error_str:
+            # This is a Python path/environment issue
+            import sys
+            import site
+            
+            # Log detailed environment information for debugging
+            logger.error(f"Python executable: {sys.executable}")
+            logger.error(f"Python version: {sys.version}")
+            logger.error(f"Python path: {sys.path}")
+            logger.error(f"Site packages: {site.getsitepackages()}")
+            
+            # Create a more specific error message for sentence_transformers import issues
+            error_message = f"""
+ERROR: Failed to import sentence_transformers package.
+This is likely a Python environment issue, not an installation issue.
+
+Debugging information:
+- Python executable: {sys.executable}
+- Python version: {sys.version.split()[0]}
+
+For Apple M1/M2 Mac users:
+1. Make sure you're running the app with the SAME Python environment where you installed sentence-transformers
+2. Try installing directly in your current environment:
+   {sys.executable} -m pip install --force-reinstall sentence-transformers
+
+3. If using a virtual environment, activate it before running the app:
+   source /path/to/your/venv/bin/activate  # Replace with your actual path
+   
+4. If using Conda, make sure you've activated the correct environment:
+   conda activate your_environment_name
+
+5. Check if the package is installed but in a different location:
+   {sys.executable} -m pip show sentence-transformers
+"""
+            logger.error(error_message)
+            
+            # Raise an exception with the specific guidance
+            raise ImportError(f"Failed to import sentence_transformers. This is a Python environment issue, not an installation issue. Run the app with the same Python environment where you installed the package. See logs for detailed debugging information.")
+        else:
+            # Generic error message for other types of errors
+            error_message = f"""
+ERROR: Failed to load embedding model.
+Error details: {error_str}
+
+For Apple M1/M2 Mac users:
+1. Install PyTorch with MPS support: pip install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1
+2. Make sure you're using Python 3.9+ for best compatibility
+3. If using Conda: conda install pytorch torchvision torchaudio -c pytorch
+
+For other users:
 1. Check your sentence-transformers installation
 2. Try reinstalling with 'pip install sentence-transformers --upgrade'
 3. Ensure PyTorch is properly installed
 4. Check the logs for more detailed error information
 """
+            logger.error(error_message)
+            
+            # Raise an exception to stop the application
+            raise ImportError(f"Failed to load embedding model: {error_str}. See logs for installation instructions.")
             logger.error(error_message)
             
             # Raise an exception to stop the application

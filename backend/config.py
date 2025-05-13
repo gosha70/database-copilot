@@ -3,7 +3,17 @@ Configuration settings for the Database Copilot application.
 """
 import os
 from pathlib import Path
-import streamlit as st
+
+# Try to import streamlit, but provide a fallback if it's not available
+try:
+    import streamlit as st
+except ImportError:
+    # Create a dummy st object with a secrets attribute that's an empty dict
+    class DummySecrets:
+        def __init__(self):
+            self.secrets = {}
+    
+    st = DummySecrets()
 
 # Base directories
 ROOT_DIR = Path(__file__).parent.parent.absolute()
@@ -14,6 +24,31 @@ DOCS_DIR = os.path.join(ROOT_DIR, "docs")
 MODELS_DIR = os.path.join(DATA_DIR, "hf_models")
 DEFAULT_LLM_MODEL = "mistral-7b-instruct-v0.2.Q4_K_M.gguf"  # This should be the file name in MODELS_DIR
 DEFAULT_EMBEDDING_MODEL = "sentence-transformers/all-mpnet-base-v2"
+DEFAULT_LLAMA_CPP_EMBEDDING_MODEL = "nomic-embed-text-v1.5.Q4_K_M.gguf"
+
+# Embedding type (sentence_transformers, llama_cpp, tensorflow, tfidf)
+# First check streamlit secrets, then environment variables
+try:
+    if hasattr(st, 'secrets') and 'EMBEDDING_TYPE' in st.secrets:
+        EMBEDDING_TYPE = st.secrets['EMBEDDING_TYPE']
+    else:
+        EMBEDDING_TYPE = os.environ.get("EMBEDDING_TYPE", "sentence_transformers")
+    
+    # Check if we're running in torch-free mode
+    if os.environ.get("LAZY_LOAD_MODELS") == "1":
+        # Force llama_cpp embeddings in torch-free mode
+        EMBEDDING_TYPE = "llama_cpp"
+except Exception:
+    # Default to sentence_transformers if there's an error with secrets
+    EMBEDDING_TYPE = "sentence_transformers"
+
+# Try to import sentence_transformers to check if it's available
+try:
+    import sentence_transformers
+except ImportError:
+    # If sentence_transformers is not available, force llama_cpp embeddings
+    EMBEDDING_TYPE = "llama_cpp"
+    print("sentence_transformers not available, using llama_cpp embeddings instead")
 
 # LLM type (local, openai, claude, gemini, mistral, deepseek)
 # First check streamlit secrets, then environment variables

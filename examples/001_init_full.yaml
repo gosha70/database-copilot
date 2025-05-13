@@ -11,7 +11,7 @@ databaseChangeLog:
       runInTransaction: true
       preConditions:
         onFail: HALT
-        - not:
+        not:
             tableExists:
               tableName: customer
       changes:
@@ -57,7 +57,7 @@ databaseChangeLog:
       runInTransaction: true
       preConditions:
         onFail: HALT
-        - not:
+        not:
             tableExists:
               tableName: "order"          # ORDER is an SQL keyword
       changes:
@@ -112,7 +112,7 @@ databaseChangeLog:
       runInTransaction: true
       preConditions:
         onFail: MARK_RAN       # allow reruns on already-patched DBs
-        - not:
+        not:
             columnExists:
               tableName: customer
               columnName: phone_number
