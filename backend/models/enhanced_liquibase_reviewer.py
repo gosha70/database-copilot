@@ -79,10 +79,10 @@ class EnhancedLiquibaseReviewer:
         all_docs = []
         with ThreadPoolExecutor(max_workers=4) as executor:
             # Submit all retrieval tasks
-            general_future = executor.submit(self.cascade_retriever.get_relevant_documents, general_query)
-            table_future = executor.submit(self.cascade_retriever.get_relevant_documents, table_query)
-            change_future = executor.submit(self.cascade_retriever.get_relevant_documents, change_query)
-            constraint_future = executor.submit(self.cascade_retriever.get_relevant_documents, constraint_query)
+            general_future = executor.submit(self.cascade_retriever.invoke, general_query)
+            table_future = executor.submit(self.cascade_retriever.invoke, table_query)
+            change_future = executor.submit(self.cascade_retriever.invoke, change_query)
+            constraint_future = executor.submit(self.cascade_retriever.invoke, constraint_query)
             
             # Get results as they complete
             general_docs = general_future.result()

@@ -112,7 +112,7 @@ class LiquibaseReviewer:
         query = f"Liquibase documentation for: {', '.join(change_types)}"
         
         # Get relevant documents
-        docs = self.liquibase_docs_retriever.get_relevant_documents(query)
+        docs = self.liquibase_docs_retriever.invoke(query)
         
         # Extract the content from the documents
         return [doc.page_content for doc in docs]
@@ -135,7 +135,7 @@ class LiquibaseReviewer:
         query = f"Internal guidelines for database migrations with: {', '.join(change_types)} on tables: {', '.join(table_names)}"
         
         # Get relevant documents
-        docs = self.internal_guidelines_retriever.get_relevant_documents(query)
+        docs = self.internal_guidelines_retriever.invoke(query)
         
         # Extract the content from the documents
         return [doc.page_content for doc in docs]
@@ -158,7 +158,7 @@ class LiquibaseReviewer:
         query = f"Example migrations with: {', '.join(change_types)} on tables: {', '.join(table_names)}"
         
         # Get relevant documents
-        docs = self.example_migrations_retriever.get_relevant_documents(query)
+        docs = self.example_migrations_retriever.invoke(query)
         
         # Extract the content from the documents
         return [doc.page_content for doc in docs]
