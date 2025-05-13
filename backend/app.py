@@ -247,6 +247,35 @@ def main():
             color: {text_color} !important;
         }}
         
+        /* Apply color to custom-label class */
+        .custom-label {{
+            color: {primary_color} !important;
+            font-weight: bold !important;
+            margin-bottom: 0.5rem !important;
+        }}
+        
+        /* Target all Streamlit labels */
+        label, .stSelectbox label, .stSlider label, .stCheckbox label {{
+            color: {primary_color} !important;
+            font-weight: bold !important;
+        }}
+        
+        /* Target specific label types that might be harder to style */
+        [data-baseweb="select"] + div, 
+        [data-baseweb="base-input"] + div,
+        .stColorPicker label,
+        .stFileUploader label {{
+            color: {primary_color} !important;
+            font-weight: bold !important;
+        }}
+        
+        /* Target sidebar section headers */
+        .sidebar .stMarkdown h1, 
+        .sidebar .stMarkdown h2, 
+        .sidebar .stMarkdown h3 {{
+            color: {primary_color} !important;
+        }}
+        
         /* Fix tab text color when selected and not selected */
         .stTabs [aria-selected="true"] p {{
             color: white !important;

@@ -26,7 +26,7 @@ CUSTOM_CSS = """
 }
 
 .app-logo {
-    height: 500px;
+    height: 150px;
     margin-right: 5px;
 }
 

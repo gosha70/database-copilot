@@ -159,12 +159,9 @@ def setup(skip_download: bool = False) -> bool:
             logger.error("Failed to download JPA/Hibernate documentation")
             return False
     
-    # Ingest documents
-    if not ingest_documents():
-        logger.error("Failed to ingest documents")
-        return False
-    
     logger.info("Setup completed successfully")
+    logger.info("To build the vector store, add any custom documents to the docs/ directories")
+    logger.info("Then run: python build_vector_store.py")
     return True
 
 def main():
@@ -182,6 +179,8 @@ def main():
     
     if setup(skip_download=args.skip_download):
         logger.info("Setup completed successfully")
+        logger.info("To build the vector store, add any custom documents to the docs/ directories")
+        logger.info("Then run: python build_vector_store.py")
         logger.info("To run the application, use: python -m backend.app")
     else:
         logger.error("Setup failed")
