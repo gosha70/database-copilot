@@ -6,6 +6,7 @@ import logging
 import sys
 import tempfile
 from typing import Optional
+from pathlib import Path
 os.environ["STREAMLIT_SERVER_FILE_WATCHER_TYPE"] = "none"   # safest
 
 # Add the parent directory to the Python path
@@ -13,6 +14,9 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 
 import streamlit as st
 from streamlit.runtime.uploaded_file_manager import UploadedFile
+
+# Import custom styles
+from backend.static.styles import CUSTOM_CSS
 
 from backend.models.liquibase_parser import LiquibaseParser
 from backend.models.liquibase_reviewer import LiquibaseReviewer
@@ -123,6 +127,26 @@ def generate_migration(description: str, format_type: str, author: str) -> str:
         logger.error(f"Error generating migration: {e}")
         return f"Error generating migration: {str(e)}"
 
+def get_image_path():
+    """
+    Get the path to the logo image.
+    
+    Returns:
+        Path to the logo image, or None if no image is found.
+    """
+    # Check for image in the static/images directory
+    image_dir = Path(__file__).parent / "static" / "images"
+    
+    # Look for any image file with "logo" in the name
+    logo_files = list(image_dir.glob("*logo*.*"))
+    
+    # If no logo files found, look for any image file
+    if not logo_files:
+        logo_files = list(image_dir.glob("*.png")) + list(image_dir.glob("*.jpg")) + list(image_dir.glob("*.jpeg"))
+    
+    # Return the first image found, or None if no images found
+    return logo_files[0] if logo_files else None
+
 def main():
     """
     Main function to run the Streamlit application.
@@ -133,8 +157,151 @@ def main():
         layout="wide"
     )
     
-    st.title("Database Copilot")
-    st.subheader("A RAG-based assistant for database migrations and ORM in Java")
+    # Apply custom CSS
+    st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
+    
+    # Create sidebar with appearance settings
+    with st.sidebar:
+        st.markdown("## Appearance Settings")
+        
+        # Add dark mode toggle
+        st.markdown("### Theme")
+        theme_mode = st.selectbox(
+            "Select theme",
+            ["Light", "Dark"],
+            index=0
+        )
+        
+        # Add color pickers
+        st.markdown("### Colors")
+        primary_color = st.color_picker("Primary Color", "#4CAF50")
+        secondary_color = st.color_picker("Secondary Color", "#2196F3")
+        text_color = st.color_picker("Text Color", "#333333")
+        
+        # Apply theme based on selection
+        if theme_mode == "Dark":
+            st.markdown("""
+            <style>
+                :root {
+                    --background-color: #121212;
+                    --text-color: #E0E0E0;
+                    --secondary-background-color: #1E1E1E;
+                }
+                
+                .stApp {
+                    background-color: var(--background-color);
+                    color: var(--text-color);
+                }
+                
+                .stSidebar {
+                    background-color: var(--secondary-background-color);
+                }
+                
+                .stTextInput > div > div > input {
+                    background-color: var(--secondary-background-color);
+                    color: var(--text-color);
+                }
+                
+                .stTextArea > div > div > textarea {
+                    background-color: var(--secondary-background-color);
+                    color: var(--text-color);
+                }
+            </style>
+            """, unsafe_allow_html=True)
+        
+        # Apply selected colors using custom CSS
+        custom_css = f"""
+        <style>
+        /* Apply primary color to various elements */
+        .stButton > button {{
+            background-color: {primary_color} !important;
+            color: white !important;
+            border-color: {primary_color} !important;
+        }}
+        
+        .streamlit-expanderHeader {{
+            color: {primary_color} !important;
+        }}
+        
+        .stTabs [aria-selected="true"] {{
+            background-color: {primary_color} !important;
+            color: white !important;
+        }}
+        
+        /* Fix the tab indicator line color */
+        .stTabs [data-baseweb="tab-highlight"] {{
+            background-color: {primary_color} !important;
+        }}
+        
+        /* Apply secondary color */
+        .stFileUploader > div > button {{
+            background-color: {secondary_color} !important;
+        }}
+        
+        /* Apply text color */
+        body {{
+            color: {text_color} !important;
+        }}
+        
+        h1, h2, h3, h4, h5, h6 {{
+            color: {text_color} !important;
+        }}
+        
+        /* Fix tab text color when selected and not selected */
+        .stTabs [aria-selected="true"] p {{
+            color: white !important;
+        }}
+        
+        /* Fix non-selected tab text color */
+        .stTabs [data-baseweb="tab"] p {{
+            color: {text_color} !important;
+        }}
+        
+        /* Fix the tab text color for the "Generate Entity" tab specifically */
+        .stTabs [data-baseweb="tab"]:nth-child(4) p {{
+            color: {text_color} !important;
+        }}
+        
+        /* Override any default Streamlit tab styling */
+        .stTabs [data-baseweb="tab"] {{
+            color: {text_color} !important;
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+        }}
+        </style>
+        """
+        st.markdown(custom_css, unsafe_allow_html=True)
+    
+    # Display logo and title
+    col1, col2 = st.columns([1, 6])
+    with col1:
+        # Check if logo image exists
+        logo_path = get_image_path()
+        if logo_path:
+            st.image(str(logo_path), width=80)
+        else:
+            # Default to emoji if no image is found
+            st.markdown("<h1 style='font-size: 3rem; text-align: center;'>🗄️</h1>", unsafe_allow_html=True)
+    with col2:
+        st.markdown("<h1 style='margin-top: 0; margin-left: -20px;'>Database Copilot</h1>", unsafe_allow_html=True)
+        st.markdown("<p style='margin-left: -20px;'>A RAG-based assistant for database migrations and ORM in Java</p>", unsafe_allow_html=True)
+    
+    # Add logo uploader to sidebar
+    with st.sidebar:
+        st.markdown("## Logo Settings")
+        logo_file = st.file_uploader("Upload Logo", type=["png", "jpg", "jpeg"], key="logo_uploader")
+        if logo_file:
+            # Save the uploaded logo
+            logo_dir = Path(__file__).parent / "static" / "images"
+            logo_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Save with a consistent name
+            logo_path = logo_dir / f"logo{Path(logo_file.name).suffix}"
+            with open(logo_path, "wb") as f:
+                f.write(logo_file.getvalue())
+            
+            st.success(f"Logo saved as {logo_path.name}")
+            st.image(logo_file, width=100, caption="Current Logo")
     
     # Create tabs for different functionalities
     tab1, tab2, tab3, tab4, tab5 = st.tabs([
@@ -164,16 +331,16 @@ def main():
                 with open(file_path, "r") as f:
                     migration_content = f.read()
                 
-                st.subheader("Migration Content")
-                st.code(migration_content, language=get_file_format(file_path))
+                with st.expander("Migration Content", expanded=True):
+                    st.code(migration_content, language=get_file_format(file_path))
                 
                 # Review button
                 if st.button("Review Migration", key="review_button"):
                     with st.spinner("Reviewing migration..."):
                         review = review_migration_file(file_path)
                     
-                    st.subheader("Review Results")
-                    st.markdown(review)
+                    with st.expander("Review Results", expanded=True):
+                        st.markdown(review)
                 
                 # Clean up the temporary file
                 try:
@@ -203,8 +370,8 @@ def main():
                 with st.spinner("Generating migration..."):
                     migration = generate_migration(description, format_type, author)
                 
-                st.subheader("Generated Migration")
-                st.code(migration, language=format_type)
+                with st.expander("Generated Migration", expanded=True):
+                    st.code(migration, language=format_type)
                 
                 # Download button
                 extension = ".xml" if format_type == "xml" else ".yaml"
@@ -239,8 +406,8 @@ def main():
                 with st.spinner("Answering question..."):
                     answer = qa_system.answer_question(question, category)
                 
-                st.subheader("Answer")
-                st.markdown(answer)
+                with st.expander("Answer", expanded=True):
+                    st.markdown(answer)
     
     # Tab 4: Generate Entity
     with tab4:
@@ -268,8 +435,8 @@ def main():
                 with open(file_path, "r") as f:
                     migration_content = f.read()
                 
-                st.subheader("Migration Content")
-                st.code(migration_content, language=get_file_format(file_path))
+                with st.expander("Migration Content", expanded=True):
+                    st.code(migration_content, language=get_file_format(file_path))
                 
                 # Generate button
                 if st.button("Generate Entity", key="generate_entity_button"):
@@ -281,8 +448,8 @@ def main():
                             lombok=lombok
                         )
                     
-                    st.subheader("Generated Entity")
-                    st.code(entity, language="java")
+                    with st.expander("Generated Entity", expanded=True):
+                        st.code(entity, language="java")
                     
                     # Download button
                     class_name = "Entity"  # Default class name
@@ -347,8 +514,8 @@ def main():
                         include_repository_tests=include_repository_tests
                     )
                 
-                st.subheader("Generated Tests")
-                st.code(tests, language="java")
+                with st.expander("Generated Tests", expanded=True):
+                    st.code(tests, language="java")
                 
                 # Download button
                 class_name = "EntityTest"  # Default class name
