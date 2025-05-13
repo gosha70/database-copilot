@@ -17,33 +17,41 @@ DEFAULT_EMBEDDING_MODEL = "sentence-transformers/all-mpnet-base-v2"
 
 # LLM type (local, openai, claude, gemini, mistral, deepseek)
 # First check streamlit secrets, then environment variables
-if hasattr(st, 'secrets') and 'LLM_TYPE' in st.secrets:
-    LLM_TYPE = st.secrets['LLM_TYPE']
-else:
-    LLM_TYPE = os.environ.get("LLM_TYPE", "local")
+try:
+    if hasattr(st, 'secrets') and 'LLM_TYPE' in st.secrets:
+        LLM_TYPE = st.secrets['LLM_TYPE']
+    else:
+        LLM_TYPE = os.environ.get("LLM_TYPE", "local")
+except Exception:
+    # Default to local if there's an error with secrets
+    LLM_TYPE = "local"
 
 # API keys for external LLMs
 # First check streamlit secrets, then environment variables
-if hasattr(st, 'secrets'):
-    # OpenAI
-    if 'OPENAI_API_KEY' in st.secrets:
-        os.environ["OPENAI_API_KEY"] = st.secrets['OPENAI_API_KEY']
-    
-    # Claude
-    if 'ANTHROPIC_API_KEY' in st.secrets:
-        os.environ["ANTHROPIC_API_KEY"] = st.secrets['ANTHROPIC_API_KEY']
-    
-    # Gemini
-    if 'GOOGLE_API_KEY' in st.secrets:
-        os.environ["GOOGLE_API_KEY"] = st.secrets['GOOGLE_API_KEY']
-    
-    # Mistral
-    if 'MISTRAL_API_KEY' in st.secrets:
-        os.environ["MISTRAL_API_KEY"] = st.secrets['MISTRAL_API_KEY']
-    
-    # DeepSeek
-    if 'DEEPSEEK_API_KEY' in st.secrets:
-        os.environ["DEEPSEEK_API_KEY"] = st.secrets['DEEPSEEK_API_KEY']
+try:
+    if hasattr(st, 'secrets'):
+        # OpenAI
+        if 'OPENAI_API_KEY' in st.secrets:
+            os.environ["OPENAI_API_KEY"] = st.secrets['OPENAI_API_KEY']
+        
+        # Claude
+        if 'ANTHROPIC_API_KEY' in st.secrets:
+            os.environ["ANTHROPIC_API_KEY"] = st.secrets['ANTHROPIC_API_KEY']
+        
+        # Gemini
+        if 'GOOGLE_API_KEY' in st.secrets:
+            os.environ["GOOGLE_API_KEY"] = st.secrets['GOOGLE_API_KEY']
+        
+        # Mistral
+        if 'MISTRAL_API_KEY' in st.secrets:
+            os.environ["MISTRAL_API_KEY"] = st.secrets['MISTRAL_API_KEY']
+        
+        # DeepSeek
+        if 'DEEPSEEK_API_KEY' in st.secrets:
+            os.environ["DEEPSEEK_API_KEY"] = st.secrets['DEEPSEEK_API_KEY']
+except Exception:
+    # Continue without secrets if there's an error
+    pass
 
 # Vector database settings
 VECTOR_DB_DIR = os.path.join(DATA_DIR, "vector_store")

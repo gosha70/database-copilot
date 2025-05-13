@@ -32,13 +32,15 @@ Database Copilot is an AI-powered tool designed to assist developers with databa
    python setup.py
    ```
 
-3. Add any custom documents to the appropriate directories in `docs/`:
+3. The setup script will create an empty `.streamlit/secrets.toml` file if it doesn't exist. You can customize this file with your API keys if you want to use external LLMs.
+
+4. Add any custom documents to the appropriate directories in `docs/`:
    - Liquibase documentation → `docs/liquibase/`
    - JPA/Hibernate documentation → `docs/jpa/`
    - Internal guidelines → `docs/internal/`
    - Example code and migrations → `docs/examples/`
 
-4. Build the vector store:
+5. Build the vector store:
    ```bash
    python build_vector_store.py
    ```
