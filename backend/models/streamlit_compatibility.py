@@ -98,13 +98,14 @@ def safe_import_transformers():
         logger.error(f"Error safely importing transformers: {e}")
         return None
 
-def get_safe_llm(model_name: Optional[str] = None, quantization_level: str = "4bit"):
+def get_safe_llm(model_name: Optional[str] = None, quantization_level: str = "4bit", use_external: bool = False):
     """
     Get an LLM with Streamlit compatibility.
     
     Args:
         model_name: Name of the LLM model to use. If None, uses the default model.
         quantization_level: The quantization level to use (4bit, 8bit, or none)
+        use_external: Whether to use an external LLM if configured
         
     Returns:
         An initialized LLM instance or None if initialization fails.
@@ -116,8 +117,23 @@ def get_safe_llm(model_name: Optional[str] = None, quantization_level: str = "4b
         TEMPERATURE,
         TOP_P,
         TOP_K,
-        REPETITION_PENALTY
+        REPETITION_PENALTY,
+        LLM_TYPE
     )
+    
+    # Check if we should use an external LLM
+    if use_external and LLM_TYPE != "local":
+        try:
+            from backend.models.external_llm.factory import create_external_llm
+            external_llm = create_external_llm(LLM_TYPE)
+            if external_llm:
+                return external_llm
+            else:
+                logger.error(f"Failed to create external LLM of type {LLM_TYPE}")
+                raise ValueError(f"Failed to create external LLM of type {LLM_TYPE}. Check your API key and configuration.")
+        except Exception as e:
+            logger.error(f"Error initializing external LLM: {e}")
+            raise ValueError(f"Error initializing external LLM: {e}. Check your API key and configuration.")
     
     model_name = model_name or DEFAULT_LLM_MODEL
     logger.info(f"Loading LLM model: {model_name}")

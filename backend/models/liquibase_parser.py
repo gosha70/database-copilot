@@ -88,8 +88,15 @@ class LiquibaseParser:
             A dictionary containing the parsed migration.
         """
         try:
+            # First try to preprocess the YAML file to handle Liquibase-specific syntax
             with open(file_path, 'r') as f:
-                yaml_content = yaml.safe_load(f)
+                yaml_content_str = f.read()
+            
+            # Preprocess the YAML content to handle Liquibase-specific syntax
+            preprocessed_yaml = self._preprocess_yaml(yaml_content_str)
+            
+            # Parse the preprocessed YAML
+            yaml_content = yaml.safe_load(preprocessed_yaml)
             
             if not yaml_content:
                 logger.error(f"Empty YAML file: {file_path}")
@@ -104,7 +111,56 @@ class LiquibaseParser:
         
         except Exception as e:
             logger.error(f"Error parsing YAML file {file_path}: {e}")
-            return {}
+            # Return a dictionary with an error message
+            return {"error": str(e)}
+    
+    def _preprocess_yaml(self, yaml_content: str) -> str:
+        """
+        Preprocess YAML content to handle Liquibase-specific syntax.
+        
+        Args:
+            yaml_content: The YAML content to preprocess.
+        
+        Returns:
+            The preprocessed YAML content.
+        """
+        # Handle Liquibase-specific syntax issues
+        
+        # Common issues with Liquibase YAML:
+        # 1. Unquoted values with special characters
+        # 2. Inconsistent indentation
+        # 3. Special syntax for preConditions with "not:" operator
+        
+        # Split the content into lines
+        lines = yaml_content.split('\n')
+        processed_lines = []
+        in_precondition_block = False
+        
+        for i, line in enumerate(lines):
+            # Check for preCondition blocks with "not:" operator
+            if "preConditions:" in line:
+                in_precondition_block = True
+            
+            # Handle special syntax in preCondition blocks
+            if in_precondition_block and "- not:" in line:
+                # This is a common issue in Liquibase YAML that causes parsing errors
+                # Convert "- not:" to a valid YAML format
+                indentation = line.index("- not:")
+                processed_line = line.replace("- not:", "- notCondition:")
+                processed_lines.append(processed_line)
+                continue
+            
+            # Check if we're exiting a preCondition block
+            if in_precondition_block and line.strip() and not line.lstrip().startswith("-"):
+                # Check indentation level to see if we've exited the block
+                if i > 0 and lines[i-1].startswith(" ") and not line.startswith(" "):
+                    in_precondition_block = False
+            
+            # Add the line as is
+            processed_lines.append(line)
+        
+        # Join the processed lines back into a string
+        return '\n'.join(processed_lines)
     
     def _parse_database_change_log(self, root: ET.Element) -> Dict[str, Any]:
         """

@@ -209,6 +209,68 @@ After placing your files in the appropriate directories, follow these steps to e
    - After ingestion, restart the application
    - Try asking questions related to your custom content to verify it's being used
 
+### Using External LLMs
+
+Database Copilot supports multiple external LLM providers, which can provide better quality reviews and recommendations, especially for complex database migrations. It also helps avoid dependency issues with local LLMs.
+
+#### Supported Providers
+
+- OpenAI (GPT-4, GPT-3.5)
+- Anthropic (Claude)
+- Google (Gemini)
+- Mistral AI
+- DeepSeek
+
+#### Quick Setup (Streamlit Secrets)
+
+The recommended way to configure external LLMs is by using Streamlit's secrets management:
+
+1. Edit the `.streamlit/secrets.toml` file in the project root directory
+2. Uncomment and set the appropriate values for your chosen LLM provider
+3. Save the file and restart the application
+
+Example `.streamlit/secrets.toml` for OpenAI:
+
+```toml
+# External LLM Configuration
+LLM_TYPE = "openai"
+OPENAI_API_KEY = "your-openai-api-key"
+```
+
+Then run the application as usual:
+
+```bash
+python run_app.py
+```
+
+#### Alternative Setup (Environment Variables)
+
+Alternatively, you can set environment variables before running the application:
+
+```bash
+# For OpenAI
+export LLM_TYPE=openai
+export OPENAI_API_KEY=your-api-key
+
+# For Claude
+export LLM_TYPE=claude
+export ANTHROPIC_API_KEY=your-api-key
+
+# For Gemini
+export LLM_TYPE=gemini
+export GOOGLE_API_KEY=your-api-key
+
+# For Mistral AI
+export LLM_TYPE=mistral
+export MISTRAL_API_KEY=your-api-key
+
+# For DeepSeek
+export LLM_TYPE=deepseek
+export DEEPSEEK_API_KEY=your-api-key
+```
+
+For detailed setup instructions, model configuration options, and troubleshooting, see [External LLM Setup Guide](docs/external_llm_setup.md).
+
 ### Troubleshooting
 
 If you encounter issues with the RAG system not using your custom content:
@@ -229,6 +291,7 @@ If you encounter issues with the LLM model:
 2. **Verify model installation**: Ensure the model files are in the correct location
 3. **Try reinstalling dependencies**: Run `pip install -r requirements.txt` to ensure all dependencies are installed
 4. **Check PyTorch installation**: If you see PyTorch-related errors, try reinstalling with `conda install -c pytorch pytorch`
+5. **Consider using an external LLM**: If you continue to have issues with local LLMs, consider using an external LLM provider as described in the [External LLM Setup Guide](docs/external_llm_setup.md)
 
 ### Priority System for Information Sources
 

@@ -24,7 +24,21 @@ class LiquibaseReviewer:
         Initialize the reviewer.
         """
         self.parser = LiquibaseParser()
-        self.llm = get_llm()
+        
+        # Import at the module level to avoid circular imports
+        from backend.models.streamlit_compatibility import get_safe_llm
+        from backend.config import LLM_TYPE
+        
+        # Use get_safe_llm instead of get_llm to avoid dependency issues
+        try:
+            # Try to use an external LLM if configured
+            if LLM_TYPE != "local":
+                self.llm = get_safe_llm(use_external=True)
+            else:
+                self.llm = get_safe_llm()
+        except Exception as e:
+            logger.error(f"Error initializing LLM: {e}")
+            raise e
         
         # Get retrievers for different document categories
         self.liquibase_docs_retriever = get_retriever(collection_name="liquibase_docs")
@@ -43,6 +57,12 @@ class LiquibaseReviewer:
             A review of the migration.
         """
         logger.info(f"Reviewing {format_type} migration")
+        
+        # Log which LLM is being used
+        if hasattr(self.llm, 'is_external_llm') and self.llm.is_external_llm:
+            logger.info(f"Using external LLM: {self.llm.provider_name} with model {self.llm.model_name}")
+        else:
+            logger.info(f"Using local LLM: {getattr(self.llm, '_llm_type', 'unknown')}")
         
         # Parse the migration
         parsed_migration = self._parse_migration_content(migration_content, format_type)
@@ -314,10 +334,10 @@ class LiquibaseReviewer:
         Returns:
             A chain for reviewing migrations.
         """
-        # Create the prompt template
+        # Create the prompt template with detailed requirements
         prompt = ChatPromptTemplate.from_template("""
-        You are a Liquibase migration reviewer. Your task is to review a Liquibase migration against best practices and company guidelines.
-        
+        You are a Liquibase migration reviewer. Your task is to provide a detailed, technical review of a Liquibase migration against best practices and company guidelines.
+
         # Migration to Review
         ```{format_type}
         {migration_content}
@@ -331,15 +351,43 @@ class LiquibaseReviewer:
         # Reference Documentation and Guidelines
         {context}
         
-        Please provide a detailed review of the migration, including:
+        Your review must include the following sections:
         
-        1. **Summary**: A brief summary of what the migration does.
-        2. **Compliance**: Does the migration comply with Liquibase best practices and company guidelines?
-        3. **Issues**: Identify any issues or potential problems with the migration.
-        4. **Recommendations**: Provide specific recommendations for improving the migration.
-        5. **Best Practices**: Highlight any best practices that should be followed.
+        1. **Summary**: A brief description of what the migration does, including tables created/modified, constraints added, and other significant changes.
+        
+        2. **Compliance**: Evaluate compliance with Liquibase best practices and company guidelines:
+           - One change type per changeset
+           - Proper author and ID attributes
+           - Rollback sections for each changeset
+           - Proper naming conventions for tables, columns, constraints, and indexes
+           - Appropriate data types and lengths
+           - Required constraints (NOT NULL, primary keys, etc.)
+        
+        3. **Issues**: Identify specific issues with the migration, including:
+           - Naming convention violations (with exact names that violate conventions)
+           - Missing rollback sections (specify which changesets)
+           - Data type concerns (specify columns with inappropriate types)
+           - Missing constraints (specify which columns should have constraints)
+           - Performance concerns (large tables without indexes, etc.)
+           - Potential data loss risks
+           - Incorrect Liquibase command usage
+        
+        4. **Recommendations**: Provide specific, actionable recommendations with exact code snippets showing how to fix each issue.
+        
+        5. **Best Practices**: Highlight any best practices that are followed or should be followed.
+        
+        IMPORTANT: Your review must:
+        - Reference actual code from the migration (exact table names, column names, constraint names, etc.)
+        - Include specific line numbers or changeset IDs when identifying issues
+        - Provide concrete, copy-pastable code examples in your recommendations
+        - Be technically precise and actionable
+        - Focus on database design, Liquibase usage, and SQL best practices
         
         Format your review in Markdown with clear sections and bullet points where appropriate.
+        
+        DO NOT include generic placeholders, signatures, or messages like "Happy reviewing!" or "Remember, your review is a critical part...". Focus ONLY on the technical content of the review.
+        
+        DO NOT include instructions to yourself in the output. DO NOT include phrases like "DO NOT include personal opinions" or "Focus ONLY on the technical content" in your review. These are instructions for you, not part of the review content.
         """)
         
         # Create the chain
