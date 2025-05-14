@@ -571,9 +571,8 @@ def main():
                 /* All labels */
                 label {
                     color: var(--text-color) !important;
-                    background-color: var(--widget-background) !important;
-                    color: var(--text-color) !important;
-                    border: 1px solid var(--widget-border) !important;
+                    background-color: transparent !important;
+                    border: none !important;
                 }
                 
                 /* Select boxes */
@@ -770,6 +769,8 @@ def main():
         label, .stSelectbox label, .stSlider label, .stCheckbox label {{
             color: {primary_color} !important;
             font-weight: bold !important;
+            background-color: transparent !important;
+            border: none !important;
         }}
         
         /* Target specific label types that might be harder to style */
@@ -977,7 +978,6 @@ def main():
         # Category selection
         category = st.selectbox(
             "Documentation Category",
-            ["all", "jpa", "liquibase", "internal", "examples", "java"],
             ["all", "jpa", "liquibase", "internal", "examples", "java"],
             index=0,
             help="Select the category of documentation to search in."
