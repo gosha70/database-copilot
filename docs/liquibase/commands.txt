@@ -1,0 +1,118 @@
+Liquibase Commands
+Skip To Main Content
+Account
+Settings
+Logout
+placeholder
+Account
+Settings
+Logout
+You are here:
+Liquibase Commands
+Liquibase ships with more than 40 commands providing users the ability to execute database change management operations.
+Commands are typically categorized by their functions such as database inspection, rolling back changes, database maintenance, and change tracking. Below are eight command categories:
+Init
+Commands used to start up a Liquibase project on a new or existing database, including the changelog and Liquibase property files.
+Update
+Commands used to execute undeployed changes specified in the changelog to a target database.
+Rollback
+Commands used to undo changes made to the database either automatically or with a custom rollback query.
+Database Inspection
+Commands used to compare differences between databases, or snapshots of databases over time.
+Change Tracking
+Commands used to view or list the deployment status of changes.
+Utility
+Commands used to manage changelogs, changesets, checksums, locks, and database schema documents.
+Policy Checks
+Commands that allow users to analyze changelogs, changesets, and SQL for specific commands and patterns that require close review early in the development life cycle. Requires a Liquibase Pro license.
+Flow
+Commands that allow users to group multiple Liquibase commands in a single file and run sequentially by typing one command in the CLI. Requires a Liquibase Pro license.
+Liquibase SQL Output Commands
+Liquibase provides commands that output the SQL Liquibase will generate from a modeled database change so users can inspect the SQL before executing a command. Only commands that change the database schema (including the update and rollback family of commands) have a corresponding Liquibase SQL output command.
+Users are strongly encouraged to run these commands when they are available.
+Executing Liquibase Commands
+Liquibase commands can be executed through different types of interfaces for database change management. These include:
+Command-line interface (CLI)
+Liquibase flow files (Pro)
+Maven
+Spring Boot
+Java API
+Command Parameters
+Liquibase command parameters let users specify behavior when running Liquibase commands and are either global parameters or command parameters:
+Global parameters are used to change a global default behavior and can be used with any Liquibase command.
+Command parameters specify command-specific settings and values.
+Typical command pattern:liquibase [global parameter] [command] [command parameter]
+liquibase [--changelog-file=dbchangelog.xml] [status] [--verbose]
+Parameter values may include booleans, strings, integers, datetimes, and other data types.
+Required Command Parameters
+Certain parameters are required to execute most commands. These include:
+--changelog-file: includes the path and filename of the changelog used.
+--url: the database JDBC URL value.
+--username*: the database username value.
+--password*: the password for the database.
+Not all commands require the same command parameters. Each individual command page provides the criteria for using the command successfully with a list of available global and command-specific parameters.
+* It is strongly recommended that credentials be stored in a secure credential repository or entered in the CLI at runtime.
+Specifying Command Properties
+Liquibase provides users multiple ways to specify command properties:
+Command Line Interface (CLI): specifying parameters in the CLI will override values stored in the Liquibase properties file. See Working with Command Parameters.
+Flow File Parameters (Liquibase Pro): similar to specifying parameters in the CLI. Flow file parameters will override values stored in the Liquibase properties file. See Liquibase Flow Files.
+Liquibase Properties File: used to store frequently used properties including the path to the changelog and database connection information. Also called the "defaults file." See Create and Configure a liquibase.properties File.
+Environment Variables: used to set global and command-specific Liquibase properties across multiple environments. See Liquibase Environment Variables.
+Java System Properties: uses the JAVA_OPTS environment variable to pass Liquibase configuration properties to the Java Virtual Machine (JVM) that runs Liquibase. See JAVA_OPTS Environment Variable.
+Maven Properties: uses a POM file (pom.xml) to specify properties and configuration settings to run Liquibase or to reference the Liquibase properties file. See Maven Properties.
+Additional Information
+CLI Command Syntax
+Liquibase provides several methods for the CLI command syntax to match a user's work style:
+kebab-case: --kebab-case-example
+camelCase: --camelCaseExample
+The Liquibase Documentation site uses the kebab-case format.
+Note: If you specify parameters outside the CLI, such as with an environment variable, the syntax is different. You can use the links in the previous section to find examples.
+Autocomplete Option for Commands
+Visit the Autocompleting Liquibase Commands documentation page to learn more about this feature.
+Liquibase Command List
+For a complete list of all available Liquibase commands, including their specific parameters:
+Visit the Liquibase Command List documentation page
+For community-maintained database tutorials, see
+the Contribute site.
+Or run liquibase --help from the CLI
+Editions & Features
+Editions & Features
+Liquibase Open Source
+Liquibase Pro
+Solutions
+CI/CD
+Compliance
+DevSecOps
+GitOps
+Version Control
+Financial Services
+Resources
+Blog
+Best Practice Guides
+Resource Library
+Documentation
+University
+Community
+Meetup/Events
+Support
+Community
+Contributors
+Contribute Code
+Share Expertise
+Advocate
+Support
+Liquibase Legends
+Liquibase Badges
+Contact
+Company
+Company
+Careers
+Leadership
+Contact
+Â© 2025 Liquibase Inc.
+All Rights Reserved.
+Liquibase is a registered trademark of Liquibase Inc.
+(737) 402-7187
+Privacy Policy
+Terms of Use
+EULA

@@ -1,0 +1,191 @@
+Example Changelogs:
+YAML Format
+Skip To Main Content
+Account
+Settings
+Logout
+placeholder
+Account
+Settings
+Logout
+You are here:
+Example Changelogs:
+YAML Format
+Liquibase supports YAML as a format for storing your Changelog files.
+Requirements
+To use YAML-based changelogs, you must include snakeyaml-<version>.jar in your classpath.
+Limitations
+None
+Example
+This example changelog contains changesets that:
+Create a new person table with columns id, firstname, lastname, and state
+Add a new username column to the person table
+Create a lookup table state using data from person
+The example precondition requires the user making the deployment to be liquibase.databaseChangeLog:
+- preConditions:
+- runningAs:
+username:
+liquibase
+- changeSet:
+id:
+1
+author:
+your.name
+labels: example-label
+context: example-context
+comment: example-comment
+changes:
+- createTable:
+tableName:
+person
+columns:
+- column:
+name:
+id
+type:
+int
+autoIncrement:
+true
+constraints:
+primaryKey:
+true
+nullable:
+false
+- column:
+name:
+name
+type:
+varchar(50)
+constraints:
+nullable:
+false
+- column:
+name:
+address1
+type:
+varchar(50)
+- column:
+name:
+address2
+type:
+varchar(50)
+- column:
+name:
+city
+type:
+varchar(30)
+- changeSet:
+id:
+2
+author:
+your.name
+labels: example-label
+context: example-context
+comment: example-comment
+changes:
+- createTable:
+tableName:
+company
+columns:
+- column:
+name:
+id
+type:
+int
+autoIncrement:
+true
+constraints:
+primaryKey:
+true
+nullable:
+false
+- column:
+name:
+name
+type:
+varchar(50)
+constraints:
+nullable:
+false
+- column:
+name:
+address1
+type:
+varchar(50)
+- column:
+name:
+address2
+type:
+varchar(50)
+- column:
+name:
+city
+type:
+varchar(30)
+- changeSet:
+id:
+3
+author:
+other.dev
+labels: example-label
+context: example-context
+comment: example-comment
+changes:
+- addColumn:
+tableName:
+person
+columns:
+- column:
+name:
+country
+type:
+varchar(2)
+Tip: You can add YAML comments outside changesets using the format # my comment.
+Related links
+Introduction to Liquibase
+Changelog
+Changeset
+Changelog Attributes
+Change Types
+Liquibase Commands
+Editions & Features
+Editions & Features
+Liquibase Open Source
+Liquibase Pro
+Solutions
+CI/CD
+Compliance
+DevSecOps
+GitOps
+Version Control
+Financial Services
+Resources
+Blog
+Best Practice Guides
+Resource Library
+Documentation
+University
+Community
+Meetup/Events
+Support
+Community
+Contributors
+Contribute Code
+Share Expertise
+Advocate
+Support
+Liquibase Legends
+Liquibase Badges
+Contact
+Company
+Company
+Careers
+Leadership
+Contact
+Â© 2025 Liquibase Inc.
+All Rights Reserved.
+Liquibase is a registered trademark of Liquibase Inc.
+(737) 402-7187
+Privacy Policy
+Terms of Use
+EULA

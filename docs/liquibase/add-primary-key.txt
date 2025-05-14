@@ -1,0 +1,268 @@
+addPrimaryKey
+Skip To Main Content
+Account
+Settings
+Logout
+placeholder
+Account
+Settings
+Logout
+You are here:
+addPrimaryKey
+The addPrimaryKey Change Type adds a primary key out of an existing column or set of columns.
+Uses
+It is a best practice to normalize the data in your relational database by setting a primary key on one or more of the columns of a table. A table can only have one primary key, regardless of whether that key is single or composite. You can use the primary key to uniquely identify each row in the table.
+Running the addPrimaryKey Change Type
+To run this Change Type, follow these steps:
+Add the Change Type to your changeset, as shown in the examples on this page.
+Specify any required attributes. Use the table on this page to see which ones your database requires.
+Deploy your changeset by running the update command:liquibase update
+Add new column to existing primary key
+If you have already set a primary key on a column, but you realize that column by itself does not provide sufficient uniqueness to each row, you can add an additional column to the existing key. Liquibase returns an error if you try to create a new primary key because one already exists. Instead, follow these steps:
+Drop the existing primary key with the dropPrimaryKey Change Type:<changeSet author="liquibase-docs" id="dropPrimaryKey-example">
+<dropPrimaryKey
+tableName= "existing_table" constraintName="primary_key_constraint"/>
+</changeSet>
+Add new column to the existing table with the addColumn Change Type:<changeSet author="liquibase-docs" id="addColumn-example">
+<addColumn tableName="existing_table">
+<column name="new_column" type="VARCHAR(256)">
+<constraints nullable="false"/>
+</column>
+</addColumn>
+</changeSet>
+Add a composite primary key to the table, including both the new and old columns:<changeSet author="liquibase-docs" id="addPrimaryKey-example">
+<addPrimaryKey tableName="existing_table" columnNames="existing_column,new_column" constraintName="primary_key_constraint"/>
+</changeSet>
+Deploy your changes:liquibase update
+Available attributes
+Name
+Description
+Required for
+Supports
+catalogName
+Name of the catalog
+all
+clustered
+Boolean. Whether to create a clustered index
+all
+columnNames
+Name of the column(s) to create the primary key on. Comma separated if multiple
+all
+all
+constraintName
+Name of the constraint for the primary key
+all except bigquery
+forIndexCatalogName
+Name of the catalog of the index to associate with the primary key
+all
+forIndexName
+Name of the index to associate with the primary key
+db2, db2z, oracle
+forIndexSchemaName
+Name of the schema of the index to associate with the primary key
+all
+schemaName
+Name of the schema
+all
+tableName
+Name of the table to create the primary key on
+all
+all
+tablespace
+Name of the tablespace to use for the primary key
+all
+validate
+Set to true if the constraint has ENABLE VALIDATE set, or false if the constraint has ENABLE NOVALIDATE set.
+all
+Examples
+SQL example
+YAML example
+JSON example
+XML example
+--liquibase formatted sql
+--changeset liquibase-docs:addPrimaryKey-example
+ALTER
+TABLE
+cat.person
+ADD
+PRIMARY
+KEY
+(id, name);
+databaseChangeLog:
+-
+changeSet:
+id:
+addPrimaryKey-example
+author:
+liquibase-docs
+changes:
+-
+addPrimaryKey:
+catalogName:
+cat
+clustered:
+true
+columnNames:
+id, name
+constraintName:
+pk_person
+forIndexName:
+A String
+schemaName:
+public
+tableName:
+person
+tablespace:
+A String
+validate:
+true
+{
+"databaseChangeLog": [
+{
+"changeSet": {
+"id": "addPrimaryKey-example",
+"author": "liquibase-docs",
+"changes": [
+{
+"addPrimaryKey": {
+"catalogName": "cat",
+"clustered": true,
+"columnNames": "id, name",
+"constraintName": "pk_person",
+"forIndexName": "A String",
+"schemaName": "public",
+"tableName": "person",
+"tablespace": "A String",
+"validate": true
+}
+}
+]
+}
+}
+]
+}
+<databaseChangeLog
+xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+http://www.liquibase.org/xml/ns/dbchangelog-ext
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+http://www.liquibase.org/xml/ns/pro
+http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+<changeSet
+author="liquibase-docs"
+id="addPrimaryKey-example">
+<addPrimaryKey
+catalogName="cat"
+clustered="true"
+columnNames="id, name"
+constraintName="pk_person"
+forIndexName="A String"
+schemaName="public"
+tableName="person"
+tablespace="A String"
+validate="true"/>
+</changeSet>
+</databaseChangeLog>
+Database support
+Database
+Notes
+Auto Rollback
+DB2/LUW
+Supported
+Yes
+DB2/z
+Supported
+Yes
+Derby
+Supported
+Yes
+Firebird
+Supported
+Yes
+Google BigQuery
+Supported
+Yes
+H2
+Supported
+Yes
+HyperSQL
+Supported
+Yes
+INGRES
+Supported
+Yes
+Informix
+Supported
+Yes
+MariaDB
+Supported
+Yes
+MySQL
+Supported
+Yes
+Oracle
+Supported
+Yes
+PostgreSQL
+Supported
+Yes
+Snowflake
+Supported
+Yes
+SQL Server
+Supported
+Yes
+SQLite
+Not Supported
+No
+Sybase
+Supported
+Yes
+Sybase Anywhere
+Supported
+Yes
+Editions & Features
+Editions & Features
+Liquibase Open Source
+Liquibase Pro
+Solutions
+CI/CD
+Compliance
+DevSecOps
+GitOps
+Version Control
+Financial Services
+Resources
+Blog
+Best Practice Guides
+Resource Library
+Documentation
+University
+Community
+Meetup/Events
+Support
+Community
+Contributors
+Contribute Code
+Share Expertise
+Advocate
+Support
+Liquibase Legends
+Liquibase Badges
+Contact
+Company
+Company
+Careers
+Leadership
+Contact
+Â© 2025 Liquibase Inc.
+All Rights Reserved.
+Liquibase is a registered trademark of Liquibase Inc.
+(737) 402-7187
+Privacy Policy
+Terms of Use
+EULA

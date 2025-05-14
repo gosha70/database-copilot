@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" class="_Skins_oss_pro" data-mc-search-type="Stem" data-mc-help-system-file-name="Default.xml" data-mc-path-to-help-system="../../" data-mc-has-content-body="True" data-mc-toc-path="[%=System.LinkedHeader%]|[%=System.LinkedHeader%]|Liquibase Core Workflows" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic;Default" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-searchable="False">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="msapplication-config" content="../../Skins/Favicons/browserconfig.xml" />
+        <meta name="description" content="This page explains the importance of trimming your changelogs and how to do it appropriately." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../Skins/Favicons/favicon-16x16.png" /><title>Trimming changelog files</title>
+        <!-- Google GA4 tag (gtag.js) -->
+        <!-- End Google GA4 tag -->
+        <!-- Google Tag Manager -->
+        <!-- End Google Tag Manager -->
+        <!-- Prism Highlighting -->
+        <!-- End Prism Highlighting -->
+        <!-- Tabs for code examples -->
+        <!--End tabs for code examples -->
+        <link href="../../Skins/Default/Stylesheets/Slideshow.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="https://docs.liquibase.com/Skins/Fluid/Stylesheets/MadCapSearch.Google.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Print.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/foundation.6.2.3.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/print.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link rel="stylesheet" href="../../z_resources/stylesheets/glidestyles.css" type="text/css" media="all" />
+        <link href="../../z_resources/stylesheets/styles.css" rel="stylesheet" type="text/css" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../Skins/Favicons/favicon-16x16.png" />
+        <link rel="canonical" href="trimming-changelogs.html" />
+        <script src="../../resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../resources/Scripts/purify.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/require.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/require.config.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/foundation.6.2.3_custom.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/plugins.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/MadCapAll.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=G-GJFFQKWLLX">
+        </script>
+        <script>/* <![CDATA[ */
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());  gtag('config', 'G-GJFFQKWLLX');
+		/* ]]> */</script>
+        <script>/* <![CDATA[ */(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&amp;l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-NTCPFS9');/* ]]> */</script>
+        <script type="text/javascript" src="../../z_resources/scripts/prism.js"> </script>
+        <script type="application/javascript" src="../../z_resources/scripts/jquery-accessible-tabs-ktc.js"> </script>
+    </head>
+    <body>
+        <div class="foundation-wrap off-canvas-wrapper">
+            <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper="">
+                <aside class="off-canvas position-right" role="navigation" id="offCanvas" data-off-canvas="" data-position="right" data-mc-ignore="true">
+                    <ul class="off-canvas-accordion vertical menu off-canvas-list" data-accordion-menu="" data-mc-back-link="Back" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="True" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True">
+                    </ul>
+                </aside>
+                <div class="off-canvas-content inner-wrap" data-off-canvas-content="">
+                    <div data-sticky-container="" class="title-bar-container">
+                        <nav class="title-bar tab-bar sticky" role="banner" data-sticky="" data-options="marginTop:0" style="width:100%" data-sticky-on="only screen and (max-width: 1279px)" data-mc-ignore="true"><a class="skip-to-content fluid-skip showOnFocus" href="#">Skip To Main Content</a>
+                            <div class="middle title-bar-section outer-row clearfix">
+                                <div class="menu-icon-container relative clearfix">
+                                    <div class="central-account-wrapper">
+                                        <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                            <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                                <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="menu-icon" aria-label="Show Navigation Panel" data-toggle="offCanvas"><span></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="title-bar-layout outer-row">
+                                <div class="logo-wrapper"><a class="logo" href="../../home.html" alt="Logo"></a>
+                                </div>
+                                <div class="navigation-wrapper nocontent">
+                                    <ul class="navigation clearfix" role="navigation" data-mc-css-tree-node-has-children="has-children" data-mc-css-sub-menu="sub-menu" data-mc-expand-event="mouseenter" data-mc-top-nav-menu="True" data-mc-max-depth="5" data-mc-include-icon="False" data-mc-include-indicator="False" data-mc-include-children="True" data-mc-include-siblings="True" data-mc-include-parent="True" data-mc-toc="True">
+                                        <li class="placeholder" style="visibility:hidden"><a>placeholder</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="central-account-wrapper">
+                                    <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                        <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                            <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="nav-search-wrapper">
+                                    <div class="nav-search row">
+                                        <form>
+                                            <div id="EaZl7IMMdkOxEcTqrymc2g" class="search-bar search-bar-container needs-pie">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="main-section">
+                        <div class="row outer-row sidenav-layout">
+                            <nav class="sidenav-wrapper">
+                                <div class="sidenav-container">
+                                    <ul class="off-canvas-accordion vertical menu sidenav" data-accordion-menu="" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu accordion-menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="False" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True" data-mc-side-nav-menu="True">
+                                    </ul>
+                                </div>
+                            </nav>
+                            <div class="body-container">
+                                <div data-mc-content-body="True">
+                                    <!-- Google Tag Manager (noscript) -->
+                                    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTCPFS9" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+                                    </noscript>
+                                    <!-- End Google Tag Manager (noscript) -->
+                                    <div class="side-content">
+                                        <form>
+                                            <div id="qdjV6mcXtki5doEKh0AEdA" class="search-bar search-bar-container needs-pie _Skins_Topics_Searchbar mc-component">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="nocontent">
+                                        <div class="MCBreadcrumbsBox_0 breadcrumbs" role="navigation" aria-label="Breadcrumbs" data-mc-breadcrumbs-divider=" &gt; " data-mc-breadcrumbs-count="3" data-mc-toc="True"><span class="MCBreadcrumbsPrefix">You are here: </span>
+                                        </div>
+                                    </div>
+                                    <!--<div>  class="topic-layout"-->
+                                    <!--AV 2023-09-13: removing duplicate nav after switch to sidenav
+		<div style="float:left; margin-right: 20px; margin-left:20px; margin-bottom: 15px;"> <MadCap:menuProxy data-mc-skin="/Project/Skins/Topics-Menu.flskn" style="mc-context-sensitive: True;mc-include-parent: True;mc-include-siblings: True;mc-include-children: True;" mc-linked-toc="/Project/TOCs/TOC.fltoc" /></div>-->
+                                    <div class="liquibase-docs-body">
+                                        <div role="main" id="mc-main-content">
+                                            <h1 id="trimming-changelog-files">Trimming <span class="mc-variable General.changelog variable">changelog</span> files</h1>
+                                            <p>Large <span class="mc-variable General.changelog variable">changelog</span> files may become unwieldy over time. This guide offers best practices on how to address this common occurrence.</p>
+                                            <p>You add individual change sets to your <span class="mc-variable General.changelog variable">changelog</span> file to make changes to your database. Over time, those changes can build up to thousands of entries, many of which are now redundant or inefficient. For example, a table was created and then deleted, or a table was created and then columns were added individually instead of creating a table with all the columns.</p>
+                                            <p class="warning" data-mc-autonum="&lt;b&gt;Warning: &lt;/b&gt;"><span class="autonumber"><span><b>Warning: </b></span></span>Before continuing, verify whether simplification is necessary. Your <span class="mc-variable General.changelog variable">changelog</span> was built, run, and tested over a long period of time. Manual edits to the <span class="mc-variable General.changelog variable">changelog</span> file risk database stability. Consider whether the performance or file size concerns you have outweigh the risk of altering a functional script.</p>
+                                            <h2>Scenario 1: <span class="mc-variable General.changelog variable">changelog</span> file size</h2>
+                                            <p>Often the <span class="mc-variable General.changelog variable">changelog</span> file is so large that it causes performance issues in your editor, or there are too many merge conflicts. The best way to handle this is to divide your <span class="mc-variable General.changelog variable">changelog</span> file into multiple files. Instead of having a single <code>changelog.xml</code> file with everything in it, create a <code>main.changelog.xml</code> file which uses the <a href="../../change-types/include.html" class="MCXref xref">include</a> tag to reference other <span class="mc-variable General.changelog variable">changelog</span> files.</p><pre xml:space="preserve"><code class="language-xml" data-lang="xml"><code>&lt;databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+        http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"&gt;</code>
+    &lt;include  file="com/example/news/news.changelog.xml"/&gt;  
+    &lt;include  file="com/example/directory/directory.changelog.xml"/&gt;  
+&lt;/databaseChangeLog&gt;</code></pre>
+                                            <p>When you run <code class="highlighter-rouge">liquibase update</code> against the <code>main.changelog.xml</code> file, <span class="mc-variable General.changeset variable">changeset</span>s in <code>com/example/news/news.changelog.xml</code> will run and then the <span class="mc-variable General.changeset variable">changeset</span>s in <code>com/example/directory/directory.changelog.xml</code> will run. You can break up <span class="mc-variable General.changeset variable">changeset</span>s by feature, release, or other ways.</p>
+                                            <h2>Scenario 2: <code>liquibase update</code> time efficiency</h2>
+                                            <p>Other times, the problem is that <code class="highlighter-rouge">liquibase update</code> takes too long. <span class="mc-variable General.Liquibase variable">Liquibase</span> tries to be as efficient as possible when comparing the contents of the <span class="mc-variable General.databasechangelog variable">DATABASECHANGELOG</span> table with the current <span class="mc-variable General.changelog variable">changelog</span> file and even if there are thousands of already ran <span class="mc-variable General.changeset variable">changeset</span>s, an <code>update</code> command should take just seconds to run. If you find that <code>update</code> takes longer than it should, watch the <span class="mc-variable General.Liquibase variable">Liquibase</span> log to determine why.</p>
+                                            <p>Perhaps there is an old <code>runAlways="true"</code> <span class="mc-variable General.changeset variable">changeset</span> that no longer needs to run or there are preconditions which are no longer needed. Running <span class="mc-variable General.Liquibase variable">Liquibase</span> with <code>--log-level=INFO</code> or even <code>--log-level=DEBUG</code> can give additional output which can help you determine which <span class="mc-variable General.changeset variable">changeset</span>s are slow. Once you know what is slowing down your update, try to alter just those <span class="mc-variable General.changeset variable">changeset</span>s rather than throwing out the whole <span class="mc-variable General.changelog variable">changelog</span> and starting from scratch. You will still want to retest your <span class="mc-variable General.changelog variable">changelog</span> in-depth, but it is a far less risky change.</p>
+                                            <h2>Scenario  3: surgically alter existing <span class="mc-variable General.changeset variable">changeset</span>s</h2>
+                                            <p>Some users find that <code class="highlighter-rouge">liquibase update</code> works well for incremental updates, but creating a database from scratch takes far too long.  Are you re-creating databases often enough that the risk of a change to the creation script makes sense? If you are,  look for problem <span class="mc-variable General.changeset variable">changeset</span>s as described above.  Indexes often cause performance bottlenecks during database creation, so start with those. If you are creating and updating indexes frequently in your creation process, you may be able to combine those <span class="mc-variable General.changeset variable">changeset</span>s into something more efficient.</p>
+                                            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>When you need to surgically alter your existing <span class="mc-variable General.changeset variable">changeset</span>s, remember how <span class="mc-variable General.Liquibase variable">Liquibase</span> works: each <span class="mc-variable General.changeset variable">changeset</span> has an <code>id</code>, an <code>author</code>, and a file path which together uniquely identifies it. If the <span class="mc-variable General.databasechangelog variable">DATABASECHANGELOG</span> table has an entry for that <span class="mc-variable General.changeset variable">changeset</span> it will not run it. If it has an entry, it throws an error if the checksum for the <span class="mc-variable General.changeset variable">changeset</span> in the file doesn't match what was stored on the last run.</p>
+                                            <h3>Modify</h3>
+                                            <p>How you modify your existing <span class="mc-variable General.changeset variable">changeset</span>s will also depend on your environment and where in the <span class="mc-variable General.changelog variable">changelog</span> the problem <span class="mc-variable General.changeset variable">changeset</span>s are. If you are modifying <span class="mc-variable General.changeset variable">changeset</span>s that have been applied to all of your environments and are now only used on fresh database builds you can treat them differently than if they have been applied to some databases but not yet to others.</p>
+                                            <h3>Merge</h3>
+                                            <p>To merge or modify existing <span class="mc-variable General.changeset variable">changeset</span>s you will be doing a combination of editing existing <span class="mc-variable General.changeset variable">changeset</span>s, removing old <span class="mc-variable General.changeset variable">changeset</span>s, and creating new ones.</p>
+                                            <h3>Remove</h3>
+                                            <p>Removing unneeded <span class="mc-variable General.changeset variable">changeset</span>s is easy because <span class="mc-variable General.Liquibase variable">Liquibase</span> doesn't care about <span class="mc-variable General.databasechangelog variable">DATABASECHANGELOG</span> rows with no corresponding <span class="mc-variable General.changeset variable">changeset</span>s. Just delete out of date <span class="mc-variable General.changeset variable">changeset</span>s and you are done. For example, if you have a <span class="mc-variable General.changeset variable">changeset</span> that creates the table <code>cart</code> and then another that drops it, just remove both <span class="mc-variable General.changeset variable">changeset</span>s from the file. You must make sure, however, that there are no <span class="mc-variable General.changeset variable">changeset</span>s between the create and the delete that make use of that table or they will fail on a fresh database build. That is an example of how you are introducing risk when changing your <span class="mc-variable General.changelog variable">changelog</span> file.</p>
+                                            <h3>Example scenario</h3>
+                                            <p>Suppose instead you have a <code>cart</code> table that is created in one <span class="mc-variable General.changeset variable">changeset</span>, then a <code>promo_code</code> column is created in another and an <code>abandoned</code> flag is created in another.</p><pre xml:space="preserve"><code class="language-xml" data-lang="xml"><code>&lt;databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+        http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"&gt;</code>
+    &lt;changeSet  author="nvoxland"  id="1"&gt;  
+        &lt;createTable  tableName="cart"&gt;  
+            &lt;column  name="id"  type="int"/&gt;  
+        &lt;/createTable&gt;  
+    &lt;/changeSet&gt;  
+
+    &lt;changeSet  author="nvoxland"  id="2"&gt;  
+        &lt;addColumn  tableName="cart"&gt;  
+            &lt;column  name="promo_code"  type="varchar(10)"/&gt;  
+        &lt;/addColumn&gt;  
+    &lt;/changeSet&gt;  
+
+    &lt;changeSet  author="nvoxland"  id="3"&gt;  
+        &lt;addColumn  tableName="cart"&gt;  
+            &lt;column  name="abandoned"  type="boolean"/&gt;  
+        &lt;/addColumn&gt;  
+    &lt;/changeSet&gt;  
+
+&lt;/databaseChangeLog&gt;</code></pre>
+                                            <h4>Option 1</h4>
+                                            <p>This will work well if all existing databases have the cart table with the <code>promo_code</code> and abandoned columns already added.</p>
+                                            <ul>
+                                                <li>Combine everything into a new <span class="mc-variable General.changeset variable">changeset</span> using the existing <code>id="1"</code> .</li>
+                                                <li>Delete the other <span class="mc-variable General.changeset variable">changeset</span>s.</li>
+                                            </ul><pre xml:space="preserve"><code class="language-xml" data-lang="xml"><code>&lt;databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+        http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"&gt;</code>
+    &lt;changeSet  author="nvoxland"  id="1"&gt;  
+        &lt;validCheckSum&gt;7:f24b25ba0fea451728ffbade634f791d&lt;/validCheckSum&gt;  
+        &lt;createTable  tableName="cart"&gt;  
+            &lt;column  name="id"  type="int"/&gt;  
+            &lt;column  name="promo_code"  type="varchar(10)"/&gt;  
+            &lt;column  name="abandoned"  type="boolean"/&gt;  
+        &lt;/createTable&gt;  
+    &lt;/changeSet&gt;  
+&lt;/databaseChangeLog&gt;</code></pre>
+                                            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>Running <span class="mc-variable General.Liquibase variable">Liquibase</span> against existing databases just sees that <code>id="1"</code> already ran and does not commit any new script.</p>
+                                            <h4>Option 2</h4>
+                                            <p>Running <span class="mc-variable General.Liquibase variable">Liquibase</span> against a blank database will create the <code>cart</code> table with all the columns right away.</p>
+                                            <p>You must apply the <code>validCheckSum</code> tag in the error message to notify <span class="mc-variable General.Liquibase variable">Liquibase</span> that you know it changed and the new value is valid. If you omit the tag, existing databases will throw an error stating that <code>id="1"</code> has changed since it was run.</p>
+                                            <h4>Option 3</h4>
+                                            <p>If you have some databases where the <code>promo_code</code> and/or abandoned columns have not yet been added, follow the below instructions:</p>
+                                            <ul>
+                                                <li>Update the original <code>createTable</code> as before.</li>
+                                                <li>Use preconditions with <code>onFail="MARK_RAN"</code> to handle cases where the old <span class="mc-variable General.changeset variable">changeset</span>s ran.</li>
+                                                <li>Do not add the columns again if the new <span class="mc-variable General.changeset variable">changeset</span>s ran.</li>
+                                            </ul><pre xml:space="preserve"><code class="language-xml" data-lang="xml"><code>&lt;databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+        http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"&gt;</code>				  
+    &lt;changeSet  author="nvoxland"  id="1"&gt;  
+        &lt;validCheckSum&gt;7:f24b25ba0fea451728ffbade634f791d&lt;/validCheckSum&gt;  
+        &lt;createTable  tableName="cart"&gt;  
+            &lt;column  name="id"  type="int"/&gt;  
+            &lt;column  name="promo_code"  type="varchar(10)"/&gt;  
+            &lt;column  name="abandoned"  type="boolean"/&gt;  
+        &lt;/createTable&gt;  
+    &lt;/changeSet&gt;  
+
+    &lt;changeSet  author="nvoxland"  id="2"&gt;  
+        &lt;preConditions  onFail="MARK_RAN"&gt;  
+            &lt;not&gt;&lt;columnExists  tableName="cart"  columnName="promo_code"/&gt;&lt;/not&gt;  
+        &lt;/preConditions&gt;  
+        &lt;addColumn  tableName="cart"&gt;  
+            &lt;column  name="promo_code"  type="varchar(10)"/&gt;  
+        &lt;/addColumn&gt;  
+    &lt;/changeSet&gt;  
+
+    &lt;changeSet  author="nvoxland"  id="3"&gt;  
+        &lt;preConditions  onFail="MARK_RAN"&gt;  
+            &lt;not&gt;&lt;columnExists  tableName="cart"  columnName="abandoned"/&gt;&lt;/not&gt;  
+        &lt;/preConditions&gt;  
+        &lt;addColumn  tableName="cart"&gt;  
+            &lt;column  name="abandoned"  type="boolean"/&gt;  
+        &lt;/addColumn&gt;  
+    &lt;/changeSet&gt;  
+
+&lt;/databaseChangeLog&gt;</code></pre>
+                                            <h4>Option 4</h4>
+                                            <p>On existing databases that have all three <span class="mc-variable General.changeset variable">changeset</span>s already ran, <span class="mc-variable General.Liquibase variable">Liquibase</span> will just continue on as before. For existing databases that have the old cart definition, it will see that the columns don't exist for <code>id="2"</code> and <code>id="3"</code> and execute as usual. For blank databases, it will create the table with the <code>promo_code</code> and abandoned columns and then in <code>id="2"</code> and <code>id="3"</code> it will see that they are already there and mark that they have ran without re-adding the columns.</p>
+                                            <h3>Preconditions</h3>
+                                            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>Preconditions add a performance overhead to your update executions and are ignored in <code>update-sql</code> mode because <span class="mc-variable General.Liquibase variable">Liquibase</span> cannot know how applicable they are when <span class="mc-variable General.changeset variable">changeset</span>s have not actually executed. It is best to use them only when needed.</p>
+                                            <p>Preconditions also add complexity to your <span class="mc-variable General.changelog variable">changelog</span> which will require additional testing so keep that in mind when deciding whether to modify your <span class="mc-variable General.changelog variable">changelog</span> logic. Sometimes it is easiest and safest to wait until all your databases have the columns and then modify the <span class="mc-variable General.changeset variable">changeset</span>s to avoid the preconditions.</p>
+                                            <p>The <code>cart</code>/<code>promo_code</code>/<code>abandoned</code> example shows some basic patterns you can use when modifying existing <span class="mc-variable General.changeset variable">changeset</span>s. Similar patters can be used to optimize different types of bottleneck issues. Just remember when one <span class="mc-variable General.changeset variable">changeset</span> is changed, it can affect other <span class="mc-variable General.changeset variable">changeset</span>s below which may need to be modified as well. This can easily spiral out of control so be mindful of what you are doing.</p>
+                                            <p>If you end up finding that it will work best to completely restart your <span class="mc-variable General.changelog variable">changelog</span>, see <a href="existing-project.html" class="MCXref xref">How to set up Liquibase with an Existing Project and Multiple Environments</a>, which describes how to add <span class="mc-variable General.Liquibase variable">Liquibase</span> to an existing project (even if that project was previously managed by <span class="mc-variable General.Liquibase variable">Liquibase</span>).</p>
+                                        </div>
+                                    </div>
+                                    <!-- UserSnap Scripts -->
+                                    <!-- Feedback Button -->
+                                    <script>/* <![CDATA[ */ <!--type="text/javascript"-->
+				window.onUsersnapCXLoad = function(api) {
+				api.init();
+				}
+				var script = document.createElement('script');
+				script.defer = 1;
+				script.src = 'https://widget.usersnap.com/global/load/632b7a0e-ba7b-4613-ab8a-a34d8edf1097?onload=onUsersnapCXLoad';
+				document.getElementsByTagName('head')[0].appendChild(script);
+		/* ]]> */</script>
+                                    <!-- End Feedback Button -->
+                                    <!-- Ratings -->
+                                    <div id="widgetContainer" style="align: center;text-align: center;">
+                                    </div>
+                                    <script>/* <![CDATA[ */
+			window.onUsersnapCXLoad = function(api) {
+			// mountNode is an element in which the widget should be rendered
+			api.init({ mountNode: document.getElementById('widgetContainer') });
+			}
+			var script = document.createElement('script');
+			script.defer = 1;
+			script.src = 'https://widget.usersnap.com/embed/load/7df92c7d-5c25-4d1e-827a-75f186914119?onload=onUsersnapCXLoad';
+			document.getElementsByTagName('head')[0].appendChild(script);
+		/* ]]> */</script>
+                                    <!-- End Ratins -->
+                                    <!-- End UserSnap Scripts -->
+                                    <!-- Start Glide Footer -->
+                                    <footer class="glide">
+                                        <div class="footer-container">
+                                            <div class="footer-wrapper">
+                                                <div class="footer-left-widget">
+                                                    <div class="footer-form-widget">
+                                                        <div class="widget-inner">
+                                                            <div class="footer-logo"><a href="https://www.liquibase.com"><img src="../../z_resources/images/glide/logo-white.svg" alt="" /></a>
+                                                            </div>
+                                                            <div class="footer-socials"><a href="https://twitter.com/liquibase" class="f-twitter" target="_blank"></a><a href="https://github.com/liquibase/liquibase" class="f-github" target="_blank"></a><a href="https://www.reddit.com/r/liquibase/" class="f-reddit" target="_blank"></a><a href="https://www.linkedin.com/company/liquibase" class="f-linkedin" target="_blank"></a><a href="https://www.youtube.com/channel/UC5qMsRjObu685rTBq0PJX8w" class="f-youtube" target="_blank"></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="footer-widgets">
+                                                    <div class="footer-widget">
+                                                        <h4>Products</h4>
+                                                        <div class="menu-column-two-menu-container">
+                                                            <ul id="menu-column-two-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-15659"><a href="https://www.liquibase.com/pricing">Pricing</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-906"><a href="https://www.liquibase.com/pricing/pro">Liquibase Pro</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15600"><a target="_blank" rel="noopener" href="https://www.liquibase.org/download">Liquibase Open Source</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Solutions</h4>
+                                                        <div class="menu-column-three-menu-container">
+                                                            <ul id="menu-column-three-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-908"><a href="https://www.liquibase.com/ci-cd">CI/CD</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/compliance">Compliance</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/devsecops">DevSecOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/financial-services">Financial Services</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/gitops-database">GitOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/public-sector">Public Sector</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-907"><a href="https://www.liquibase.com/version-control">Version Control</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Resources</h4>
+                                                        <div class="menu-column-four-menu-container">
+                                                            <ul id="menu-column-four-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-916"><a href="https://www.liquibase.com/blog">Blog</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15471"><a href="https://www.liquibase.com/resources">Resource Library</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-resource_category menu-item-914"><a href="https://www.liquibase.com/resources/guides">Guides</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14975"><a href="../../index.html">Documentation</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-917"><a href="https://www.liquibase.com/support">Support</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom last-menu-item menu-item-15215"><a target="_blank" rel="noopener noreferrer" href="https://learn.liquibase.com/index">Training</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Company</h4>
+                                                        <div class="menu-column-five-menu-container">
+                                                            <ul id="menu-column-five-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-1176"><a href="https://www.liquibase.com/company">Company</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1177"><a href="https://www.liquibase.com/company/leadership">Leadership</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1070"><a href="https://www.liquibase.com/company/careers">Careers</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1071"><a href="https://www.liquibase.com/partners">Partners</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15024"><a href="https://www.liquibase.com/category/press-releases">News</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-1178"><a href="https://www.liquibase.com/contact">Contact</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                    <div class="footer-bottom">
+                                                        <div class="copyright">
+                                                            <p><span class="mc-variable General.copyright variable">© 2023 Liquibase Inc.  All Rights Reserved. 
+Liquibase is a registered trademark of Liquibase Inc.</span>
+                                                                <br /><span class="mc-variable General.PhoneNumber variable">(737) 402-7187</span>
+                                                            </p>
+                                                        </div>
+                                                        <div class="footer-menu">
+                                                            <div class="menu-footer-menu-container">
+                                                                <ul id="menu-footer-menu">
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-privacy-policy first-menu-item menu-item-902"><a href="https://www.liquibase.com/privacy-policy">Privacy Policy</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-901"><a href="https://www.liquibase.com/terms-of-use">Terms of Use</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-14933"><a href="https://www.liquibase.com/eula">EULA</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                </div>
+                                                <div class="clear">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </footer>
+                                    <!-- This script is necessary to relocate the footer so that it maintains 100% width -->
+                                    <!--       <script type="text/javascript">/*<![CDATA[*/$(document).ready(function(){ $("footer").appendTo("div.off-canvas-content.inner-wrap"); });/*]]>*/</script> -->
+                                    <!-- End Glide Footer -->
+                                </div>
+                            </div>
+                        </div>
+                    </div><a data-close="true"></a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

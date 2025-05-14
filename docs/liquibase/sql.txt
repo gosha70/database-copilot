@@ -1,0 +1,226 @@
+sql
+Skip To Main Content
+Account
+Settings
+Logout
+placeholder
+Account
+Settings
+Logout
+You are here:
+sql
+The sql Change Type allows you to specify whatever SQL you want.
+Uses
+sql is useful for complex changes that are not supported through Liquibase automated Change Types such as stored procedures. The SQL contained in sql can be multi-line.
+Tip: If you use psql, SQL Plus, or sqlcmd utility and Liquibase Pro, see Use Native Executors with PostgreSQL, Use Native Executors with Oracle Database, and Use native executors with Microsoft SQL Server.
+Using the SQL Change Type
+The <sql> Change Type can also support multi-line statements in the same file. Statements can either be split using a ; at the end of the last line of the SQL or a GO on its own on the line between the statements can be used. Multi-line SQL statements are also supported and only a ; or GO statement will finish a statement, a new line is not enough. Files containing a single statement do not need to use a ; or GO.
+The SQL change can also contain comments of either of the following formats:
+A multi-line comment that starts with /* and ends with */.
+A single line comment starting with -- and finishing at the end of the line.
+Note: By default it will attempt to split statements on a ; or GO at the end of lines. Because of this, if you have a comment or some other non-statement ending ; or GO, don't have it at the end of a line or you will get invalid SQL.
+Run sql
+To run this Change Type, follow these steps:
+Add the Change Type to your changeset, as shown in the examples on this page.
+Specify any required attributes. Use the table on this page to see which ones your database requires.
+Deploy your changeset by running the update command:liquibase update
+Examples
+SQL example
+YAML example
+JSON example
+XML example
+Currently, there is no SQL example for the <sql> tag, since you can just put SQL into a SQL formatted changelog.
+databaseChangeLog:
+-
+changeSet:
+id:
+sql-example
+author:
+liquibase-docs
+changes:
+-
+sql:
+dbms:
+'!h2,
+oracle,
+mysql'
+endDelimiter:
+\nGO
+splitStatements:
+true
+sql:
+insert into person (name) values ('Bob')
+stripComments:
+true
+{
+"databaseChangeLog": [
+{
+"databaseChangeLog": [
+{
+"changeSet": {
+"id": "sql-example",
+"author": "liquibase-docs",
+"changes": [
+{
+"sql": {
+"dbms": "!h2, oracle, mysql",
+"endDelimiter": "GO",
+"splitStatements": true,
+"sql": "insert into person (name) values ('Bob')",
+"stripComments": true
+}
+}
+]
+}
+}
+]
+}
+]
+}
+<databaseChangeLog
+xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+http://www.liquibase.org/xml/ns/dbchangelog-ext
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+http://www.liquibase.org/xml/ns/pro
+http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+<changeSet
+author="liquibase-docs"
+id="sql-example">
+<sql dbms="!h2, oracle, mysql"
+endDelimiter="\nGO"
+splitStatements="true"
+stripComments="true">insert into person (name) values ('Bob')
+</sql>
+</changeSet>
+</databaseChangeLog>
+Available attributes
+Name
+Description
+Required for
+Supports
+Since
+dbms
+Specifies which database type(s) a changeset is to be used for. See valid database type names on dbms. Separate multiple databases with commas. Specify that a changeset is not applicable to a particular database type by prefixing with !. The keywords all and none are also available.
+all
+3.0
+endDelimiter
+Specifies delimiter to apply to the end of the statement. Your delimiter string can be a combination of one or more letters, symbols, and/or numbers, or the empty string (""). Default: ";". See also: --pro-global-end-delimiter and --pro-global-end-delimiter-prioritized.
+Tip: It is a best practice not to use endDelimiter on changesets you are running with a native executor. Native executors handle delimiters natively.
+all
+splitStatements
+If true, Liquibase splits SQL statements using the delimiters ; and GO. If false, Liquibase does not split SQL statements. Default: true.
+Tip: It is a best practice not to use splitStatements=true on changesets you are running with a native executor. Native executors handle statement splitting natively.
+all
+sql
+Specifies the SQL to execute.
+all
+all
+stripComments
+When true, removes any comments in the statement before executing. Otherwise, set it to false. Default: false. See also: --pro-global-strip-comments and --pro-global-strip-comments-prioritized.
+all
+Database support
+Database
+Notes
+Auto Rollback
+DB2/LUW
+Supported
+No
+DB2/z
+Supported
+No
+Derby
+Supported
+No
+Firebird
+Supported
+No
+Google BigQuery
+Supported
+No
+H2
+Supported
+No
+HyperSQL
+Supported
+No
+INGRES
+Supported
+No
+Informix
+Supported
+No
+MariaDB
+Supported
+No
+MySQL
+Supported
+No
+Oracle
+Supported
+No
+PostgreSQL
+Supported
+No
+Snowflake
+Supported
+No
+SQL Server
+Supported
+No
+SQLite
+Supported
+No
+Sybase
+Supported
+No
+Sybase Anywhere
+Supported
+No
+Related links
+endDelimiter SQL attribute
+Editions & Features
+Editions & Features
+Liquibase Open Source
+Liquibase Pro
+Solutions
+CI/CD
+Compliance
+DevSecOps
+GitOps
+Version Control
+Financial Services
+Resources
+Blog
+Best Practice Guides
+Resource Library
+Documentation
+University
+Community
+Meetup/Events
+Support
+Community
+Contributors
+Contribute Code
+Share Expertise
+Advocate
+Support
+Liquibase Legends
+Liquibase Badges
+Contact
+Company
+Company
+Careers
+Leadership
+Contact
+Â© 2025 Liquibase Inc.
+All Rights Reserved.
+Liquibase is a registered trademark of Liquibase Inc.
+(737) 402-7187
+Privacy Policy
+Terms of Use
+EULA

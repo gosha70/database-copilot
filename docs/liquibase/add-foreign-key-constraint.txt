@@ -1,0 +1,298 @@
+addForeignKeyConstraint
+Skip To Main Content
+Account
+Settings
+Logout
+placeholder
+Account
+Settings
+Logout
+You are here:
+addForeignKeyConstraint
+Adds a foreign key constraint to an existing column.
+Run addForeignKeyConstraint
+To run this Change Type, follow these steps:
+Add the Change Type to your changeset, as shown in the examples on this page.
+Specify any required attributes. Use the table on this page to see which ones your database requires.
+Deploy your changeset by running the update command:liquibase update
+Available attributes
+Name
+Description
+Required for
+Supports
+baseColumnNames
+Name of the column(s) to place the foreign key constraint on. To specify multiple columns, separate names with commas.
+all
+all
+baseTableCatalogName
+Name of the catalog of the base table
+all
+baseTableName
+Name of the table containing the column to constraint
+all
+all
+baseTableSchemaName
+Name of the schema of the base table
+all
+constraintName
+Name of the constraint
+all
+all
+deferrable
+Defines whether constraints are deferrable
+oracle, postgresql
+initiallyDeferred
+Defines whether constraints are initially deferred
+oracle, postgresql
+onDelete
+ON DELETE functionality. Possible values: CASCADE, SET NULL, SET DEFAULT, RESTRICT, NO ACTION. Note that db2z only supports CASCADE, SET NULL, and RESTRICT
+asany, db2, db2z, derby, firebird, h2, hsqldb, informix, ingres, mariadb, mssql, mysql, oracle, postgresql
+onUpdate
+ON UPDATE functionality. Possible values: CASCADE, SET NULL, SET DEFAULT, RESTRICT, NO ACTION
+all except db2z
+referencedColumnNames
+Name of the column(s) the foreign key points to. To specify multiple columns, separate names with commas.
+all
+all
+referencedTableCatalogName
+Name of the catalog of the referenced table
+all
+referencedTableName
+Name of the table the foreign key points to
+all
+all
+referencedTableSchemaName
+Name of the schema of the referenced table
+all
+validate
+Set to true if the constraint has ENABLE VALIDATE set, or false if the constraint has ENABLE NOVALIDATE set.
+all
+referencesUniqueColumn
+[Deprecated] Boolean.
+all
+Examples
+SQL example
+YAML example
+JSON example
+XML example
+--liquibase formatted sql
+--changeset liquibase-docs:addForeignKeyConstraint-example
+ALTER
+TABLE
+cat.address
+ADD
+CONSTRAINT
+fk_address_person
+FOREIGN
+KEY
+(person_id)
+REFERENCES
+cat.person
+(id)
+ON
+UPDATE
+RESTRICT
+ON
+DELETE
+CASCADE
+DEFERRABLE
+INITIALLY
+DEFERRED;
+databaseChangeLog:
+-
+changeSet:
+id:
+addForeignKeyConstraint-example
+author:
+liquibase-docs
+changes:
+-
+addForeignKeyConstraint:
+baseColumnNames:
+person_id
+baseTableCatalogName:
+cat
+baseTableName:
+address
+baseTableSchemaName:
+public
+constraintName:
+fk_address_person
+deferrable:
+true
+initiallyDeferred:
+true
+onDelete:
+CASCADE
+onUpdate:
+RESTRICT
+referencedColumnNames:
+id
+referencedTableCatalogName:
+cat
+referencedTableName:
+person
+referencedTableSchemaName:
+public
+validate:
+true
+{
+"databaseChangeLog": [
+{
+"changeSet": {
+"id": "addForeignKeyConstraint-example",
+"author": "liquibase-docs",
+"changes": [
+{
+"addForeignKeyConstraint": {
+"baseColumnNames": "person_id",
+"baseTableCatalogName": "cat",
+"baseTableName": "address",
+"baseTableSchemaName": "public",
+"constraintName": "fk_address_person",
+"deferrable": true,
+"initiallyDeferred": true,
+"onDelete": "CASCADE",
+"onUpdate": "RESTRICT",
+"referencedColumnNames": "id",
+"referencedTableCatalogName": "cat",
+"referencedTableName": "person",
+"referencedTableSchemaName": "public",
+"validate": true
+}
+}
+]
+}
+}
+]
+}
+<databaseChangeLog
+xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+http://www.liquibase.org/xml/ns/dbchangelog-ext
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+http://www.liquibase.org/xml/ns/pro
+http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+<changeSet
+author="liquibase-docs"
+id="addForeignKeyConstraint-example">
+<addForeignKeyConstraint
+baseColumnNames="person_id"
+baseTableCatalogName="cat"
+baseTableName="address"
+baseTableSchemaName="public"
+constraintName="fk_address_person"
+deferrable="true"
+initiallyDeferred="true"
+onDelete="CASCADE"
+onUpdate="RESTRICT"
+referencedColumnNames="id"
+referencedTableCatalogName="cat"
+referencedTableName="person"
+referencedTableSchemaName="public"
+validate="true"/>
+</changeSet>
+</databaseChangeLog>
+Database support
+Database
+Notes
+Auto Rollback
+DB2/LUW
+Supported
+Yes
+DB2/z
+Supported
+Yes
+Derby
+Supported
+Yes
+Firebird
+Supported
+Yes
+Google BigQuery
+Supported
+Yes
+H2
+Supported
+Yes
+HyperSQL
+Supported
+Yes
+INGRES
+Supported
+Yes
+Informix
+Supported
+Yes
+MariaDB
+Supported
+Yes
+MySQL
+Supported
+Yes
+Oracle
+Supported
+Yes
+PostgreSQL
+Supported
+Yes
+Snowflake
+Supported
+Yes
+SQL Server
+Supported
+Yes
+SQLite
+Not Supported
+No
+Sybase
+Supported
+Yes
+Sybase Anywhere
+Supported
+Yes
+Editions & Features
+Editions & Features
+Liquibase Open Source
+Liquibase Pro
+Solutions
+CI/CD
+Compliance
+DevSecOps
+GitOps
+Version Control
+Financial Services
+Resources
+Blog
+Best Practice Guides
+Resource Library
+Documentation
+University
+Community
+Meetup/Events
+Support
+Community
+Contributors
+Contribute Code
+Share Expertise
+Advocate
+Support
+Liquibase Legends
+Liquibase Badges
+Contact
+Company
+Company
+Careers
+Leadership
+Contact
+Â© 2025 Liquibase Inc.
+All Rights Reserved.
+Liquibase is a registered trademark of Liquibase Inc.
+(737) 402-7187
+Privacy Policy
+Terms of Use
+EULA

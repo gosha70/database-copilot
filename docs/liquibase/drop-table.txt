@@ -1,0 +1,205 @@
+dropTable
+Skip To Main Content
+Account
+Settings
+Logout
+placeholder
+Account
+Settings
+Logout
+You are here:
+dropTable
+Drops an existing table from your database.
+Run dropTable
+To run this Change Type, follow these steps:
+Add the Change Type to your changeset, as shown in the examples on this page.
+Specify any required attributes. Use the table on this page to see which ones your database requires.
+Deploy your changeset by running the update command:liquibase update
+Available attributes
+Name
+Description
+Required for
+Supports
+Since
+cascadeConstraints
+Boolean. Adds the CASCADE CONSTRAINTS SQL to the statement
+all
+catalogName
+Name of the catalog
+all
+3.0
+schemaName
+Name of the schema
+all
+tableName
+Name of the table to drop
+all
+all
+Examples
+SQL example
+YAML example
+JSON example
+XML example
+--liquibase formatted sql
+--changeset liquibase-docs:dropTable-example
+DROP
+TABLE
+cat.person;
+databaseChangeLog:
+-
+changeSet:
+id:
+dropTable-example
+author:
+liquibase-docs
+changes:
+-
+dropTable:
+cascadeConstraints:
+true
+catalogName:
+cat
+schemaName:
+public
+tableName:
+person
+{
+"databaseChangeLog": [
+{
+"changeSet": {
+"id": "dropTable-example",
+"author": "liquibase-docs",
+"changes": [
+{
+"dropTable": {
+"cascadeConstraints": true,
+"catalogName": "cat",
+"schemaName": "public",
+"tableName": "person"
+}
+}
+]
+}
+}
+]
+}
+<databaseChangeLog
+xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+http://www.liquibase.org/xml/ns/dbchangelog-ext
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+http://www.liquibase.org/xml/ns/pro
+http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+<changeSet
+author="liquibase-docs"
+id="dropTable-example">
+<dropTable
+cascadeConstraints="true"
+catalogName="cat"
+schemaName="public"
+tableName="person"/>
+</changeSet>
+</databaseChangeLog>
+Database support
+Database
+Notes
+Auto Rollback
+DB2/LUW
+Supported
+No
+DB2/z
+Supported
+No
+Derby
+Supported
+No
+Firebird
+Supported
+No
+Google BigQuery
+Supported
+No
+H2
+Supported
+No
+HyperSQL
+Supported
+No
+INGRES
+Supported
+No
+Informix
+Supported
+No
+MariaDB
+Supported
+No
+MySQL
+Supported
+No
+Oracle
+Supported
+No
+PostgreSQL
+Supported
+No
+Snowflake
+Supported
+No
+SQL Server
+Supported
+No
+SQLite
+Supported
+No
+Sybase
+Supported
+No
+Sybase Anywhere
+Supported
+No
+Editions & Features
+Editions & Features
+Liquibase Open Source
+Liquibase Pro
+Solutions
+CI/CD
+Compliance
+DevSecOps
+GitOps
+Version Control
+Financial Services
+Resources
+Blog
+Best Practice Guides
+Resource Library
+Documentation
+University
+Community
+Meetup/Events
+Support
+Community
+Contributors
+Contribute Code
+Share Expertise
+Advocate
+Support
+Liquibase Legends
+Liquibase Badges
+Contact
+Company
+Company
+Careers
+Leadership
+Contact
+Â© 2025 Liquibase Inc.
+All Rights Reserved.
+Liquibase is a registered trademark of Liquibase Inc.
+(737) 402-7187
+Privacy Policy
+Terms of Use
+EULA

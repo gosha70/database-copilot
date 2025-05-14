@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" class="_Skins_oss_pro" data-mc-search-type="Stem" data-mc-help-system-file-name="Default.xml" data-mc-path-to-help-system="../../../" data-mc-has-content-body="True" data-mc-toc-path="Start|[%=System.LinkedHeader%]|Liquibase Release Notes" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic;Default" data-mc-preload-images="false" data-mc-in-preview-mode="false">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="msapplication-config" content="../../../Skins/Favicons/browserconfig.xml" />
+        <meta name="description" content="Liquibase 4.26.0 release notes." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../../Skins/Favicons/favicon-16x16.png" /><title>Liquibase 4.26.0 Release Notes</title>
+        <!-- Google GA4 tag (gtag.js) -->
+        <!-- End Google GA4 tag -->
+        <!-- Google Tag Manager -->
+        <!-- End Google Tag Manager -->
+        <!-- Prism Highlighting -->
+        <!-- End Prism Highlighting -->
+        <!-- Tabs for code examples -->
+        <!--End tabs for code examples -->
+        <link href="../../../Skins/Default/Stylesheets/Slideshow.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="https://docs.liquibase.com/Skins/Fluid/Stylesheets/MadCapSearch.Google.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Default/Stylesheets/Components/Styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Default/Stylesheets/Components/Tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Default/Stylesheets/Components/Mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Default/Stylesheets/Components/Print.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Fluid/stylesheets/foundation.6.2.3.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Fluid/stylesheets/styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Fluid/stylesheets/tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Fluid/stylesheets/mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Fluid/stylesheets/print.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link rel="stylesheet" href="../../../z_resources/stylesheets/glidestyles.css" type="text/css" media="all" />
+        <link href="../../../z_resources/stylesheets/styles.css" rel="stylesheet" type="text/css" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../../Skins/Favicons/favicon-16x16.png" />
+        <link rel="canonical" href="liquibase-4.26.0.html" />
+        <script src="../../../resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../resources/Scripts/purify.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../../resources/Scripts/require.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../../resources/Scripts/require.config.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../../resources/Scripts/foundation.6.2.3_custom.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../../resources/Scripts/plugins.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../../resources/Scripts/MadCapAll.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=G-GJFFQKWLLX">
+        </script>
+        <script>/* <![CDATA[ */
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());  gtag('config', 'G-GJFFQKWLLX');
+		/* ]]> */</script>
+        <script>/* <![CDATA[ */(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&amp;l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-NTCPFS9');/* ]]> */</script>
+        <script type="text/javascript" src="../../../z_resources/scripts/prism.js"> </script>
+        <script type="application/javascript" src="../../../z_resources/scripts/jquery-accessible-tabs-ktc.js"> </script>
+    </head>
+    <body>
+        <div class="foundation-wrap off-canvas-wrapper">
+            <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper="">
+                <aside class="off-canvas position-right" role="navigation" id="offCanvas" data-off-canvas="" data-position="right" data-mc-ignore="true">
+                    <ul class="off-canvas-accordion vertical menu off-canvas-list" data-accordion-menu="" data-mc-back-link="Back" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="True" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True">
+                    </ul>
+                </aside>
+                <div class="off-canvas-content inner-wrap" data-off-canvas-content="">
+                    <div data-sticky-container="" class="title-bar-container">
+                        <nav class="title-bar tab-bar sticky" role="banner" data-sticky="" data-options="marginTop:0" style="width:100%" data-sticky-on="only screen and (max-width: 1279px)" data-mc-ignore="true"><a class="skip-to-content fluid-skip showOnFocus" href="#">Skip To Main Content</a>
+                            <div class="middle title-bar-section outer-row clearfix">
+                                <div class="menu-icon-container relative clearfix">
+                                    <div class="central-account-wrapper">
+                                        <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                            <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                                <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="menu-icon" aria-label="Show Navigation Panel" data-toggle="offCanvas"><span></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="title-bar-layout outer-row">
+                                <div class="logo-wrapper"><a class="logo" href="../../../home.html" alt="Logo"></a>
+                                </div>
+                                <div class="navigation-wrapper nocontent">
+                                    <ul class="navigation clearfix" role="navigation" data-mc-css-tree-node-has-children="has-children" data-mc-css-sub-menu="sub-menu" data-mc-expand-event="mouseenter" data-mc-top-nav-menu="True" data-mc-max-depth="5" data-mc-include-icon="False" data-mc-include-indicator="False" data-mc-include-children="True" data-mc-include-siblings="True" data-mc-include-parent="True" data-mc-toc="True">
+                                        <li class="placeholder" style="visibility:hidden"><a>placeholder</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="central-account-wrapper">
+                                    <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                        <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                            <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="nav-search-wrapper">
+                                    <div class="nav-search row">
+                                        <form>
+                                            <div id="EaZl7IMMdkOxEcTqrymc2g" class="search-bar search-bar-container needs-pie">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="main-section">
+                        <div class="row outer-row sidenav-layout">
+                            <nav class="sidenav-wrapper">
+                                <div class="sidenav-container">
+                                    <ul class="off-canvas-accordion vertical menu sidenav" data-accordion-menu="" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu accordion-menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="False" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True" data-mc-side-nav-menu="True">
+                                    </ul>
+                                </div>
+                            </nav>
+                            <div class="body-container">
+                                <div data-mc-content-body="True">
+                                    <!-- Google Tag Manager (noscript) -->
+                                    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTCPFS9" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+                                    </noscript>
+                                    <!-- End Google Tag Manager (noscript) -->
+                                    <div class="side-content">
+                                        <form>
+                                            <div id="M6wfOTl0fU-j5jp1_bq0mA" class="search-bar search-bar-container needs-pie _Skins_Topics_Searchbar mc-component">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="nocontent">
+                                        <div class="MCBreadcrumbsBox_0 breadcrumbs" role="navigation" aria-label="Breadcrumbs" data-mc-breadcrumbs-divider=" &gt; " data-mc-breadcrumbs-count="3" data-mc-toc="True"><span class="MCBreadcrumbsPrefix">You are here: </span>
+                                        </div>
+                                    </div>
+                                    <!--<div>  class="topic-layout"-->
+                                    <!--AV 2023-09-13: removing duplicate nav after switch to sidenav
+		<div style="float:left; margin-right: 20px; margin-left:20px; margin-bottom: 15px;"> <MadCap:menuProxy data-mc-skin="/Project/Skins/Topics-Menu.flskn" style="mc-context-sensitive: True;mc-include-parent: True;mc-include-siblings: True;mc-include-children: True;" mc-linked-toc="/Project/TOCs/TOC.fltoc" /></div>-->
+                                    <div class="liquibase-docs-body">
+                                        <div role="main" id="mc-main-content">
+                                            <h1>Liquibase 4.26.0 Release Notes</h1>
+                                            <p>Liquibase 4.26.0 is a major release</p>
+                                            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>Liquibase 4.26.0 contains several Notable Changes for Liquibase Pro users: Advanced IF conditionals, Simpler Regex-based pattern checks, and Checks Run Reports.</p>
+                                            <p>Full <span class="mc-variable General.changelog variable">changelog</span>: <a href="https://github.com/liquibase/liquibase/compare/v4.25.1...v4.26.0">4.25.1 - 4.26.0</a></p>
+                                            <h2>Notable Changes</h2>
+                                            <h3>Liquibase Pro</h3>
+                                            <h4>Liquibase Flow: Advanced IF conditionals</h4>
+                                            <ul>
+                                                <li>In Liquibase flow files, use AND (&amp;&amp;), OR (||), and NOT (!) logic options, in single or grouped conditions, as well as substring matching and checking if a key or file exists.</li>
+                                                <li>Learn more here: <a href="../../../commands/flow/flow.html" class="MCXref xref">flow</a>, <a href="../../../commands/flow/if-conditionals.html" class="MCXref xref">if conditionals</a>, <a href="../../../commands/flow/variables.html" class="MCXref xref">variables and include feature</a></li>
+                                            </ul>
+                                            <h4>Quality Checks: Simpler Regex-based pattern checks</h4>
+                                            <ul>
+                                                <li>Check four advanced patterns without having to figure out the complicated regex needed to do it—just supply the patterns and Quality Checks will link and execute them.</li>
+                                                <li>Learn more here:&#160;<a href="../../../commands/quality-checks/checks/changelog-checks/patterna-followed-bypatternb.html" class="MCXref xref">PatternAFollowedByPatternB</a>, <a href="../../../commands/quality-checks/checks/changelog-checks/patterna-notfollowed-bypatternb.html" class="MCXref xref">PatternANotFollowedByPatternB</a>, <a href="../../../commands/quality-checks/checks/changelog-checks/patterna-notpreceded-bypatternb.html" class="MCXref xref">PatternANotPrecededByPatternB</a>, <a href="../../../commands/quality-checks/checks/changelog-checks/patterna-preceded-bypatternb.html" class="MCXref xref">PatternAPrecededByPatternB</a></li>
+                                            </ul>
+                                            <h4>Observability: Checks Run Reports</h4>
+                                            <ul>
+                                                <li>Understand and share the data on the execution of Quality Checks with a new Checks Run Report. Easily scan and understand your results with the summary section, Analyze your checks by viewing details by ChangeSet, by check, and by database. And collaborate with your team with shareable report.</li>
+                                                <li>Learn more here:&#160;<a href="../../../tools-integrations/observability/home.html" class="MCXref xref">Liquibase Observability</a> , <a href="../../../tools-integrations/observability/operation-reports-checks-run-report.html" class="MCXref xref">Checks Run Report</a></li>
+                                            </ul>
+                                            <h4>Formatted SQL changelogs can use rollback scripts</h4>
+                                            <ul>
+                                                <li>Previously, Formatted SQL ChangeLogs could only run in-line rollback commands. But, sometimes you need something more complex, like a full rollbackSqlFile. This functionality has been available for XML, JSON, and YAML formatted changelogs.</li>
+                                                <li>Learn more here:&#160;<a href="../../../concepts/changelogs/sql-format.html" class="MCXref xref">Example Changelogs: SQL Format</a></li>
+                                            </ul>
+                                            <h3>Liquibase Open Source and Liquibase Pro</h3>
+                                            <h4>Liquibase capability enhancements</h4>
+                                            <ul>
+                                                <li>The <code>diffChangeLog</code> command has been updated only to create a changelog when changes are detected. This is a change from the previous behavior of creating an empty changelog.</li>
+                                                <li>Adds two new <code>generateChangelog</code> options:<ul><li><code>--run-on-change-types=createView,createProcedure</code> will set <code>runOnChange="true"</code> for each changeSet which contains solely <code>createView</code> and <code>createProcedure</code> changes. For backward compatibility, the default is an empty list.</li><li><code>--replace-if-exists=createView,createProcedure</code> will set<code> replaceIfExists="true"</code> for each <code>createView</code> and <code>createProcedure</code> changes. For backward compatibility, the default is an empty list.</li></ul></li>
+                                                <li>Fix a bug that previously included substituted properties in the checksum calculation for SQLFile change types</li>
+                                            </ul>
+                                            <h4>JDBC driver updates</h4>
+                                            <ul>
+                                                <li>MariaDB JDBC driver updated from 3.2.0 to 3.3.2</li>
+                                                <li>Snowflake JDBC driver updated from 3.14.3 to 3.14.4</li>
+                                                <li>Firebird SQL JDBC driver updated from 5.0.2.java8 to 5.0.3.java8</li>
+                                                <li>SQLite JDBC driver updated from 3.43.2.2 to 3.44.1.0</li>
+                                            </ul>
+                                            <h4>Database platform improvements</h4>
+                                            <p style="font-weight: bold;">General</p>
+                                            <ul>
+                                                <li>Adds <code>create table if not exists</code> support for the following databases: CockroachDB, DB2 LUW, H2, HSQL, Informix, Ingres9, MariaDB, MySQL, Postgres, and SQLite.</li>
+                                                <li>Fix the generated default column value in PostgreSQL and Oracle for char/clob data types.</li>
+                                            </ul>
+                                            <p style="font-weight: bold;">Maria DB</p>
+                                            <ul>
+                                                <li>Adds Liquibase support for Maria DB 10.10.6 and later's new UUID data type.</li>
+                                                <li>For boolean columns on MariaDB, revert the change made in Liquibase 4.25.1. It has been returned from TINYINT back to TINYINT(1).</li>
+                                            </ul>
+                                            <p style="font-weight: bold;">DB2 z/OS</p>
+                                            <ul>
+                                                <li>Improves support for the empty table precondition.</li>
+                                            </ul>
+                                            <p style="font-weight: bold;">Java API Changes</p>
+                                            <ul>
+                                                <li>AbstractJdbcDatabase now delegates the execution of Changes to the executor, which allows the executor more control over how Changes are executed. This gives executors access to Changes and ChangeSets which enables the management of transaction commits.</li>
+                                                <li>Failure exceptions in ChangeSet.execute are now logged as a SEVERE level for easier access to a concise error message.</li>
+                                            </ul>
+                                            <h2>Changelog</h2>
+                                            <h3>[PRO] Changelog</h3>
+                                            <ul>
+                                                <li>DAT-16531 Add labels, contexts, rollback-on-error to update reports runtime info in <a href="https://github.com/liquibase/liquibase-pro/pull/1499">liquibase/liquibase-pro#1499</a> by @abrackx</li>
+                                                <li>DAT-15455 Refactor ChangelogRewriters to follow general Factory approach in <a href="https://github.com/liquibase/liquibase-pro/pull/1195">liquibase/liquibase-pro#1195</a> by @vitaliimak</li>
+                                                <li>DAT-16675 add aliases for init copy and project in <a href="https://github.com/liquibase/liquibase-pro">liquibase/liquibase-pro#1488</a> by @StevenMassaro</li>
+                                                <li>DAT-16640 add rollbackSqlFile to formatted SQL changelog parsingin <a href="https://github.com/liquibase/liquibase-pro/pull/1501">liquibase/liquibase-pro#1501</a> by @StevenMassaro</li>
+                                                <li>DAT-16054 Implement filters for snapshot command in <a href="https://github.com/liquibase/liquibase-pro/pull/1440">liquibase/liquibase-pro#1440</a> by @wwillard7800</li>
+                                                <li>DAT-16282 Implement MVEL expression and added tests in <a href="https://github.com/liquibase/liquibase-pro/pull/1382">liquibase/liquibase-pro#1382</a> by @wwillard7800</li>
+                                                <li>DAT-16684 Checks run report tweaks, add check packages info in <a href="https://github.com/liquibase/liquibase-pro/pull/1491">liquibase/liquibase-pro#1491</a> by @abrackx</li>
+                                                <li>DAT-16273 Show fully qualified path in console when generating report in <a href="https://github.com/liquibase/liquibase-pro/pull/1483">liquibase/liquibase-pro#1483</a> by @abrackx</li>
+                                                <li>DAT-13042 Parse LDAP-style URL to create SQLPLUS connection string in <a href="https://github.com/liquibase/liquibase-pro/pull/1473">liquibase/liquibase-pro#1473</a> by @wwillard7800</li>
+                                                <li>DAT-16237 Styled checks run report in <a href="https://github.com/liquibase/liquibase-pro/pull/1481">liquibase/liquibase-pro#1481</a> by @abrackx</li>
+                                                <li>DAT-16349 Make sure diffChangelog respects drift arguments in <a href="https://github.com/liquibase/liquibase-pro/pull/1461">liquibase/liquibase-pro#1461</a> by @wwillard7800</li>
+                                                <li>DAT-16110 Implementation of regex helper checks in <a href="https://github.com/liquibase/liquibase-pro/pull/1330">liquibase/liquibase-pro#1330</a> by @wwillard7800</li>
+                                                <li>DAT-16500 do not clear a subset of MDC keys when scope exits in <a href="https://github.com/liquibase/liquibase-pro/pull/1447">liquibase/liquibase-pro#1447</a> by @StevenMassaro</li>
+                                                <li>DAT-16477 Append command name to default report name in <a href="https://github.com/liquibase/liquibase-pro/pull/1456">liquibase/liquibase-pro#1456</a> by @abrackx</li>
+                                                <li>DAT-16482 Correctly set logLevel on the Liquibase logger in <a href="https://github.com/liquibase/liquibase-pro/pull/1433">liquibase/liquibase-pro#1433</a> by @wwillard7800</li>
+                                                <li>DAT-16397 add changeset identifier to exceptions thrown from LiquibaseSqlParser in <a href="https://github.com/liquibase/liquibase-pro/pull/1443">liquibase/liquibase-pro#1443</a> by @StevenMassaro</li>
+                                                <li>DAT-16534 Fix issue with generateChangelog and diffChangelog in <a href="https://github.com/liquibase/liquibase-pro/pull/1446">liquibase/liquibase-pro#1446</a> by @wwillard7800</li>
+                                                <li>DAT-16330 Remove drift report mode parameter in <a href="https://github.com/liquibase/liquibase-pro/pull/1423">liquibase/liquibase-pro#1423</a> by @wwillard7800</li>
+                                                <li>DAT-13864 New pending changeset filter for checks run in <a href="https://github.com/liquibase/liquibase-pro/pull/1419">liquibase/liquibase-pro#1419</a> by @wwillard7800</li>
+                                                <li>DAT-16332 Add pending changes to update report in <a href="https://github.com/liquibase/liquibase-pro/pull/1438">liquibase/liquibase-pro#1438</a> by @abrackx</li>
+                                            </ul>
+                                            <h4>[PRO] Security, Driver and Other Updates</h4>
+                                            <ul>
+                                                <li>Bump com.oracle.database.jdbc:ojdbc8 from 19.20.0.0 to 19.21.0.0 <a href="https://github.com/liquibase/liquibase/issues/1339">#1339</a> by dependabot bot</li>
+                                            </ul>
+                                            <h3>[OSS] Changelog</h3>
+                                            <h4>New Features</h4>
+                                            <ul>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5525">#5525</a>) Add labels, context and rollback on error info to report (DAT-16531) @abrackx</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5490">#5490</a>) DAT-16675: add support for command aliases @StevenMassaro</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5406">#5406</a>) Allow snapshot control creation to be overridden for snapshot filters DAT-16054 @wwillard7800</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5256">#5256</a>) Added exclusion for MVEL DAT-16282 @wwillard7800</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5336">#5336</a>) add default constructor + setters to RanChangeSet &amp; related classes @rursprung</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5340">#5340</a>) Fixes #2352 by adding support for loading embedded jar files @hayeskl</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5164">#5164</a>) Write changelog only if changes exist @brachi-wernick</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5360">#5360</a>) Introduce support for primitive types in new changes @fbiville</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5274">#5274</a>) Use mariadb UUID when specify UUID type @mohamed-ahrrass-nw</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5413">#5413</a>) add changeset identifier to exceptions thrown from LiquibaseSqlParser (DAT-16397) @StevenMassaro</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5402">#5402</a>) Adds pending changesets to update report (DAT-16332) @abrackx</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/3581">#3581</a>) Support create table if not exists @taeyeon-Kim</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/4635">#4635</a>) generateChangelog optionally creates runOnChange=true and replaceIfExists=true for createView changes @mkarg</li>
+                                            </ul>
+                                            <p style="font-weight: bold;">Changes</p>
+                                            <ul>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5329">#5329</a>) Support runWith executors committing after the change set completes @dzeigler</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5452">#5452</a>) Log the exception in case of failure in ChangeSet.execute @bignoncedric</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5043">#5043</a>) Improve support for DB2[z] empty table precondition @MichaelKern-IVV</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5424">#5424</a>) Moved saved_state/compareGenerateSql.. directory from java source to resources bundle @MalloD12</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase">#5462</a>) map testcontainers to random available host port @StevenMassaro</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5457">#5457</a>) prevent multiple databases in test classes @StevenMassaro</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5416">#5416</a>) do not clear a subset of MDC keys when scope exits (DAT-16500) @StevenMassaro</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5417">#5417</a>) switch integration tests to use h2 where possible (DAT-16015) @StevenMassaro</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5347">#5347</a>) Added extra space for command help arguments display DAT-13864 @wwillard7800</li>
+                                            </ul>
+                                            <p style="font-weight: bold;">Bug Fixes</p>
+                                            <ul>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5522">#5522</a>) MariaDB boolean: back to TINYINT(1) instead of TINYINT (MySQL) @famod</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5524">#5524</a>) Don't execute CustomSqlChanges to generate logs @Alf-Melmac</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5498">#5498</a>) Add missing OSGI settings @filipelautert</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5391">#5391</a>) fix SQLFileChange.generateCheckSum() to calculate checksum without property substitution @jglass524</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase">#5398</a>) Fix issue <a href="https://github.com/liquibase/liquibase/issues/3516">#3516</a> addColumn ignores deleteCascade=true @andreiyusupau</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5479">#5479</a>) do not skip over duplicate tags when doing rollback (DAT-16277) @StevenMassaro</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5484">#5484</a>) Workaround failing test containers startup for mysql by falling back to previous version. @abrackx</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5397">#5397</a>) Fix DatabaseFactory db loading when Database implementation is specified (fix for Issues 5371 &amp; 5396 ) @dhsmith1001</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5202">#5202</a>) 4464 fix generated default column value using in PostgreSQL and Oracle for char/clob data types @LonwoLonwo</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5350">#5350</a>) Fix getSerializableFieldValue when dealing with rollback object @MalloD12</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5414">#5414</a>) Fix NPE in generateChangelog and diffChangelog DAT-16534 @wwillard7800</li>
+                                                <li>(<a href="https://github.com/liquibase/liquibase/pull/5267">#5267</a>) fix <a href="https://github.com/liquibase/liquibase/issues/5266">#5266</a>: comma separated dbms-attribute for createProcedure-change triggers validation-check @jclohm...</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- UserSnap Scripts -->
+                                    <!-- Feedback Button -->
+                                    <script>/* <![CDATA[ */ <!--type="text/javascript"-->
+				window.onUsersnapCXLoad = function(api) {
+				api.init();
+				}
+				var script = document.createElement('script');
+				script.defer = 1;
+				script.src = 'https://widget.usersnap.com/global/load/632b7a0e-ba7b-4613-ab8a-a34d8edf1097?onload=onUsersnapCXLoad';
+				document.getElementsByTagName('head')[0].appendChild(script);
+		/* ]]> */</script>
+                                    <!-- End Feedback Button -->
+                                    <!-- Ratings -->
+                                    <div id="widgetContainer" style="align: center;text-align: center;">
+                                    </div>
+                                    <script>/* <![CDATA[ */
+			window.onUsersnapCXLoad = function(api) {
+			// mountNode is an element in which the widget should be rendered
+			api.init({ mountNode: document.getElementById('widgetContainer') });
+			}
+			var script = document.createElement('script');
+			script.defer = 1;
+			script.src = 'https://widget.usersnap.com/embed/load/7df92c7d-5c25-4d1e-827a-75f186914119?onload=onUsersnapCXLoad';
+			document.getElementsByTagName('head')[0].appendChild(script);
+		/* ]]> */</script>
+                                    <!-- End Ratins -->
+                                    <!-- End UserSnap Scripts -->
+                                    <!-- Start Glide Footer -->
+                                    <footer class="glide">
+                                        <div class="footer-container">
+                                            <div class="footer-wrapper">
+                                                <div class="footer-left-widget">
+                                                    <div class="footer-form-widget">
+                                                        <div class="widget-inner">
+                                                            <div class="footer-logo"><a href="https://www.liquibase.com"><img src="../../../z_resources/images/glide/logo-white.svg" alt="" /></a>
+                                                            </div>
+                                                            <div class="footer-socials"><a href="https://twitter.com/liquibase" class="f-twitter" target="_blank"></a><a href="https://github.com/liquibase/liquibase" class="f-github" target="_blank"></a><a href="https://www.reddit.com/r/liquibase/" class="f-reddit" target="_blank"></a><a href="https://www.linkedin.com/company/liquibase" class="f-linkedin" target="_blank"></a><a href="https://www.youtube.com/channel/UC5qMsRjObu685rTBq0PJX8w" class="f-youtube" target="_blank"></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="footer-widgets">
+                                                    <div class="footer-widget">
+                                                        <h4>Products</h4>
+                                                        <div class="menu-column-two-menu-container">
+                                                            <ul id="menu-column-two-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-15659"><a href="https://www.liquibase.com/pricing">Pricing</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-906"><a href="https://www.liquibase.com/pricing/pro">Liquibase Pro</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15600"><a target="_blank" rel="noopener" href="https://www.liquibase.org/download">Liquibase Open Source</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Solutions</h4>
+                                                        <div class="menu-column-three-menu-container">
+                                                            <ul id="menu-column-three-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-908"><a href="https://www.liquibase.com/ci-cd">CI/CD</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/compliance">Compliance</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/devsecops">DevSecOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/financial-services">Financial Services</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/gitops-database">GitOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/public-sector">Public Sector</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-907"><a href="https://www.liquibase.com/version-control">Version Control</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Resources</h4>
+                                                        <div class="menu-column-four-menu-container">
+                                                            <ul id="menu-column-four-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-916"><a href="https://www.liquibase.com/blog">Blog</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15471"><a href="https://www.liquibase.com/resources">Resource Library</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-resource_category menu-item-914"><a href="https://www.liquibase.com/resources/guides">Guides</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14975"><a href="../../../index.html">Documentation</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-917"><a href="https://www.liquibase.com/support">Support</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom last-menu-item menu-item-15215"><a target="_blank" rel="noopener noreferrer" href="https://learn.liquibase.com/index">Training</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Company</h4>
+                                                        <div class="menu-column-five-menu-container">
+                                                            <ul id="menu-column-five-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-1176"><a href="https://www.liquibase.com/company">Company</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1177"><a href="https://www.liquibase.com/company/leadership">Leadership</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1070"><a href="https://www.liquibase.com/company/careers">Careers</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1071"><a href="https://www.liquibase.com/partners">Partners</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15024"><a href="https://www.liquibase.com/category/press-releases">News</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-1178"><a href="https://www.liquibase.com/contact">Contact</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                    <div class="footer-bottom">
+                                                        <div class="copyright">
+                                                            <p><span class="mc-variable General.copyright variable">© 2023 Liquibase Inc.  All Rights Reserved. 
+Liquibase is a registered trademark of Liquibase Inc.</span>
+                                                                <br /><span class="mc-variable General.PhoneNumber variable">(737) 402-7187</span>
+                                                            </p>
+                                                        </div>
+                                                        <div class="footer-menu">
+                                                            <div class="menu-footer-menu-container">
+                                                                <ul id="menu-footer-menu">
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-privacy-policy first-menu-item menu-item-902"><a href="https://www.liquibase.com/privacy-policy">Privacy Policy</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-901"><a href="https://www.liquibase.com/terms-of-use">Terms of Use</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-14933"><a href="https://www.liquibase.com/eula">EULA</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                </div>
+                                                <div class="clear">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </footer>
+                                    <!-- This script is necessary to relocate the footer so that it maintains 100% width -->
+                                    <!--       <script type="text/javascript">/*<![CDATA[*/$(document).ready(function(){ $("footer").appendTo("div.off-canvas-content.inner-wrap"); });/*]]>*/</script> -->
+                                    <!-- End Glide Footer -->
+                                </div>
+                            </div>
+                        </div>
+                    </div><a data-close="true"></a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

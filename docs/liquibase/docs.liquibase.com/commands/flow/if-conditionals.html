@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" class="_Skins_oss_pro" data-mc-search-type="Stem" data-mc-help-system-file-name="Default.xml" data-mc-path-to-help-system="../../" data-mc-has-content-body="True" data-mc-toc-path="Commands|Flow" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic;Default" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-searchable="False">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="msapplication-config" content="../../Skins/Favicons/browserconfig.xml" />
+        <meta name="description" content="Reference information and use cases for if conditionals in the Flow File." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../Skins/Favicons/favicon-16x16.png" /><title>if conditionals</title>
+        <!-- Google GA4 tag (gtag.js) -->
+        <!-- End Google GA4 tag -->
+        <!-- Google Tag Manager -->
+        <!-- End Google Tag Manager -->
+        <!-- Prism Highlighting -->
+        <!-- End Prism Highlighting -->
+        <!-- Tabs for code examples -->
+        <!--End tabs for code examples -->
+        <link href="../../Skins/Default/Stylesheets/Slideshow.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="https://docs.liquibase.com/Skins/Fluid/Stylesheets/MadCapSearch.Google.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Print.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/foundation.6.2.3.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/print.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link rel="stylesheet" href="../../z_resources/stylesheets/glidestyles.css" type="text/css" media="all" />
+        <link href="../../z_resources/stylesheets/styles.css" rel="stylesheet" type="text/css" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../Skins/Favicons/favicon-16x16.png" />
+        <link rel="canonical" href="if-conditionals.html" />
+        <script src="../../resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../resources/Scripts/purify.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/require.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/require.config.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/foundation.6.2.3_custom.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/plugins.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/MadCapAll.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=G-GJFFQKWLLX">
+        </script>
+        <script>/* <![CDATA[ */
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());  gtag('config', 'G-GJFFQKWLLX');
+		/* ]]> */</script>
+        <script>/* <![CDATA[ */(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&amp;l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-NTCPFS9');/* ]]> */</script>
+        <script type="text/javascript" src="../../z_resources/scripts/prism.js"> </script>
+        <script type="application/javascript" src="../../z_resources/scripts/jquery-accessible-tabs-ktc.js"> </script>
+    </head>
+    <body>
+        <div class="foundation-wrap off-canvas-wrapper">
+            <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper="">
+                <aside class="off-canvas position-right" role="navigation" id="offCanvas" data-off-canvas="" data-position="right" data-mc-ignore="true">
+                    <ul class="off-canvas-accordion vertical menu off-canvas-list" data-accordion-menu="" data-mc-back-link="Back" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="True" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True">
+                    </ul>
+                </aside>
+                <div class="off-canvas-content inner-wrap" data-off-canvas-content="">
+                    <div data-sticky-container="" class="title-bar-container">
+                        <nav class="title-bar tab-bar sticky" role="banner" data-sticky="" data-options="marginTop:0" style="width:100%" data-sticky-on="only screen and (max-width: 1279px)" data-mc-ignore="true"><a class="skip-to-content fluid-skip showOnFocus" href="#">Skip To Main Content</a>
+                            <div class="middle title-bar-section outer-row clearfix">
+                                <div class="menu-icon-container relative clearfix">
+                                    <div class="central-account-wrapper">
+                                        <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                            <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                                <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="menu-icon" aria-label="Show Navigation Panel" data-toggle="offCanvas"><span></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="title-bar-layout outer-row">
+                                <div class="logo-wrapper"><a class="logo" href="../../home.html" alt="Logo"></a>
+                                </div>
+                                <div class="navigation-wrapper nocontent">
+                                    <ul class="navigation clearfix" role="navigation" data-mc-css-tree-node-has-children="has-children" data-mc-css-sub-menu="sub-menu" data-mc-expand-event="mouseenter" data-mc-top-nav-menu="True" data-mc-max-depth="5" data-mc-include-icon="False" data-mc-include-indicator="False" data-mc-include-children="True" data-mc-include-siblings="True" data-mc-include-parent="True" data-mc-toc="True">
+                                        <li class="placeholder" style="visibility:hidden"><a>placeholder</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="central-account-wrapper">
+                                    <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                        <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                            <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="nav-search-wrapper">
+                                    <div class="nav-search row">
+                                        <form>
+                                            <div id="EaZl7IMMdkOxEcTqrymc2g" class="search-bar search-bar-container needs-pie">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="main-section">
+                        <div class="row outer-row sidenav-layout">
+                            <nav class="sidenav-wrapper">
+                                <div class="sidenav-container">
+                                    <ul class="off-canvas-accordion vertical menu sidenav" data-accordion-menu="" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu accordion-menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="False" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True" data-mc-side-nav-menu="True">
+                                    </ul>
+                                </div>
+                            </nav>
+                            <div class="body-container">
+                                <div data-mc-content-body="True">
+                                    <!-- Google Tag Manager (noscript) -->
+                                    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTCPFS9" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+                                    </noscript>
+                                    <!-- End Google Tag Manager (noscript) -->
+                                    <div class="side-content">
+                                        <form>
+                                            <div id="B-oxDv3UF0q9K5AdyXZaiQ" class="search-bar search-bar-container needs-pie _Skins_Topics_Searchbar mc-component">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="nocontent">
+                                        <div class="MCBreadcrumbsBox_0 breadcrumbs" role="navigation" aria-label="Breadcrumbs" data-mc-breadcrumbs-divider=" &gt; " data-mc-breadcrumbs-count="3" data-mc-toc="True"><span class="MCBreadcrumbsPrefix">You are here: </span>
+                                        </div>
+                                    </div>
+                                    <!--<div>  class="topic-layout"-->
+                                    <!--AV 2023-09-13: removing duplicate nav after switch to sidenav
+		<div style="float:left; margin-right: 20px; margin-left:20px; margin-bottom: 15px;"> <MadCap:menuProxy data-mc-skin="/Project/Skins/Topics-Menu.flskn" style="mc-context-sensitive: True;mc-include-parent: True;mc-include-siblings: True;mc-include-children: True;" mc-linked-toc="/Project/TOCs/TOC.fltoc" /></div>-->
+                                    <div class="liquibase-docs-body">
+                                        <div role="main" id="mc-main-content">
+                                            <h1><code>if</code> conditionals<br /></h1><a href="https://www.liquibase.com/trial"><img src="../../z_resources/images/logos/pro-button_32x18.jpg" class="ver_icon_size" title="This feature is part of Liquibase Pro and requires a Liquibase Pro license key" style="width: 32;height: 18;" /></a>
+                                            <p><code>if</code>&#160;conditionals allow you to set specific blocks of code to run or not run depending on your <a href="flow.html" class="MCXref xref">flow</a> file functionality needs.</p>
+                                            <p>Read more: <a href="advanced-flow-file.html" class="MCXref xref">Advanced Flow File</a></p>
+                                            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>The <code>flow</code> feature requires <span class="mc-variable General.Liquibase variable">Liquibase</span> 4.17.0+.</p>
+                                            <h2><code>if</code>&#160;conditionals code format</h2>
+                                            <p>If conditionals exist within their own block of code within a Stage or Action in a Flow file. A few formatting rules to note are:</p>
+                                            <ul>
+                                                <li>The entire conditional must be encompassed by "quotes".</li>
+                                                <li>Variables must begin with <code>$</code> and be encompassed by {curly braces}.</li>
+                                            </ul>
+                                            <p>For example:</p><pre><code class="language-text">if:&#160;"${LIQUIBASE_ACTIVE_TARGET} == dev"</code></pre>
+                                            <p>Any defined variable within the scope of the flow file can be used as a conditional. <br />This includes: </p>
+                                            <ul>
+                                                <li>Environment variables </li>
+                                                <li>Global variables</li>
+                                                <li>Stage variables</li>
+                                                <li>"included" variables</li>
+                                                <li>Properties from the defaults file</li>
+                                            </ul>
+                                            <p>Read more: <a href="variables.html" class="MCXref xref">variables and include feature</a></p>
+                                            <h2>Implement <code>if</code> conditionals</h2>
+                                            <p>Values within <code>if</code> conditionals are called on in the format below. If the conditional value is evaluated to <code>true</code>, it will run the command. If the conditional value is evaluated  to <code>false</code>, it will not run the command.</p>
+                                            <div class="codeSnippet"><a class="codeSnippetCopyButton" role="button" href="javascript:void(0);">Copy</a>
+                                                <div style="mc-code-lang: JavaScript;" class="codeSnippetBody" data-mc-continue="False" data-mc-line-number-start="1" data-mc-use-line-numbers="False"><pre><code>-type:&#160;liquibase<br />&#160;&#160;&#160;&#160;<span style="color: #333333; font-weight: bold; ">if</span>:&#160;<span style="color: #dd1144; ">"${LIQUIBASE_ACTIVE_TARGET} == dev"</span><br />&#160;&#160;&#160;&#160;command:&#160;checks run<br />&#160;&#160;&#160;&#160;cmdArgs:&#160;{checks-scope: changelog}<br />&#160;&#160;&#160;&#160;<br />-type:&#160;liquibase<br />&#160;&#160;&#160;&#160;<span style="color: #333333; font-weight: bold; ">if</span>:&#160;<span style="color: #dd1144; ">"${LIQUIBASE_ACTIVE_TARGET} != dev"</span><br />&#160;&#160;&#160;&#160;command:&#160;updatesql<br />&#160;&#160;&#160;&#160;</code></pre>
+                                                </div>
+                                            </div>
+                                            <p>When <code>liquibase flow</code> runs,  messages will appear in the CLI after the flow file executes each section. Notice in the sample message below it says <code>Executing 'liquibase' checks run</code> because the environment variable above is set to true. You will also notice the message <code>Skipping action:&#160;'liquibase' updatesql because condition 'dev != dev' evaluated to false.'</code> This is the best location to find why <code>if</code>&#160;conditionals did or did not run successfully. If you expected a conditional to run successfully and it did not, you are better equipped to adjust the flow file accordingly.</p>
+                                            <div class="codeSnippet"><a class="codeSnippetCopyButton" role="button" href="javascript:void(0);">Copy</a>
+                                                <div class="codeSnippetBody" data-mc-continue="False" data-mc-line-number-start="1" data-mc-use-line-numbers="False"><pre><code>***********************************************************************<br />*<br />* Executing 'liquibase' checks run<br />*<br />***********************************************************************<br /><br />Executing Quiality Checks against example-changelog.sql<br /><br />Executing all changelog checks because a valid license key was found!<br /><br />Warning: No database checks were run. Make sure the checks-scope property includes "database" to run database checks. In the CLI set --checks-scope+'changelog.database" or set an environment variable.<br />LIQUIBASE_COMMAND_CHECKS_SCOPE=database. Learn more at https://docs.liquibase.com/quality-checks<br /><br />INFO: Checks executed against SQL generated by H2 at jdbc:h2:tcp://localhost:9090/mem:dev.<br />Changesets Validated: in example-changelog.sql<br />&#160;&#160;&#160;&#160;ID: 1; Author: your.name<br />&#160;&#160;&#160;&#160;ID: 2; Author: your.name<br />&#160;&#160;&#160;&#160;ID: 3; Author: other.dev<br />&#160;&#160;&#160;&#160;<br />Checks run against each changeset:<br />&#160;&#160;&#160;&#160;Changesets Must Have a Context Assigned (Short names: ChangesetCommentCheck)<br />&#160;&#160;&#160;&#160;Changesets Must Have a Context Assigned (Short names: ChangesetContextCheck)<br />&#160;&#160;&#160;&#160;Changesets Must Have a Label Assigned (Short names: ChangesetLabelCheck)<br />&#160;&#160;&#160;&#160;Check Table Column Count (Short names: TableColumnLimit)<br />&#160;&#160;&#160;&#160;Rollback Required for Changeset (Short names: RollbackRequired)<br />&#160;&#160;&#160;&#160;Warn on Detection of 'GRANT' statements (short names: SQLGrantWarn)<br />&#160;&#160;&#160;&#160;Warn on Detection of 'REVOKE' statements (short names: SQLRevokeWarn)<br />&#160;&#160;&#160;&#160;Warn on Detection of grant that contains 'WITH ADMIN OPTION' (Short names: SqlGrantAdminWarn)<br />&#160;&#160;&#160;&#160;Warn on Detection of grant that contains 'WITH GRANT OPTION' (Short names: SqlGrantOptionWarn)<br />&#160;&#160;&#160;&#160;Warn when 'DROP COLUMN' detected (Short names: ChangeDropColumnWarn)<br />&#160;&#160;&#160;&#160;Warn when 'DROP TABLE' detected (Short names: ChangeDropTableWarn)<br />&#160;&#160;&#160;&#160;Warn when 'MODIFY &lt;column&gt;' detected (Short names: ModifyDataTypeWarn)<br />&#160;&#160;&#160;&#160;Warn when 'TRUNCATE TABLE' detected (Short names: ChangeTruncateTableWarn)<br />&#160;&#160;&#160;&#160;<br />Changelogs Checks Skipped Due to unsupported changeset type for this check:<br />&#160;&#160;&#160;&#160;Require primary key when creating table (Short names: PrimaryKeyOnCreateTable) skipped for:<br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;1:your.name,<br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;2:your.name,<br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;3:other.dev,<br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<br />Liquibase command 'checks run' was executed successfully.<br /><br />***********************************************************************<br />*<br />* Skipping action: 'liquibase updatesql because condition 'dev != dev' evaluated to false.<br />*<br />***********************************************************************</code></pre>
+                                                </div>
+                                            </div>
+                                            <p>
+                                                <h2>Expansion on Conditionals</h2>
+                                                <p>Additional conditionals are available in <span class="mc-variable General.Liquibase variable">Liquibase</span> v 4.26.0. These conditional features provide more flexibility that allows users to determine if a stage or action is executed within their Flow file. This permits users to author simplified flows that are easier to reuse and maintain when applied to multiple products across an organization. This makes flows scalable and applicable to your database as your company grows. This section covers how to enable AND, OR, NULL, STARTSWITH, ENDSWITH, and CONTAINS logic conditionals. Find descriptions and examples of these below.</p>
+                                                <h3>Rules for additional conditionals</h3>
+                                                <ul>
+                                                    <li>It is best practice to encompass entire conditionals by "quotes"</li>
+                                                    <p class="example" data-mc-autonum="&lt;b&gt;Example: &lt;/b&gt;"><span class="autonumber"><span><b>Example: </b></span></span>
+                                                        <br /><code>if: "${key} == 'production'"<br /><br />if: "thisIsAVar == 'This is a string'"<br /><br />if: "'thisString' == ${myVar}"</code>
+                                                    </p>
+                                                    <li>Strings, also referred to as non-variables, require quotations around them, otherwise <span class="mc-variable General.Liquibase variable">Liquibase</span> will assume they are variables or property names instead of strings.</li>
+                                                    <p class="example" data-mc-autonum="&lt;b&gt;Example: &lt;/b&gt;"><span class="autonumber"><span><b>Example: </b></span></span>
+                                                        <br /><b>Correct:</b>&#160;<code>$user == 'example'</code><br style="font-weight: bold;" /><b>Incorrect:</b> <code>$user == example</code></p>
+                                                    <li>Any conditional previously written is guaranteed to work, as long as it is not modified. If changes are needed you should rewrite the conditional and follow the quoting rule above.</li>
+                                                </ul>
+                                                <h3>Implementing additional conditionals</h3>
+                                                <h4>Conditional AND statements</h4>
+                                                <p>This section includes additional conditionals which allow logic operations such as AND and OR.</p>
+                                                <p><code>if: "${KEY} == ${VALUE} &amp;&amp; ${KEY2} != ${VALUE2}"</code>
+                                                </p>
+                                                <h4>Conditional OR statements</h4>
+                                                <p><code>if: "${KEY} == ${VALUE} || ${KEY2} == ${VALUE2}"</code>
+                                                </p>
+                                                <h4>Grouping in Flows<br /></h4>
+                                                <p>You may group conditionals and nest groups of conditionals within flows.</p><pre><code>if: "(a==true &amp;&amp; b==true) or c==false"</code></pre><pre><code>if: "((a==true &amp;&amp; b==true) or c==false) &amp;&amp; d=true"</code></pre>
+                                                <h4>Conditionals that check if variables exist</h4>
+                                                <p>flow files can check the state of a variable to see if it exists or not.</p><pre>if: "(key != `null`)"</pre><pre>if: "(${KEY2} == nil)"</pre><pre>if: "(myVar == empty)"</pre>
+                                                <p>You can express a null value in the following three ways:</p><pre>`null`</pre><pre>nil</pre><pre>empty</pre>
+                                                <h4>Conditionals that check if files exist</h4>
+                                                <p>The if exists conditional allows a user to check if a file exits at a certain location. </p>
+                                                <p>Rules for <code>if exists</code> conditionals:</p>
+                                                <p>
+                                                    <ul>
+                                                        <li>A file can exist in a local or remote location</li>
+                                                        <li>The path can be quoted or not</li>
+                                                        <li>The path can be passed wholly or in part as a property substitution</li>
+                                                        <li>The path can be marked as <code>true</code> or <code>false</code> relative to the current working directory.</li>
+                                                    </ul>
+                                                </p>
+                                                <p><code>exists</code> example:<br></br></p>
+                                                <ul>
+                                                    <li><code>if: exists("path/to/file")</code>
+                                                    </li>
+                                                    <li>
+                                                        <p><code>if: exists("./path/to/file")</code>
+                                                        </p>
+                                                    </li>
+                                                    <li>
+                                                        <p><code>if: exists("s3://mybucket/path/to/file")</code>
+                                                        </p>
+                                                        <ul>
+                                                            <li>
+                                                                <p>requires s3 credentials and s3 extension</p>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <p><code>if: exists("path/to/file", [true|false])</code>
+                                                        </p>
+                                                        <ul>
+                                                            <li>
+                                                                <p>This is relative to the current working directory. It is true by default.</p>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                                <h4>Conditional Substring Matching</h4>
+                                                <p>You can set if conditionals to determine actions based on if variables or strings start with, end with, or contain a specified string. These conditional's names are case insensitive, so you may specify <code>startswith</code>, <code>STARTSWITH</code>, <code>endswith</code>, <code>ENDSWITH</code>, etc in whichever case you prefer. It is important to keep in mind that the string that you want to match must be quoted and is case sensitive.</p>
+                                                <ul>
+                                                    <li><code>STARTSWITH</code> example:&#160;<pre>if: "STARTSWITH(${MYVAR}, "STRINGTITLE")"</pre><p>This conditional matches <code>STRINGTITLEONE</code> but does not match <code>TITLEONESTRING</code>.</p></li>
+                                                    <li>
+                                                        <p><code>ENDSWITH</code> example:</p><pre>if: "endswith(${MYVAR}, "STRINGTITLE")"</pre>
+                                                        <p>This conditional matches <code>FIRSTSTRINGTITLE</code>, but does not match<code> STRINGTITLEFIRST</code>.</p>
+                                                    </li>
+                                                    <li>
+                                                        <p><code>CONTAINS</code> example:</p><pre>if: "contains(${VAR}, "TITLE")"</pre>
+                                                        <p>This condition matches TITLE, STRINGTITLE, and STRINGTITLEONE.</p>
+                                                    </li>
+                                                </ul>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <!-- UserSnap Scripts -->
+                                    <!-- Feedback Button -->
+                                    <script>/* <![CDATA[ */ <!--type="text/javascript"-->
+				window.onUsersnapCXLoad = function(api) {
+				api.init();
+				}
+				var script = document.createElement('script');
+				script.defer = 1;
+				script.src = 'https://widget.usersnap.com/global/load/632b7a0e-ba7b-4613-ab8a-a34d8edf1097?onload=onUsersnapCXLoad';
+				document.getElementsByTagName('head')[0].appendChild(script);
+		/* ]]> */</script>
+                                    <!-- End Feedback Button -->
+                                    <!-- Ratings -->
+                                    <div id="widgetContainer" style="align: center;text-align: center;">
+                                    </div>
+                                    <script>/* <![CDATA[ */
+			window.onUsersnapCXLoad = function(api) {
+			// mountNode is an element in which the widget should be rendered
+			api.init({ mountNode: document.getElementById('widgetContainer') });
+			}
+			var script = document.createElement('script');
+			script.defer = 1;
+			script.src = 'https://widget.usersnap.com/embed/load/7df92c7d-5c25-4d1e-827a-75f186914119?onload=onUsersnapCXLoad';
+			document.getElementsByTagName('head')[0].appendChild(script);
+		/* ]]> */</script>
+                                    <!-- End Ratins -->
+                                    <!-- End UserSnap Scripts -->
+                                    <!-- Start Glide Footer -->
+                                    <footer class="glide">
+                                        <div class="footer-container">
+                                            <div class="footer-wrapper">
+                                                <div class="footer-left-widget">
+                                                    <div class="footer-form-widget">
+                                                        <div class="widget-inner">
+                                                            <div class="footer-logo"><a href="https://www.liquibase.com"><img src="../../z_resources/images/glide/logo-white.svg" alt="" /></a>
+                                                            </div>
+                                                            <div class="footer-socials"><a href="https://twitter.com/liquibase" class="f-twitter" target="_blank"></a><a href="https://github.com/liquibase/liquibase" class="f-github" target="_blank"></a><a href="https://www.reddit.com/r/liquibase/" class="f-reddit" target="_blank"></a><a href="https://www.linkedin.com/company/liquibase" class="f-linkedin" target="_blank"></a><a href="https://www.youtube.com/channel/UC5qMsRjObu685rTBq0PJX8w" class="f-youtube" target="_blank"></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="footer-widgets">
+                                                    <div class="footer-widget">
+                                                        <h4>Products</h4>
+                                                        <div class="menu-column-two-menu-container">
+                                                            <ul id="menu-column-two-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-15659"><a href="https://www.liquibase.com/pricing">Pricing</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-906"><a href="https://www.liquibase.com/pricing/pro">Liquibase Pro</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15600"><a target="_blank" rel="noopener" href="https://www.liquibase.org/download">Liquibase Open Source</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Solutions</h4>
+                                                        <div class="menu-column-three-menu-container">
+                                                            <ul id="menu-column-three-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-908"><a href="https://www.liquibase.com/ci-cd">CI/CD</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/compliance">Compliance</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/devsecops">DevSecOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/financial-services">Financial Services</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/gitops-database">GitOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/public-sector">Public Sector</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-907"><a href="https://www.liquibase.com/version-control">Version Control</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Resources</h4>
+                                                        <div class="menu-column-four-menu-container">
+                                                            <ul id="menu-column-four-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-916"><a href="https://www.liquibase.com/blog">Blog</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15471"><a href="https://www.liquibase.com/resources">Resource Library</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-resource_category menu-item-914"><a href="https://www.liquibase.com/resources/guides">Guides</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14975"><a href="../../index.html">Documentation</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-917"><a href="https://www.liquibase.com/support">Support</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom last-menu-item menu-item-15215"><a target="_blank" rel="noopener noreferrer" href="https://learn.liquibase.com/index">Training</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Company</h4>
+                                                        <div class="menu-column-five-menu-container">
+                                                            <ul id="menu-column-five-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-1176"><a href="https://www.liquibase.com/company">Company</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1177"><a href="https://www.liquibase.com/company/leadership">Leadership</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1070"><a href="https://www.liquibase.com/company/careers">Careers</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1071"><a href="https://www.liquibase.com/partners">Partners</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15024"><a href="https://www.liquibase.com/category/press-releases">News</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-1178"><a href="https://www.liquibase.com/contact">Contact</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                    <div class="footer-bottom">
+                                                        <div class="copyright">
+                                                            <p><span class="mc-variable General.copyright variable">© 2023 Liquibase Inc.  All Rights Reserved. 
+Liquibase is a registered trademark of Liquibase Inc.</span>
+                                                                <br /><span class="mc-variable General.PhoneNumber variable">(737) 402-7187</span>
+                                                            </p>
+                                                        </div>
+                                                        <div class="footer-menu">
+                                                            <div class="menu-footer-menu-container">
+                                                                <ul id="menu-footer-menu">
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-privacy-policy first-menu-item menu-item-902"><a href="https://www.liquibase.com/privacy-policy">Privacy Policy</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-901"><a href="https://www.liquibase.com/terms-of-use">Terms of Use</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-14933"><a href="https://www.liquibase.com/eula">EULA</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                </div>
+                                                <div class="clear">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </footer>
+                                    <!-- This script is necessary to relocate the footer so that it maintains 100% width -->
+                                    <!--       <script type="text/javascript">/*<![CDATA[*/$(document).ready(function(){ $("footer").appendTo("div.off-canvas-content.inner-wrap"); });/*]]>*/</script> -->
+                                    <!-- End Glide Footer -->
+                                </div>
+                            </div>
+                        </div>
+                    </div><a data-close="true"></a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

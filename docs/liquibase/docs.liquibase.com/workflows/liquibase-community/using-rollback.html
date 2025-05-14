@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" class="_Skins_oss_pro" data-mc-search-type="Stem" data-mc-help-system-file-name="Default.xml" data-mc-path-to-help-system="../../" data-mc-has-content-body="True" data-mc-toc-path="[%=System.LinkedHeader%]|[%=System.LinkedHeader%]" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic;Default" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-searchable="False">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="msapplication-config" content="../../Skins/Favicons/browserconfig.xml" />
+        <meta name="description" content="This page explains the rollback workflows in Liquibase." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../Skins/Favicons/favicon-16x16.png" /><title>Liquibase Rollback Workflow</title>
+        <!-- Google GA4 tag (gtag.js) -->
+        <!-- End Google GA4 tag -->
+        <!-- Google Tag Manager -->
+        <!-- End Google Tag Manager -->
+        <!-- Prism Highlighting -->
+        <!-- End Prism Highlighting -->
+        <!-- Tabs for code examples -->
+        <!--End tabs for code examples -->
+        <link href="../../Skins/Default/Stylesheets/Slideshow.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="https://docs.liquibase.com/Skins/Fluid/Stylesheets/MadCapSearch.Google.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Print.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/foundation.6.2.3.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/print.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link rel="stylesheet" href="../../z_resources/stylesheets/glidestyles.css" type="text/css" media="all" />
+        <link href="../../z_resources/stylesheets/styles.css" rel="stylesheet" type="text/css" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../Skins/Favicons/favicon-16x16.png" />
+        <link rel="canonical" href="using-rollback.html" />
+        <script src="../../resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../resources/Scripts/purify.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/require.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/require.config.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/foundation.6.2.3_custom.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/plugins.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/MadCapAll.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=G-GJFFQKWLLX">
+        </script>
+        <script>/* <![CDATA[ */
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());  gtag('config', 'G-GJFFQKWLLX');
+		/* ]]> */</script>
+        <script>/* <![CDATA[ */(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&amp;l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-NTCPFS9');/* ]]> */</script>
+        <script type="text/javascript" src="../../z_resources/scripts/prism.js"> </script>
+        <script type="application/javascript" src="../../z_resources/scripts/jquery-accessible-tabs-ktc.js"> </script>
+    </head>
+    <body>
+        <div class="foundation-wrap off-canvas-wrapper">
+            <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper="">
+                <aside class="off-canvas position-right" role="navigation" id="offCanvas" data-off-canvas="" data-position="right" data-mc-ignore="true">
+                    <ul class="off-canvas-accordion vertical menu off-canvas-list" data-accordion-menu="" data-mc-back-link="Back" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="True" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True">
+                    </ul>
+                </aside>
+                <div class="off-canvas-content inner-wrap" data-off-canvas-content="">
+                    <div data-sticky-container="" class="title-bar-container">
+                        <nav class="title-bar tab-bar sticky" role="banner" data-sticky="" data-options="marginTop:0" style="width:100%" data-sticky-on="only screen and (max-width: 1279px)" data-mc-ignore="true"><a class="skip-to-content fluid-skip showOnFocus" href="#">Skip To Main Content</a>
+                            <div class="middle title-bar-section outer-row clearfix">
+                                <div class="menu-icon-container relative clearfix">
+                                    <div class="central-account-wrapper">
+                                        <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                            <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                                <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="menu-icon" aria-label="Show Navigation Panel" data-toggle="offCanvas"><span></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="title-bar-layout outer-row">
+                                <div class="logo-wrapper"><a class="logo" href="../../home.html" alt="Logo"></a>
+                                </div>
+                                <div class="navigation-wrapper nocontent">
+                                    <ul class="navigation clearfix" role="navigation" data-mc-css-tree-node-has-children="has-children" data-mc-css-sub-menu="sub-menu" data-mc-expand-event="mouseenter" data-mc-top-nav-menu="True" data-mc-max-depth="5" data-mc-include-icon="False" data-mc-include-indicator="False" data-mc-include-children="True" data-mc-include-siblings="True" data-mc-include-parent="True" data-mc-toc="True">
+                                        <li class="placeholder" style="visibility:hidden"><a>placeholder</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="central-account-wrapper">
+                                    <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                        <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                            <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="nav-search-wrapper">
+                                    <div class="nav-search row">
+                                        <form>
+                                            <div id="EaZl7IMMdkOxEcTqrymc2g" class="search-bar search-bar-container needs-pie">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="main-section">
+                        <div class="row outer-row sidenav-layout">
+                            <nav class="sidenav-wrapper">
+                                <div class="sidenav-container">
+                                    <ul class="off-canvas-accordion vertical menu sidenav" data-accordion-menu="" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu accordion-menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="False" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True" data-mc-side-nav-menu="True">
+                                    </ul>
+                                </div>
+                            </nav>
+                            <div class="body-container">
+                                <div data-mc-content-body="True">
+                                    <!-- Google Tag Manager (noscript) -->
+                                    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTCPFS9" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+                                    </noscript>
+                                    <!-- End Google Tag Manager (noscript) -->
+                                    <div class="side-content">
+                                        <form>
+                                            <div id="p8xKwQ0MTUaKyPcb7f9JaA" class="search-bar search-bar-container needs-pie _Skins_Topics_Searchbar mc-component">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="nocontent">
+                                        <div class="MCBreadcrumbsBox_0 breadcrumbs" role="navigation" aria-label="Breadcrumbs" data-mc-breadcrumbs-divider=" &gt; " data-mc-breadcrumbs-count="3" data-mc-toc="True"><span class="MCBreadcrumbsPrefix">You are here: </span>
+                                        </div>
+                                    </div>
+                                    <!--<div>  class="topic-layout"-->
+                                    <!--AV 2023-09-13: removing duplicate nav after switch to sidenav
+		<div style="float:left; margin-right: 20px; margin-left:20px; margin-bottom: 15px;"> <MadCap:menuProxy data-mc-skin="/Project/Skins/Topics-Menu.flskn" style="mc-context-sensitive: True;mc-include-parent: True;mc-include-siblings: True;mc-include-children: True;" mc-linked-toc="/Project/TOCs/TOC.fltoc" /></div>-->
+                                    <div class="liquibase-docs-body">
+                                        <div role="main" id="mc-main-content">
+                                            <h1><span class="mc-variable General.Liquibase variable">Liquibase</span> Rollback Workflow</h1>
+                                            <p><span class="mc-variable General.Liquibase variable">Liquibase</span> provides commands to allow you to undo changes you have made to your database, either automatically or with a custom rollback command. The intention of a rollback script is to return the database to a previous specified point in time.</p>
+                                            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>Rollback support is available in command line, Ant, and Maven.</p>
+                                            <h2>Rollback commands</h2>
+                                            <p>There are three <b>rollback modes</b>:</p>
+                                            <table style="width: auto;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Command</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><a href="../../commands/rollback/rollback-by-tag.html" class="MCXref xref">rollback</a>
+                                                        </td>
+                                                        <td>This command will revert all changes made to the database after the specified tag.
+
+It is used when you want to undo a series of changes related to a specific tag such as a numbered release.
+</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="../../commands/rollback/rollback-to-date.html" class="MCXref xref">rollback-to-date</a>
+                                                        </td>
+                                                        <td>
+                                                            <p>This command is used to revert all changes made to the database from the current date to the date and time you specify. 
+
+There are several ways to revert your changes with the <code>rollback-to-date</code> command.</p>
+                                                            <p><b>There are three options:</b>
+You can use <code>YYYY-MM-DD</code>, <code>HH:MM:SS</code>, or <code>YYYY-MM-DD'T'HH:MM:SS</code> formats to specify the rollback date, time, or date + time. 
+You can also specify date or time only.</p>
+                                                            <p><u style="font-weight: bold;">Examples</u>:
+<code>rollback-to-date YYYY-MM-DD</code>, <code>rollback-to-date HH:MM:SS</code>, or <code>rollback-to-date YYYY-MM-DD’T’HH:MM:SS</code></p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="../../commands/rollback/rollback-count.html" class="MCXref xref">rollback-count</a>
+                                                        </td>
+                                                        <td>This command is used to roll back a specified number of <span class="mc-variable General.changeset variable">changeset</span>s, where <code>&lt;value&gt;</code> is the number of <span class="mc-variable General.changeset variable">changeset</span>s you want to revert sequentially on your database.
+
+The command will rollback the changes sequentially starting with the most recent changes.
+</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h2><span class="mc-variable General.LBPro variable">Liquibase Pro</span> rollback commands</h2>
+                                            <p><span class="mc-variable General.LBPro variable">Liquibase Pro</span> contains additional built in commands that allow you to perform <b>targeted rollback tasks</b>.</p>
+                                            <table style="width: auto;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Command</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><a href="../../commands/rollback/rollback-one-changeset.html" class="MCXref xref">rollback-one-changeset</a><![CDATA[                    ]]></td>
+                                                        <td>This command will revert <b>one</b> non-sequential <span class="mc-variable General.changeset variable">changeset</span> made during a previous change to the database without affecting any other changes made to your database.</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="../../commands/rollback/rollback-one-update.html" class="MCXref xref">rollback-one-update</a><![CDATA[                    ]]></td>
+                                                        <td>This command will revert <b>all</b> <span class="mc-variable General.changeset variable">changeset</span>s related to a specific <code>deploymentId</code> that was made during a previous database change.
+The command will undo a series of changes made to the database during a specific deployment and revert those <span class="mc-variable General.changeset variable">changeset</span>s to their previous state without affecting any other changes made to the database.
+</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h3>Rollback on error</h3>
+                                            <p>In <span class="mc-variable General.LBPro variable">Liquibase Pro</span> 4.18.0 and later, you can use the command parameter <code>--rollback-on-error</code> with the following commands:&#160;<code><a href="../../commands/update/update.html" class="MCXref xref">update</a></code>, <code><a href="../../commands/update/update-count.html" class="MCXref xref">update-count</a></code>, <code><a href="../../commands/update/update-one-changeset.html" class="MCXref xref">update-one-changeset</a></code>, <code><a href="../../commands/update/update-testing-rollback.html" class="MCXref xref">update-testing-rollback</a></code>, and <code><a href="../../commands/update/update-to-tag.html" class="MCXref xref">update-to-tag</a></code>. If you set <code>--rollback-on-error</code> to <code>true</code>, then <span class="mc-variable General.Liquibase variable">Liquibase</span> automatically rolls back any <span class="mc-variable General.changeset variable">changeset</span>s that cause errors when you try to deploy them. See also:&#160;<code><a href="../../concepts/changelogs/attributes/fail-on-error.html" class="MCXref xref">failOnError</a></code>.</p>
+                                            <h2>Validating rollbacks</h2>
+                                            <p>Rollback scripts are one of the most difficult aspects of application development to create and maintain, especially when data is modified.</p>
+                                            <ul>
+                                                <li>If the database change is simple such as adding a new index, or an update to a stored procedure, then the rollback is straight forward.</li>
+                                                <li>Rolling back complex changes that involve structural changes and data migrations are much more difficult.</li>
+                                            </ul>
+                                            <p>So before performing a rollback, it is important to validate the changes <span class="mc-variable General.Liquibase variable">Liquibase</span> will run prior to making the change to the database. These <b>two</b> commands help in validating and testing rollbacks.</p>
+                                            <table style="width: auto;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Command</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><a href="../../commands/update/update-testing-rollback.html" class="MCXref xref">update-testing-rollback</a>
+                                                        </td>
+                                                        <td>This command is used to test rollback functionality when deploying <span class="mc-variable General.changeset variable">changeset</span>s in your <span class="mc-variable General.changelog variable">changelog</span> sequentially. 
+It tests the rollback by deploying all pending <span class="mc-variable General.changeset variable">changeset</span>s, executing a sequential rollback in reverse order for the <span class="mc-variable General.changeset variable">changeset</span>s that were deployed, then running the update again.
+</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="../../commands/rollback/future-rollback-sql.html" class="MCXref xref">future-rollback-sql</a>
+                                                        </td>
+                                                        <td>This command produces the raw SQL <span class="mc-variable General.Liquibase variable">Liquibase</span> would use to revert changes associated with undeployed <span class="mc-variable General.changeset variable">changeset</span>s.
+Used when auditors need to verify that all database changes have a rollback.
+</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <p>Rollbacks are also validated with the help of <b>SQL helper commands</b>:</p>
+                                            <table style="width: auto;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Command</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><a href="../../commands/rollback/rollback-sql.html" class="MCXref xref">rollback-sql</a>
+                                                        </td>
+                                                        <td>This helper command is used in conjunction with the <code>rollback&lt;tag&gt;</code> command to inspect the SQL <span class="mc-variable General.Liquibase variable">Liquibase</span> will use to revert changes associated with the tag you specify.</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="../../commands/rollback/future-rollback-from-tag-sql.html" class="MCXref xref">future-rollback-from-tag-sql</a>
+                                                        </td>
+                                                        <td>This helper command produces the raw SQL <span class="mc-variable General.Liquibase variable">Liquibase</span> would need to roll back all undeployed changes made up to the specified tag.</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="../../commands/rollback/rollback-to-date-sql.html" class="MCXref xref">rollback-to-date-sql</a>
+                                                        </td>
+                                                        <td>This helper command is used in conjunction with the <code>rollback-to-date</code> command to inspect the SQL that <span class="mc-variable General.Liquibase variable">Liquibase</span> will run when using the <code>rollback-to-date</code> command.</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="../../commands/update/update-count-sql.html" class="MCXref xref">update-count-sql</a>
+                                                        </td>
+                                                        <td>This helper command is used in conjunction with the <code>rollback-count &lt;value&gt;</code> command to inspect the SQL <span class="mc-variable General.Liquibase variable">Liquibase</span> will use to rollback changes based on the value specified.</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <table style="width: auto;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Pro Command</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><a href="../../commands/rollback/rollback-one-changeset-sql.html" class="MCXref xref">rollback-one-changeset-sql</a>
+                                                        </td>
+                                                        <td>This helper command is used in conjunction with the <code>rollback-one-changeset</code> command to inspect the SQL <span class="mc-variable General.Liquibase variable">Liquibase</span> will use to rollback changes based on the specified <span class="mc-variable General.changeset variable">changeset</span>.</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="../../commands/rollback/rollback-one-update-sql.html" class="MCXref xref">rollback-one-update-sql</a>
+                                                        </td>
+                                                        <td>This helper command is used in conjunction with the <code>rollback-one-update</code> command to inspect the SQL <span class="mc-variable General.Liquibase variable">Liquibase</span> will run to revert all <span class="mc-variable General.changeset variable">changeset</span>s associated with the <code>deploymentId</code> specified in the <code>rollback-one-update</code> command.</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h2>Rollback test cycle</h2>
+                                            <p>Rollback scripts need to be tested just like application code so we know they work as designed.</p>
+                                            <p>You will need to carefully test your rollback scripts. This includes determining who will test the rollback script, how and when they will be tested.</p>
+                                            <p><b>A complete test cycle should include</b>:</p>
+                                            <ol>
+                                                <li value="1">Deploying all changes to the database and validating that they were deployed.</li>
+                                                <li value="2">Rolling back all changes to the database, validating that all changes were reversed, and verification that the database was brought back to the previous state.</li>
+                                                <li value="3">Redeploying all changes to the database. This is required to verify that the rollback did not miss any changes that could impact a future deployment.</li>
+                                            </ol>
+                                            <h2>Creating rollback statements</h2>
+                                            <p>Many <span class="mc-variable General.changetypes variable">Change Type</span>s such as <b>create table</b>, <b>rename column</b>, and <b>add column</b> can automatically create rollback statements. If your <span class="mc-variable General.changelog variable">changelog</span> contains only statements that fit into this category, your rollback commands will be generated automatically.</p>
+                                            <p>Other <span class="mc-variable General.changetypes variable">Change Type</span>s such as <b>drop table</b> and <b>insert data</b> have no corresponding rollback commands that can be automatically generated. <span class="mc-variable General.Liquibase variable">Liquibase</span> also cannot automatically generate rollback statements for formatted SQL&#160;<span class="mc-variable General.changeset variable">changeset</span>s. In these cases, and cases where you want to override the default generated rollback commands, you can specify the rollback commands via the tag within the <span class="mc-variable General.changeset variable">changeset</span> tag.</p>
+                                            <p>To determine if <span class="mc-variable General.Liquibase variable">Liquibase</span> can automatically roll back a specific <span class="mc-variable General.changetypes variable">Change Type</span> and see the examples of the rollback tag, see <a href="automatic-custom-rollbacks.html" class="MCXref xref">Automatic and Custom Rollbacks</a>. You can also check the <a href="../../change-types/home.html" class="MCXref xref">Change Types</a> documentation. Go to the <b>Database Support</b> section to determine whether auto rollback is available for your database platform.</p>
+                                            <h3>Formatted SQL</h3>
+                                            <p><span class="mc-variable General.Liquibase variable">Liquibase</span> does not support an automatic rollback for formatted SQL <span class="mc-variable General.changeset variable">changeset</span>s. Also, some <span class="mc-variable General.changetypes variable">Change Type</span>s have no corresponding <code>rollback</code> commands that can be automatically generated by <span class="mc-variable General.Liquibase variable">Liquibase</span>. In these cases, you should add custom rollback statements to the <span class="mc-variable General.changeset variable">changeset</span>s if you want to use <code>rollback</code> commands. For example, in formatted SQL:</p><pre xml:space="preserve"><code class="language-sql">-- changeset liquibaseuser:1
+create table testTable ( id int primary key, name varchar(255) );
+-- rollback drop table testTable;
+				
+-- changeset liquibaseuser:2
+insert into testTable values ('1','The First', 'Country')
+insert into testTable values ('2','The Second', 'Country2')
+-- rollback delete from testTable where id='1'
+-- rollback delete from testTable where id='2'</code></pre>
+                                            <p>In <span class="mc-variable General.Liquibase variable">Liquibase</span> 4.26.0 and later, you can also specify rollback SQL&#160;for a <span class="mc-variable General.changeset variable">changeset</span> in a separate file using the <code>-- rollbackSqlFile</code> statement. For more information, see <a href="../../concepts/changelogs/sql-format.html" class="MCXref xref">Example Changelogs: SQL Format</a>.</p>
+                                            <h3>Override default rollback commands</h3>
+                                            <p>The <code>&lt;rollback&gt;</code> tag describes how to roll back a change using SQL statements, <span class="mc-variable General.changetypes variable">Change Type</span>s, or a reference to a previous <span class="mc-variable General.changeset variable">changeset</span>. You can use any <span class="mc-variable General.changetypes variable">Change Type</span> in the <code>&lt;rollback&gt;</code> element, such as <a href="../../change-types/drop-table.html" class="MCXref xref">dropTable</a>, <a href="../../change-types/sql.html" class="MCXref xref">sql</a>, and <a href="../../change-types/sql-file.html" class="MCXref xref">sqlFile</a>:</p>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />XML</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre><code class="language-xml">&lt;changeSet id="1" author="liquibaseuser"&gt;
+    &lt;createTable tableName="testTable"&gt;
+        &lt;column name="id" type="int"/&gt;
+    &lt;/createTable&gt;
+    &lt;rollback&gt;
+        &lt;dropTable tableName="testTable"/&gt;
+    &lt;/rollback&gt;
+&lt;/changeSet&gt;</code></pre>
+                                                    <p>Alternatively, you can have raw SQL in the content part of the <code>&lt;rollback&gt;</code> element.  For example:</p><pre><code class="language-xml">&lt;changeSet id="1" author="liquibaseuser"&gt;
+    &lt;createTable tableName="testTable"&gt;
+        &lt;column name="id" type="int"/&gt;
+    &lt;/createTable&gt;
+    &lt;rollback&gt;
+        drop table testTable
+    &lt;/rollback&gt;
+&lt;/changeSet&gt;</code></pre>
+                                                    <p><span class="mc-variable General.Liquibase variable">Liquibase</span> treats the raw SQL within <code>&lt;rollback&gt;</code> the same as in the <code>&lt;sql&gt;</code>&#160;<span class="mc-variable General.changetypes variable">Change Type</span>, with <code>stripComments</code> set to <code>true</code>, <code>splitStatements</code> set to <code>true</code>, and <code>endDelimiter</code> set to <code>;</code>. For more details, see the XML example from the <a href="../../change-types/sql.html" class="MCXref xref">sql</a> documentation.</p>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />YAML</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-yaml">- changeSet:
+    id: 1
+    author: liquibaseuser
+    changes:
+      - createTable:
+          tableName: testTable
+          columns:
+            - column:
+                name: id
+    rollback:
+      - dropTable:
+          tableName: testTable</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />JSON</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-json">{
+  "changeSet": {
+    "id": 1,
+    "author": "liquibaseuser",
+    "changes": [
+      {
+        "createTable": {
+          "tableName": "testTable"
+        }
+      }
+    ],
+    "rollback": [
+      {
+        "dropTable": {
+          "tableName": "testTable"
+        }
+      }
+    ]
+  }
+}</code></pre>
+                                                </div>
+                                            </div>
+                                            <h3>Multiple rollbacks</h3>
+                                            <p>You can also specify multiple <span class="mc-variable General.changetypes variable">Change Type</span>s within a single <code>&lt;rollback&gt;</code>&#160;statement or across multiple <code>&lt;rollback&gt;</code> statements:</p>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />XML</a></span>
+                                                <div class="MCDropDownBody dropDownBody">
+                                                    <p><span class="mc-variable General.changetypes variable">Change Type</span> syntax:</p><pre xml:space="preserve"><code class="language-xml">&lt;changeSet id="multiRollbackTest" author="liquibaseuser"&gt;
+    &lt;createTable tableName="multiRollback1"&gt;
+        &lt;column name="id" type="int"/&gt;
+    &lt;/createTable&gt;
+    &lt;createTable tableName="multiRollback2"&gt;
+        &lt;column name="id" type="int"/&gt;
+    &lt;/createTable&gt;
+    &lt;createTable tableName="multiRollback3"&gt;
+        &lt;column name="id" type="int"/&gt;
+    &lt;/createTable&gt;
+    &lt;rollback&gt;
+        &lt;dropTable tableName="multiRollback1"/&gt;
+        &lt;dropTable tableName="multiRollback2"/&gt;
+    &lt;/rollback&gt;
+    &lt;rollback&gt;
+      &lt;dropTable tableName="multiRollback3"/&gt;
+    &lt;/rollback&gt;
+&lt;/changeSet&gt;</code></pre>
+                                                    <p>Raw SQL:</p><pre xml:space="preserve"><code class="language-xml">&lt;changeSet id="multiRollbackTest" author="liquibaseuser"&gt;
+    &lt;createTable tableName="multiRollback1"&gt;
+        &lt;column name="id" type="int"/&gt;
+    &lt;/createTable&gt;
+    &lt;createTable tableName="multiRollback2"&gt;
+        &lt;column name="id" type="int"/&gt;
+    &lt;/createTable&gt;
+    &lt;createTable tableName="multiRollback3"&gt;
+        &lt;column name="id" type="int"/&gt;
+    &lt;/createTable&gt;
+    &lt;rollback&gt;
+        drop table multiRollback1;
+        drop table multiRollback2;
+    &lt;/rollback&gt;
+    &lt;rollback&gt;drop table multiRollback3&lt;/rollback&gt;
+&lt;/changeSet&gt;</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />YAML</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-yaml">- changeSet:
+    id: multiRollbackTest
+    author: liquibaseuser
+    changes:
+      - createTable:
+          tableName: multiRollback1
+          columns:
+            - column:
+                name: id
+      - createTable:
+          tableName: multiRollback2
+          columns:
+            - column:
+                name: id
+      - createTable:
+          tableName: multiRollback3
+          columns:
+            - column:
+                name: id
+    rollback:
+      - dropTable:
+          tableName: multiRollback1
+      - dropTable:
+          tableName: multiRollback2
+    rollback:
+      - dropTable:
+          tableName: multiRollback3</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />JSON</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-json">{
+  "changeSet": {
+    "id": multiRollbackTest,
+    "author": "liquibaseuser",
+    "changes": [
+      {
+        "createTable": {
+          "tableName": "multiRollback1",
+          "columns": [
+            {
+              "column": {
+                "name": "id"
+              }
+            }
+          ]
+        },
+        "createTable": {
+          "tableName": "multiRollback2"
+          "columns": [
+            {
+              "column": {
+                "name": "id"
+              }
+            }
+          ]
+        },
+        "createTable": {
+          "tableName": "multiRollback3"
+          "columns": [
+            {
+              "column": {
+                "name": "id"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "rollback": [
+      {
+        "dropTable": {
+          "tableName": "multiRollback1"
+        },
+        "dropTable": {
+          "tableName": "multiRollback2"
+        }
+      }
+    ],
+    "rollback": [
+      {
+        "dropTable": {
+          "tableName": "multiRollback3"
+        }
+      }
+    ],
+  }
+}</code></pre>
+                                                </div>
+                                            </div>
+                                            <h3>Directly reference <span class="mc-variable General.changeset variable">changeset</span></h3>
+                                            <p>The following example shows how you can use a <code>&lt;rollback&gt;</code> tag to reference the <span class="mc-variable General.changeset variable">changeset</span> that originally created a statement. This example uses <span class="mc-variable General.changeset variable">changeset</span> <code>2</code> to implement rollback logic  against <span class="mc-variable General.changeset variable">changeset</span> <code>1</code>:</p>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />SQL</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre><code class="language-sql">-- changeset liquibaseuser:1
+create table testTable ( id int primary key, name varchar(255) );
+
+-- changeset liquibaseuser:2
+-- rollback drop table testTable;
+-- rollback changesetId:1 changesetAuthor:liquibaseuser changesetPath:optional/path/to/myChangeLog.sql</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />XML</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre><code class="language-xml">&lt;changeSet id="1" author="liquibaseuser"&gt;
+    &lt;createTable tableName="testTable"/&gt;
+        &lt;column name="id" type="varchar(255)"/&gt;
+    &lt;/createTable&gt;
+&lt;/changeSet&gt;
+
+&lt;changeSet id="2" author="liquibaseuser"&gt;
+    &lt;dropTable tableName="testTable"/&gt;
+    &lt;rollback changesetId="1" changesetAuthor="liquibaseuser" changesetPath="optional/path/to/myChangeLog.xml"/&gt;
+&lt;/changeSet&gt;</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />YAML</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-yaml">- changeSet:
+    id: 1
+    author: liquibaseuser
+    changes:
+      - createTable:
+          tableName: testTable
+          columns:
+            - column:
+                name: id
+- changeSet:
+    id: 2
+    author: liquibaseuser
+    rollback:
+      - dropTable:
+          tableName: testTable
+      changesetId: 1
+      changesetAuthor: liquibaseuser
+      changesetpath: optional/path/to/myChangeLog.yaml</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />JSON</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-json">{
+  "changeSet": {
+    "id": 1,
+    "author": "liquibaseuser",
+    "changes": [
+      {
+        "createTable": {
+          "tableName": "testTable",
+          "columns": [
+            {
+              "column": {
+                "name": "id",
+                "type": "varchar(255)"
+              }
+            }
+          ]
+        }
+      }
+    ]
+{
+  "changeSet": {
+    "id": 2,
+    "author": "liquibaseuser",
+    "rollback": [
+      {
+        "dropTable": {
+          "tableName": "testTable"
+        }
+      },
+      "changesetId": "1",
+      "changesetAuthor": "liquibaseuser",
+      "changesetPath": "optional/path/to/myChangeLog.json"
+    ]
+  }
+}</code></pre>
+                                                </div>
+                                            </div>
+                                            <h3>Empty rollback statements</h3>
+                                            <p>If you do not want to revert a change in a rollback mode, use either the keyword <code>empty</code> or the keyword <code>not required</code> inside the <code>rollback</code> tag. In XML, YAML, and JSON <span class="mc-variable General.changelog variable">changelog</span>s, you can also use an empty string inside the <code>rollback</code> tag.</p>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />SQL</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-sql">-- changeset liquibaseuser:1
+create table testTable ( id int primary key, name varchar(255) );
+-- rollback empty</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />XML</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-xml">&lt;changeSet id="3" author="liquibaseuser"&gt;
+    &lt;createTable tableName="testTable"&gt;
+        &lt;column name="id" type="int"/&gt;
+    &lt;/createTable&gt;
+    &lt;rollback&gt;empty&lt;/rollback&gt;
+&lt;/changeSet&gt;</code></pre>
+                                                    <p>You can also use an empty string (<code>&lt;rollback&gt;&lt;/rollback&gt;</code>) or  a self-closing-tag (<code>&lt;rollback/&gt;</code>).</p>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />YAML</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-yaml">- changeSet:
+    id: 1
+    author: liquibase
+    changes:
+      - createTable:
+          tableName: testTable
+          columns:
+            - column:
+                name: id
+                type: int
+    rollback: empty</code></pre>
+                                                    <p>You can also use an empty string (<code>rollback: ""</code>).</p>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />JSON</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-json">{
+  "changeSet": {
+    "id": 1,
+    "author": "example",
+    "changes": [
+      {
+        "createTable": {
+          "tableName": "testTable",
+          "columns": [
+            {
+              "column": {
+                "name": "id",
+                "type": "int"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "rollback": "empty"
+  }
+}</code></pre>
+                                                    <p>You can also use an empty string (<code>"rollback": ""</code>).</p>
+                                                </div>
+                                            </div>
+                                            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>The <code><a href="../../change-types/empty.html" class="MCXref xref">empty</a></code> and <code><a href="../../change-types/output.html" class="MCXref xref">output</a></code>&#160;<span class="mc-variable General.changetypes variable">Change Type</span>s support automatic rollbacks.</p>
+                                        </div>
+                                    </div>
+                                    <!-- UserSnap Scripts -->
+                                    <!-- Feedback Button -->
+                                    <script>/* <![CDATA[ */ <!--type="text/javascript"-->
+				window.onUsersnapCXLoad = function(api) {
+				api.init();
+				}
+				var script = document.createElement('script');
+				script.defer = 1;
+				script.src = 'https://widget.usersnap.com/global/load/632b7a0e-ba7b-4613-ab8a-a34d8edf1097?onload=onUsersnapCXLoad';
+				document.getElementsByTagName('head')[0].appendChild(script);
+		/* ]]> */</script>
+                                    <!-- End Feedback Button -->
+                                    <!-- Ratings -->
+                                    <div id="widgetContainer" style="align: center;text-align: center;">
+                                    </div>
+                                    <script>/* <![CDATA[ */
+			window.onUsersnapCXLoad = function(api) {
+			// mountNode is an element in which the widget should be rendered
+			api.init({ mountNode: document.getElementById('widgetContainer') });
+			}
+			var script = document.createElement('script');
+			script.defer = 1;
+			script.src = 'https://widget.usersnap.com/embed/load/7df92c7d-5c25-4d1e-827a-75f186914119?onload=onUsersnapCXLoad';
+			document.getElementsByTagName('head')[0].appendChild(script);
+		/* ]]> */</script>
+                                    <!-- End Ratins -->
+                                    <!-- End UserSnap Scripts -->
+                                    <!-- Start Glide Footer -->
+                                    <footer class="glide">
+                                        <div class="footer-container">
+                                            <div class="footer-wrapper">
+                                                <div class="footer-left-widget">
+                                                    <div class="footer-form-widget">
+                                                        <div class="widget-inner">
+                                                            <div class="footer-logo"><a href="https://www.liquibase.com"><img src="../../z_resources/images/glide/logo-white.svg" alt="" /></a>
+                                                            </div>
+                                                            <div class="footer-socials"><a href="https://twitter.com/liquibase" class="f-twitter" target="_blank"></a><a href="https://github.com/liquibase/liquibase" class="f-github" target="_blank"></a><a href="https://www.reddit.com/r/liquibase/" class="f-reddit" target="_blank"></a><a href="https://www.linkedin.com/company/liquibase" class="f-linkedin" target="_blank"></a><a href="https://www.youtube.com/channel/UC5qMsRjObu685rTBq0PJX8w" class="f-youtube" target="_blank"></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="footer-widgets">
+                                                    <div class="footer-widget">
+                                                        <h4>Products</h4>
+                                                        <div class="menu-column-two-menu-container">
+                                                            <ul id="menu-column-two-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-15659"><a href="https://www.liquibase.com/pricing">Pricing</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-906"><a href="https://www.liquibase.com/pricing/pro">Liquibase Pro</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15600"><a target="_blank" rel="noopener" href="https://www.liquibase.org/download">Liquibase Open Source</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Solutions</h4>
+                                                        <div class="menu-column-three-menu-container">
+                                                            <ul id="menu-column-three-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-908"><a href="https://www.liquibase.com/ci-cd">CI/CD</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/compliance">Compliance</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/devsecops">DevSecOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/financial-services">Financial Services</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/gitops-database">GitOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/public-sector">Public Sector</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-907"><a href="https://www.liquibase.com/version-control">Version Control</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Resources</h4>
+                                                        <div class="menu-column-four-menu-container">
+                                                            <ul id="menu-column-four-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-916"><a href="https://www.liquibase.com/blog">Blog</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15471"><a href="https://www.liquibase.com/resources">Resource Library</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-resource_category menu-item-914"><a href="https://www.liquibase.com/resources/guides">Guides</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14975"><a href="../../index.html">Documentation</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-917"><a href="https://www.liquibase.com/support">Support</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom last-menu-item menu-item-15215"><a target="_blank" rel="noopener noreferrer" href="https://learn.liquibase.com/index">Training</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Company</h4>
+                                                        <div class="menu-column-five-menu-container">
+                                                            <ul id="menu-column-five-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-1176"><a href="https://www.liquibase.com/company">Company</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1177"><a href="https://www.liquibase.com/company/leadership">Leadership</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1070"><a href="https://www.liquibase.com/company/careers">Careers</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1071"><a href="https://www.liquibase.com/partners">Partners</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15024"><a href="https://www.liquibase.com/category/press-releases">News</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-1178"><a href="https://www.liquibase.com/contact">Contact</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                    <div class="footer-bottom">
+                                                        <div class="copyright">
+                                                            <p><span class="mc-variable General.copyright variable">© 2023 Liquibase Inc.  All Rights Reserved. 
+Liquibase is a registered trademark of Liquibase Inc.</span>
+                                                                <br /><span class="mc-variable General.PhoneNumber variable">(737) 402-7187</span>
+                                                            </p>
+                                                        </div>
+                                                        <div class="footer-menu">
+                                                            <div class="menu-footer-menu-container">
+                                                                <ul id="menu-footer-menu">
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-privacy-policy first-menu-item menu-item-902"><a href="https://www.liquibase.com/privacy-policy">Privacy Policy</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-901"><a href="https://www.liquibase.com/terms-of-use">Terms of Use</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-14933"><a href="https://www.liquibase.com/eula">EULA</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                </div>
+                                                <div class="clear">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </footer>
+                                    <!-- This script is necessary to relocate the footer so that it maintains 100% width -->
+                                    <!--       <script type="text/javascript">/*<![CDATA[*/$(document).ready(function(){ $("footer").appendTo("div.off-canvas-content.inner-wrap"); });/*]]>*/</script> -->
+                                    <!-- End Glide Footer -->
+                                </div>
+                            </div>
+                        </div>
+                    </div><a data-close="true"></a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

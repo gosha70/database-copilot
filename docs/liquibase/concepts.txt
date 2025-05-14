@@ -1,0 +1,67 @@
+Concepts
+Skip To Main Content
+Account
+Settings
+Logout
+placeholder
+Account
+Settings
+Logout
+You are here:
+Concepts
+Performing database schema migrations is an essential task for nearly every software project. To understand how Liquibase works, familiarize yourself with the following concepts:
+Changelogs
+Changeset
+Changeset Checksums
+Tracking Tables
+Database Connections
+Best Practices
+Liquibase Data Type Handling
+Liquibase Security
+FAQ
+Related links
+Change Types
+Liquibase Commands
+Liquibase Database Tutorials
+Workflows
+Editions & Features
+Editions & Features
+Liquibase Open Source
+Liquibase Pro
+Solutions
+CI/CD
+Compliance
+DevSecOps
+GitOps
+Version Control
+Financial Services
+Resources
+Blog
+Best Practice Guides
+Resource Library
+Documentation
+University
+Community
+Meetup/Events
+Support
+Community
+Contributors
+Contribute Code
+Share Expertise
+Advocate
+Support
+Liquibase Legends
+Liquibase Badges
+Contact
+Company
+Company
+Careers
+Leadership
+Contact
+Â© 2025 Liquibase Inc.
+All Rights Reserved.
+Liquibase is a registered trademark of Liquibase Inc.
+(737) 402-7187
+Privacy Policy
+Terms of Use
+EULA

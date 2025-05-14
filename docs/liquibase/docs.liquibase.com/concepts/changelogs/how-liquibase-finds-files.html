@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" class="_Skins_oss_pro" data-mc-search-type="Stem" data-mc-help-system-file-name="Default.xml" data-mc-path-to-help-system="../../" data-mc-has-content-body="True" data-mc-toc-path="[%=System.LinkedHeader%]|[%=System.LinkedHeader%]" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic;Default" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-searchable="False">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="msapplication-config" content="../../Skins/Favicons/browserconfig.xml" />
+        <meta name="description" content="Reference information on how Liquibase finds files." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../Skins/Favicons/favicon-16x16.png" /><title>How Liquibase Finds Files: Liquibase Search Path</title>
+        <!-- Google GA4 tag (gtag.js) -->
+        <!-- End Google GA4 tag -->
+        <!-- Google Tag Manager -->
+        <!-- End Google Tag Manager -->
+        <!-- Prism Highlighting -->
+        <!-- End Prism Highlighting -->
+        <!-- Tabs for code examples -->
+        <!--End tabs for code examples -->
+        <link href="../../Skins/Default/Stylesheets/Slideshow.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="https://docs.liquibase.com/Skins/Fluid/Stylesheets/MadCapSearch.Google.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Print.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/foundation.6.2.3.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/print.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link rel="stylesheet" href="../../z_resources/stylesheets/glidestyles.css" type="text/css" media="all" />
+        <link href="../../z_resources/stylesheets/styles.css" rel="stylesheet" type="text/css" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../Skins/Favicons/favicon-16x16.png" />
+        <link rel="canonical" href="how-liquibase-finds-files.html" />
+        <script src="../../resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../resources/Scripts/purify.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/require.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/require.config.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/foundation.6.2.3_custom.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/plugins.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/MadCapAll.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=G-GJFFQKWLLX">
+        </script>
+        <script>/* <![CDATA[ */
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());  gtag('config', 'G-GJFFQKWLLX');
+		/* ]]> */</script>
+        <script>/* <![CDATA[ */(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&amp;l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-NTCPFS9');/* ]]> */</script>
+        <script type="text/javascript" src="../../z_resources/scripts/prism.js"> </script>
+        <script type="application/javascript" src="../../z_resources/scripts/jquery-accessible-tabs-ktc.js"> </script>
+    </head>
+    <body>
+        <div class="foundation-wrap off-canvas-wrapper">
+            <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper="">
+                <aside class="off-canvas position-right" role="navigation" id="offCanvas" data-off-canvas="" data-position="right" data-mc-ignore="true">
+                    <ul class="off-canvas-accordion vertical menu off-canvas-list" data-accordion-menu="" data-mc-back-link="Back" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="True" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True">
+                    </ul>
+                </aside>
+                <div class="off-canvas-content inner-wrap" data-off-canvas-content="">
+                    <div data-sticky-container="" class="title-bar-container">
+                        <nav class="title-bar tab-bar sticky" role="banner" data-sticky="" data-options="marginTop:0" style="width:100%" data-sticky-on="only screen and (max-width: 1279px)" data-mc-ignore="true"><a class="skip-to-content fluid-skip showOnFocus" href="#">Skip To Main Content</a>
+                            <div class="middle title-bar-section outer-row clearfix">
+                                <div class="menu-icon-container relative clearfix">
+                                    <div class="central-account-wrapper">
+                                        <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                            <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                                <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="menu-icon" aria-label="Show Navigation Panel" data-toggle="offCanvas"><span></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="title-bar-layout outer-row">
+                                <div class="logo-wrapper"><a class="logo" href="../../home.html" alt="Logo"></a>
+                                </div>
+                                <div class="navigation-wrapper nocontent">
+                                    <ul class="navigation clearfix" role="navigation" data-mc-css-tree-node-has-children="has-children" data-mc-css-sub-menu="sub-menu" data-mc-expand-event="mouseenter" data-mc-top-nav-menu="True" data-mc-max-depth="5" data-mc-include-icon="False" data-mc-include-indicator="False" data-mc-include-children="True" data-mc-include-siblings="True" data-mc-include-parent="True" data-mc-toc="True">
+                                        <li class="placeholder" style="visibility:hidden"><a>placeholder</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="central-account-wrapper">
+                                    <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                        <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                            <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="nav-search-wrapper">
+                                    <div class="nav-search row">
+                                        <form>
+                                            <div id="EaZl7IMMdkOxEcTqrymc2g" class="search-bar search-bar-container needs-pie">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="main-section">
+                        <div class="row outer-row sidenav-layout">
+                            <nav class="sidenav-wrapper">
+                                <div class="sidenav-container">
+                                    <ul class="off-canvas-accordion vertical menu sidenav" data-accordion-menu="" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu accordion-menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="False" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True" data-mc-side-nav-menu="True">
+                                    </ul>
+                                </div>
+                            </nav>
+                            <div class="body-container">
+                                <div data-mc-content-body="True">
+                                    <!-- Google Tag Manager (noscript) -->
+                                    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTCPFS9" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+                                    </noscript>
+                                    <!-- End Google Tag Manager (noscript) -->
+                                    <div class="side-content">
+                                        <form>
+                                            <div id="G288K1ypgkCJqo_homo6Pg" class="search-bar search-bar-container needs-pie _Skins_Topics_Searchbar mc-component">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="nocontent">
+                                        <div class="MCBreadcrumbsBox_0 breadcrumbs" role="navigation" aria-label="Breadcrumbs" data-mc-breadcrumbs-divider=" &gt; " data-mc-breadcrumbs-count="3" data-mc-toc="True"><span class="MCBreadcrumbsPrefix">You are here: </span>
+                                        </div>
+                                    </div>
+                                    <!--<div>  class="topic-layout"-->
+                                    <!--AV 2023-09-13: removing duplicate nav after switch to sidenav
+		<div style="float:left; margin-right: 20px; margin-left:20px; margin-bottom: 15px;"> <MadCap:menuProxy data-mc-skin="/Project/Skins/Topics-Menu.flskn" style="mc-context-sensitive: True;mc-include-parent: True;mc-include-siblings: True;mc-include-children: True;" mc-linked-toc="/Project/TOCs/TOC.fltoc" /></div>-->
+                                    <div class="liquibase-docs-body">
+                                        <div role="main" id="mc-main-content">
+                                            <h1>How <span class="mc-variable General.Liquibase variable">Liquibase</span> Finds Files: <span class="mc-variable General.Liquibase variable">Liquibase</span> Search Path</h1>
+                                            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>The <a href="../../parameters/search-path.html" class="MCXref xref">search-path</a> property is available in <span class="mc-variable General.Liquibase variable">Liquibase</span> v4.13 and later.</p>
+                                            <p>During the <span class="mc-variable General.Liquibase variable">Liquibase</span> installation process, the installer creates directories and installs several files including <b>JAR files</b>. <span class="mc-variable General.Liquibase variable">Liquibase</span> is an <b>extensible tool</b> that enables users to add functionality and integrations to the <b>standard installation</b> packaged as one or more JAR files that can be downloaded separately.</p>
+                                            <p>JAR files are packages of aggregated <b>Java class files</b> and associated metadata built on a ZIP format which contains application functionality. In order to use the functionality of the JAR file, <span class="mc-variable General.Liquibase variable">Liquibase</span> needs to find the JAR file.</p>
+                                            <p>In addition to JAR files, <span class="mc-variable General.Liquibase variable">Liquibase</span> also needs to find the <span class="mc-variable General.changelog variable">changelog</span> and looks for both of these file types in the <b>following locations:</b><br /></p>
+                                            <ul>
+                                                <li>Any paths specified in the classpath setting.</li>
+                                                <li>The current working directory.</li>
+                                                <li>A <b>liquibase_libs</b> directory in the current working directory.</li>
+                                                <li>A <b>lib</b> directory in the <span class="mc-variable General.Liquibase variable">Liquibase</span> install location.</li>
+                                                <li>Inside any <b>.zip</b> or <b>.jar</b> files in the <code>liquibase_libs</code> or <code>lib</code> directories.</li>
+                                                <li>Using <code><a href="../../parameters/search-path.html" class="MCXref xref">search-path</a></code> (v4.13 and later). For more information about <code>search-path</code>, continue reading this page.</li>
+                                            </ul>
+                                            <p><span class="mc-variable General.Liquibase variable">Liquibase</span> uses the paths to files as part of <span class="mc-variable General.changeset variable">changeset</span> identifiers. It is important for these paths to remain consistent and stable, because they are often included in shared <span class="mc-variable General.changelog variable">changelog</span> files, even when the physical location of those files may change from machine to machine.</p>
+                                            <p>To provide that separation between the file reference and the physical location of the file, <span class="mc-variable General.Liquibase variable">Liquibase</span> uses the concept of a "search path." The search path is the list of base physical locations where given <span class="mc-variable General.changelog variable">changelog</span> paths can be found. For each file to look up, <span class="mc-variable General.Liquibase variable">Liquibase</span> will check all those locations for the file.</p>
+                                            <p>For example, if your referenced file path is <code>db.changelog.xml</code> and your search path is <code>/Users/example/liquibase,/projects/global</code>, <span class="mc-variable General.Liquibase variable">Liquibase</span> will look for <code>/Users/example/liquibase/db.changelog.xml</code> and <code>/projects/global/db.changelog.xml</code>.</p>
+                                            <p>For example, if your referenced file path is <code>project1/db.changelog.xml</code> and your search path is <code>/Users/example/liquibase,/projects/global</code>, <span class="mc-variable General.Liquibase variable">Liquibase</span> will look for <code>/Users/example/liquibase/project1/db.changelog.xml</code> and <code>/projects/global/project1/db.changelog.xml</code>.</p>
+                                            <p>It does not matter if your referenced file path starts with a <code>/</code> or not, <span class="mc-variable General.Liquibase variable">Liquibase</span> always looks up the file path within your search path.</p>
+                                            <p><span class="mc-variable General.Liquibase variable">Liquibase</span> configures the search path based on these factors:</p>
+                                            <ul>
+                                                <li>The path specified in the <code>search-path</code> setting</li>
+                                                <li>Default locations based on how you run <span class="mc-variable General.Liquibase variable">Liquibase</span><ul><li>	CLI: the current working directory where <span class="mc-variable General.Liquibase variable">Liquibase</span> commands are running, plus everything in your <code>LIQUIBASE_HOME/lib</code> and <code>liquibase_libs</code> directories, plus the classpath setting</li><li>Maven: project’s classpath</li><li>Spring Boot: application’s classpath</li></ul><p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>When <code>search-path</code> is set, <span class="mc-variable General.Liquibase variable">Liquibase</span> will only search along that path and it overrides the default settings.</p></li>
+                                            </ul>
+                                            <h2>Syntax</h2>
+                                            <p> You can set this parameter in the following ways:</p>
+                                            <table style="width: 100%;">
+                                                <col />
+                                                <col />
+                                                <thead>
+                                                    <tr>
+                                                        <th>Option</th>
+                                                        <th>Syntax</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><a href="../connections/creating-config-properties.html"><span class="mc-variable General.Liquibase variable">Liquibase</span> properties file</a>
+                                                        </td>
+                                                        <td><pre xml:space="preserve"><code class="language-text">liquibase.<span class="mc-variable parameters-global-command.case-camel variable">searchPath</span>: <span class="mc-variable parameters-global-command.value-type variable">&lt;string&gt;</span></code></pre>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Global <a href="../../commands/flow/flow.html" class="MCXref xref" data-mc-variable-override="">flow</a> file argument (example)</td>
+                                                        <td><pre xml:space="preserve"><code class="language-text">stages:
+  Default:
+    actions:
+      - type: liquibase
+        command: <span class="mc-variable parameters-global-command.command-name variable">update</span>
+        globalArgs: { <span class="mc-variable parameters-global-command.case-kebab variable">search-path</span>: "<span class="mc-variable parameters-global-command.value-type variable">&lt;string&gt;</span>" }</code></pre>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Global CLI parameter</td>
+                                                        <td><pre xml:space="preserve"><code class="language-text">liquibase
+ --<span class="mc-variable parameters-global-command.case-kebab variable">search-path</span>=<span class="mc-variable parameters-global-command.value-type variable">&lt;string&gt;</span>&#160;<span class="mc-variable parameters-global-command.command-name variable">update</span>
+ --changelog-file=example-changelog.xml</code></pre>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <p>JVM system property (<a href="../connections/java-opts-environment-variable.html" class="MCXref xref" data-mc-variable-override="">JAVA_OPTS Environment Variable</a>)</p>
+                                                        </td>
+                                                        <td><pre><code class="language-text">JAVA_OPTS=-Dliquibase.<span class="mc-variable parameters-global-command.case-camel variable">searchPath</span>=<span class="mc-variable parameters-global-command.value-type variable">&lt;string&gt;</span></code></pre>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="../connections/liquibase-environment-variables.html" class="MCXref xref" data-mc-variable-override="">Liquibase Environment Variables</a>
+                                                        </td>
+                                                        <td><pre><code class="language-text">LIQUIBASE_<span class="mc-variable parameters-global-command.case-envar variable">SEARCH_PATH</span>=<span class="mc-variable parameters-global-command.value-type variable">&lt;string&gt;</span></code></pre>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <p>For more information, see <a href="../../parameters/working-with-command-parameters.html" class="MCXref xref" data-mc-variable-override="">Working with Command Parameters</a>.</p>
+                                            <p class="tip" data-mc-autonum="&lt;b&gt;Tip: &lt;/b&gt;"><span class="autonumber"><span><b>Tip: </b></span></span>If you use Maven, Ant, Spring Boot, or other integrations, you can set your <code>searchPath</code> in the default files, such as <code>pom.xml</code>, <code>application.yml</code>, and others. Check the <a href="../../tools-integrations/home.html" class="MCXref xref">Tools &amp; Integrations</a> documentation for more information.</p>
+                                            <h2>How the <span class="mc-variable General.Liquibase variable">Liquibase</span> search path worked before version 4.13</h2>
+                                            <p>Before version 4.13, the search path was not configured separately from the classpath. The logic of always looking up file references via a set of base locations was the same, but the only way to configure those locations was through the classpath configuration.</p>
+                                            <p>Before version 4.0, one of the default locations <span class="mc-variable General.Liquibase variable">Liquibase</span> added to the searchPath/classpath was the root directory in your filesystem (/). The change caused issues because of a machine-dependent <span class="mc-variable General.changelog variable">changelog</span> path, such as <code>/home/my-user/projects/liquibase/changelog.xml</code>, found under the <code>/</code> directory. This way, <span class="mc-variable General.Liquibase variable">Liquibase</span> uses the given path as part of the <span class="mc-variable General.changeset variable">changeset</span> identifier stored in the <span class="mc-variable General.databasechangelog variable">DATABASECHANGELOG</span> table, and when you run <span class="mc-variable General.Liquibase variable">Liquibase</span> from <code>/home/other-user/projects/liquibase/changelog.xml</code>, <span class="mc-variable General.Liquibase variable">Liquibase</span> sees it as a different <span class="mc-variable General.changelog variable">changelog</span> and tries to rerun all the previously run <span class="mc-variable General.changeset variable">changeset</span>s.</p>
+                                            <p>To prevent identification issues from happening, a <code>/</code> was removed as a default part of the searchPath/classpath.</p>
+                                            <h2>How the <span class="mc-variable General.Liquibase variable">Liquibase</span> searchPath works in 4.0 and later versions</h2>
+                                            <p>Starting with <span class="mc-variable General.Liquibase variable">Liquibase</span> 4.0, the root directory (/) is no longer a default part of the searchPath/classpath because of the issue mentioned in the previous section.</p>
+                                            <p>To migrate from your existing searchPath/classpath format, including the root directory (/), to version 4.0+, you can do any of the following:</p>
+                                            <ul>
+                                                <li>Configure your searchPath to include <code>/</code>. The configuration brings back an old behavior with no file changes.</li>
+                                                <li>Add the <a href="attributes/logicalfilepath.html" class="MCXref xref">logicalFilePath</a> <span class="mc-variable General.Param/Attribute variable">attribute</span> to the root element of your <span class="mc-variable General.changelog variable">changelog</span> files. When you set the <code>logicalFilePath</code> value to be an old file reference name, <span class="mc-variable General.Liquibase variable">Liquibase</span> uses it for the comparison file name, which will match what is in the database. If you add the <code>logicalFilePath</code>, it will bring back the old behavior with file changes, and you will not have any runtime configuration changes.</li>
+                                                <li>Coordinate updates to the <span class="mc-variable General.databasechangelog variable">DATABASECHANGELOG</span> table so that the filepath value gets changed to be a new path. You can do it with a single SQL statement, but the exact statement will depend on the database you use. See a PostgreSQL example:</li>
+                                                <p class="example" data-mc-autonum="&lt;b&gt;Example: &lt;/b&gt;"><span class="autonumber"><span><b>Example: </b></span></span><code>update databasechangelog set filepath=substring(filepath, length('/src/my-project')</code>
+                                                </p>
+                                            </ul>
+                                            <p>You need to figure out the SQL statement and time when you run that statement because any passed existing references will start failing once you make the change, and any passed new references will fail until you do make the change.</p>
+                                            <h2>Related links</h2>
+                                            <ul>
+                                                <li><a href="../connections/liquibase-environment-variables.html" class="MCXref xref">Liquibase Environment Variables</a>
+                                                </li>
+                                                <li><a href="../connections/java-opts-environment-variable.html" class="MCXref xref">JAVA_OPTS Environment Variable</a>
+                                                </li>
+                                                <li><a href="../../commands/home.html" class="MCXref xref">About Liquibase Commands</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- UserSnap Scripts -->
+                                    <!-- Feedback Button -->
+                                    <script>/* <![CDATA[ */ <!--type="text/javascript"-->
+				window.onUsersnapCXLoad = function(api) {
+				api.init();
+				}
+				var script = document.createElement('script');
+				script.defer = 1;
+				script.src = 'https://widget.usersnap.com/global/load/632b7a0e-ba7b-4613-ab8a-a34d8edf1097?onload=onUsersnapCXLoad';
+				document.getElementsByTagName('head')[0].appendChild(script);
+		/* ]]> */</script>
+                                    <!-- End Feedback Button -->
+                                    <!-- Ratings -->
+                                    <div id="widgetContainer" style="align: center;text-align: center;">
+                                    </div>
+                                    <script>/* <![CDATA[ */
+			window.onUsersnapCXLoad = function(api) {
+			// mountNode is an element in which the widget should be rendered
+			api.init({ mountNode: document.getElementById('widgetContainer') });
+			}
+			var script = document.createElement('script');
+			script.defer = 1;
+			script.src = 'https://widget.usersnap.com/embed/load/7df92c7d-5c25-4d1e-827a-75f186914119?onload=onUsersnapCXLoad';
+			document.getElementsByTagName('head')[0].appendChild(script);
+		/* ]]> */</script>
+                                    <!-- End Ratins -->
+                                    <!-- End UserSnap Scripts -->
+                                    <!-- Start Glide Footer -->
+                                    <footer class="glide">
+                                        <div class="footer-container">
+                                            <div class="footer-wrapper">
+                                                <div class="footer-left-widget">
+                                                    <div class="footer-form-widget">
+                                                        <div class="widget-inner">
+                                                            <div class="footer-logo"><a href="https://www.liquibase.com"><img src="../../z_resources/images/glide/logo-white.svg" alt="" /></a>
+                                                            </div>
+                                                            <div class="footer-socials"><a href="https://twitter.com/liquibase" class="f-twitter" target="_blank"></a><a href="https://github.com/liquibase/liquibase" class="f-github" target="_blank"></a><a href="https://www.reddit.com/r/liquibase/" class="f-reddit" target="_blank"></a><a href="https://www.linkedin.com/company/liquibase" class="f-linkedin" target="_blank"></a><a href="https://www.youtube.com/channel/UC5qMsRjObu685rTBq0PJX8w" class="f-youtube" target="_blank"></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="footer-widgets">
+                                                    <div class="footer-widget">
+                                                        <h4>Products</h4>
+                                                        <div class="menu-column-two-menu-container">
+                                                            <ul id="menu-column-two-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-15659"><a href="https://www.liquibase.com/pricing">Pricing</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-906"><a href="https://www.liquibase.com/pricing/pro">Liquibase Pro</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15600"><a target="_blank" rel="noopener" href="https://www.liquibase.org/download">Liquibase Open Source</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Solutions</h4>
+                                                        <div class="menu-column-three-menu-container">
+                                                            <ul id="menu-column-three-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-908"><a href="https://www.liquibase.com/ci-cd">CI/CD</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/compliance">Compliance</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/devsecops">DevSecOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/financial-services">Financial Services</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/gitops-database">GitOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/public-sector">Public Sector</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-907"><a href="https://www.liquibase.com/version-control">Version Control</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Resources</h4>
+                                                        <div class="menu-column-four-menu-container">
+                                                            <ul id="menu-column-four-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-916"><a href="https://www.liquibase.com/blog">Blog</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15471"><a href="https://www.liquibase.com/resources">Resource Library</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-resource_category menu-item-914"><a href="https://www.liquibase.com/resources/guides">Guides</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14975"><a href="../../index.html">Documentation</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-917"><a href="https://www.liquibase.com/support">Support</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom last-menu-item menu-item-15215"><a target="_blank" rel="noopener noreferrer" href="https://learn.liquibase.com/index">Training</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Company</h4>
+                                                        <div class="menu-column-five-menu-container">
+                                                            <ul id="menu-column-five-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-1176"><a href="https://www.liquibase.com/company">Company</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1177"><a href="https://www.liquibase.com/company/leadership">Leadership</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1070"><a href="https://www.liquibase.com/company/careers">Careers</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1071"><a href="https://www.liquibase.com/partners">Partners</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15024"><a href="https://www.liquibase.com/category/press-releases">News</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-1178"><a href="https://www.liquibase.com/contact">Contact</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                    <div class="footer-bottom">
+                                                        <div class="copyright">
+                                                            <p><span class="mc-variable General.copyright variable">© 2023 Liquibase Inc.  All Rights Reserved. 
+Liquibase is a registered trademark of Liquibase Inc.</span>
+                                                                <br /><span class="mc-variable General.PhoneNumber variable">(737) 402-7187</span>
+                                                            </p>
+                                                        </div>
+                                                        <div class="footer-menu">
+                                                            <div class="menu-footer-menu-container">
+                                                                <ul id="menu-footer-menu">
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-privacy-policy first-menu-item menu-item-902"><a href="https://www.liquibase.com/privacy-policy">Privacy Policy</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-901"><a href="https://www.liquibase.com/terms-of-use">Terms of Use</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-14933"><a href="https://www.liquibase.com/eula">EULA</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                </div>
+                                                <div class="clear">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </footer>
+                                    <!-- This script is necessary to relocate the footer so that it maintains 100% width -->
+                                    <!--       <script type="text/javascript">/*<![CDATA[*/$(document).ready(function(){ $("footer").appendTo("div.off-canvas-content.inner-wrap"); });/*]]>*/</script> -->
+                                    <!-- End Glide Footer -->
+                                </div>
+                            </div>
+                        </div>
+                    </div><a data-close="true"></a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

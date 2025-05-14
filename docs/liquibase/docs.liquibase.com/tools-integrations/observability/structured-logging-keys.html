@@ -1,0 +1,2019 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" class="_Skins_oss_pro" data-mc-search-type="Stem" data-mc-help-system-file-name="Default.xml" data-mc-path-to-help-system="../../" data-mc-has-content-body="True" data-mc-toc-path="[%=System.LinkedHeader%]|[%=System.LinkedHeader%]|[%=System.LinkedHeader%]" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic;Default" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-searchable="False">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="msapplication-config" content="../../Skins/Favicons/browserconfig.xml" />
+        <meta name="description" content="Reference information for Liquibase structured log keys in the Mapped Diagnostic Context." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../Skins/Favicons/favicon-16x16.png" /><title>Structured Logging Keys</title>
+        <!-- Google GA4 tag (gtag.js) -->
+        <!-- End Google GA4 tag -->
+        <!-- Google Tag Manager -->
+        <!-- End Google Tag Manager -->
+        <!-- Prism Highlighting -->
+        <!-- End Prism Highlighting -->
+        <!-- Tabs for code examples -->
+        <!--End tabs for code examples -->
+        <link href="../../Skins/Default/Stylesheets/Slideshow.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="https://docs.liquibase.com/Skins/Fluid/Stylesheets/MadCapSearch.Google.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Print.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/foundation.6.2.3.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/print.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link rel="stylesheet" href="../../z_resources/stylesheets/glidestyles.css" type="text/css" media="all" />
+        <link href="../../z_resources/stylesheets/styles.css" rel="stylesheet" type="text/css" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../Skins/Favicons/favicon-16x16.png" />
+        <link rel="canonical" href="structured-logging-keys.html" />
+        <script src="../../resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../resources/Scripts/purify.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/require.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/require.config.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/foundation.6.2.3_custom.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/plugins.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/MadCapAll.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=G-GJFFQKWLLX">
+        </script>
+        <script>/* <![CDATA[ */
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());  gtag('config', 'G-GJFFQKWLLX');
+		/* ]]> */</script>
+        <script>/* <![CDATA[ */(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&amp;l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-NTCPFS9');/* ]]> */</script>
+        <script type="text/javascript" src="../../z_resources/scripts/prism.js"> </script>
+        <script type="application/javascript" src="../../z_resources/scripts/jquery-accessible-tabs-ktc.js"> </script>
+    </head>
+    <body>
+        <div class="foundation-wrap off-canvas-wrapper">
+            <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper="">
+                <aside class="off-canvas position-right" role="navigation" id="offCanvas" data-off-canvas="" data-position="right" data-mc-ignore="true">
+                    <ul class="off-canvas-accordion vertical menu off-canvas-list" data-accordion-menu="" data-mc-back-link="Back" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="True" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True">
+                    </ul>
+                </aside>
+                <div class="off-canvas-content inner-wrap" data-off-canvas-content="">
+                    <div data-sticky-container="" class="title-bar-container">
+                        <nav class="title-bar tab-bar sticky" role="banner" data-sticky="" data-options="marginTop:0" style="width:100%" data-sticky-on="only screen and (max-width: 1279px)" data-mc-ignore="true"><a class="skip-to-content fluid-skip showOnFocus" href="#">Skip To Main Content</a>
+                            <div class="middle title-bar-section outer-row clearfix">
+                                <div class="menu-icon-container relative clearfix">
+                                    <div class="central-account-wrapper">
+                                        <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                            <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                                <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="menu-icon" aria-label="Show Navigation Panel" data-toggle="offCanvas"><span></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="title-bar-layout outer-row">
+                                <div class="logo-wrapper"><a class="logo" href="../../home.html" alt="Logo"></a>
+                                </div>
+                                <div class="navigation-wrapper nocontent">
+                                    <ul class="navigation clearfix" role="navigation" data-mc-css-tree-node-has-children="has-children" data-mc-css-sub-menu="sub-menu" data-mc-expand-event="mouseenter" data-mc-top-nav-menu="True" data-mc-max-depth="5" data-mc-include-icon="False" data-mc-include-indicator="False" data-mc-include-children="True" data-mc-include-siblings="True" data-mc-include-parent="True" data-mc-toc="True">
+                                        <li class="placeholder" style="visibility:hidden"><a>placeholder</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="central-account-wrapper">
+                                    <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                        <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                            <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="nav-search-wrapper">
+                                    <div class="nav-search row">
+                                        <form>
+                                            <div id="EaZl7IMMdkOxEcTqrymc2g" class="search-bar search-bar-container needs-pie">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="main-section">
+                        <div class="row outer-row sidenav-layout">
+                            <nav class="sidenav-wrapper">
+                                <div class="sidenav-container">
+                                    <ul class="off-canvas-accordion vertical menu sidenav" data-accordion-menu="" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu accordion-menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="False" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True" data-mc-side-nav-menu="True">
+                                    </ul>
+                                </div>
+                            </nav>
+                            <div class="body-container">
+                                <div data-mc-content-body="True">
+                                    <!-- Google Tag Manager (noscript) -->
+                                    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTCPFS9" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+                                    </noscript>
+                                    <!-- End Google Tag Manager (noscript) -->
+                                    <div class="side-content">
+                                        <form>
+                                            <div id="Z0nbzFXc_UmJIdTEMQ366A" class="search-bar search-bar-container needs-pie _Skins_Topics_Searchbar mc-component">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="nocontent">
+                                        <div class="MCBreadcrumbsBox_0 breadcrumbs" role="navigation" aria-label="Breadcrumbs" data-mc-breadcrumbs-divider=" &gt; " data-mc-breadcrumbs-count="3" data-mc-toc="True"><span class="MCBreadcrumbsPrefix">You are here: </span>
+                                        </div>
+                                    </div>
+                                    <!--<div>  class="topic-layout"-->
+                                    <!--AV 2023-09-13: removing duplicate nav after switch to sidenav
+		<div style="float:left; margin-right: 20px; margin-left:20px; margin-bottom: 15px;"> <MadCap:menuProxy data-mc-skin="/Project/Skins/Topics-Menu.flskn" style="mc-context-sensitive: True;mc-include-parent: True;mc-include-siblings: True;mc-include-children: True;" mc-linked-toc="/Project/TOCs/TOC.fltoc" /></div>-->
+                                    <div class="liquibase-docs-body">
+                                        <div role="main" id="mc-main-content">
+                                            <p><a href="https://www.liquibase.com/trial"><img src="../../z_resources/images/logos/pro-button_32x18.jpg" class="ver_icon_size" title="This feature is part of Liquibase Pro and requires a Liquibase Pro license key" style="width: 32;height: 18;" /></a>
+                                            </p>
+                                            <h1>Structured Logging Keys</h1>
+                                            <p><span class="mc-variable General.Liquibase variable">Liquibase</span> uses a Mapped Diagnostic Context (MDC) to generate <a href="structured-logging.html">structured logs</a> in a JSON format. The output is a nested group of key-value pairs. You can access data from your structured logs by calling on the keys described on this page.</p>
+                                            <p>Most values in the log are strings. Other JSON types such as arrays and integers are used for some nested keys.</p>
+                                            <p>In <span class="mc-variable General.Liquibase variable">Liquibase</span> 4.23.2+, you can create a custom metadata file that controls exactly which keys appears in your <span class="mc-variable General.StructuredLog variable">Structured Log</span>s. For more information, see <a href="structured-logging-custom-data.html" class="MCXref xref">Custom and Private Data in Structured Logs</a>.</p>
+                                            <h2>System keys</h2>
+                                            <p>The following keys can appear in <b>all structured logs</b>, regardless of which command the log originates from:</p>
+                                            <table>
+                                                <col />
+                                                <col />
+                                                <thead>
+                                                    <tr>
+                                                        <th>Key</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>class</code>
+                                                        </td>
+                                                        <td><span class="mc-variable General.Liquibase variable">Liquibase</span> Java class associated with log event</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changelog</code>
+                                                        </td>
+                                                        <td>Name of the <span class="mc-variable General.changelog variable">changelog</span> associated with the log event</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetAuthor</code>
+                                                        </td>
+                                                        <td>Value of <code>--author</code>. Author of the <span class="mc-variable General.changeset variable">changeset</span> being logged</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetCount</code>
+                                                        </td>
+                                                        <td>Number of <span class="mc-variable General.changeset variable">changeset</span>s associated with the log event</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetId</code>
+                                                        </td>
+                                                        <td>Value of <code>--id</code>. ID of the <span class="mc-variable General.changeset variable">changeset</span> being logged</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetOutcome</code>
+                                                        </td>
+                                                        <td>Outcome of deploying this <span class="mc-variable General.changeset variable">changeset</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>deploymentId</code>
+                                                        </td>
+                                                        <td>ID of database deployment. Appears in all logs in <span class="mc-variable General.Liquibase variable">Liquibase</span> 4.25.0+.</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>deploymentOutcome</code>
+                                                        </td>
+                                                        <td>Outcome of the database deployment. Appears in all logs in <span class="mc-variable General.Liquibase variable">Liquibase</span> 4.25.0+.</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>deploymentOutcomeCount</code>
+                                                        </td>
+                                                        <td>Number of <span class="mc-variable General.changeset variable">changeset</span>s deployed. Appears in all logs in <span class="mc-variable General.Liquibase variable">Liquibase</span> 4.25.0+.</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>level</code>
+                                                        </td>
+                                                        <td>Value of <code href="../../parameters/log-level.htm">--<a href="../../parameters/log-level.html" class="MCXref xref">log-level</a></code>. Level of detail of the output.</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>liquibaseInternalCommand</code>
+                                                        </td>
+                                                        <td>Name of the internal <span class="mc-variable General.Liquibase variable">Liquibase</span> operation</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>liquibaseCatalogName</code>
+                                                        </td>
+                                                        <td>Value of <code>--<a href="../../parameters/liquibase-catalog-name.html" class="MCXref xref">liquibase-catalog-name</a></code>. Name of the database catalog. Appears in all logs in <span class="mc-variable General.Liquibase variable">Liquibase</span> 4.25.0+.</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>liquibaseCommandName</code>
+                                                        </td>
+                                                        <td>Name of the command entered in the CLI</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>liquibaseSchemaName</code>
+                                                        </td>
+                                                        <td>Value of <code>--<a href="../../parameters/liquibase-schema-name.html" class="MCXref xref">liquibase-schema-name</a></code>. Name of the database schema. Appears in all logs in <span class="mc-variable General.Liquibase variable">Liquibase</span> 4.25.0+.</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>liquibaseSystemName</code>
+                                                        </td>
+                                                        <td>System name running <span class="mc-variable General.Liquibase variable">Liquibase</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>liquibaseSystemUser</code>
+                                                        </td>
+                                                        <td>Name of user running <span class="mc-variable General.Liquibase variable">Liquibase</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>liquibaseTargetUrl</code>
+                                                        </td>
+                                                        <td>URL&#160;of the target database associated with the log</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>liquibaseVersion</code>
+                                                        </td>
+                                                        <td>Version of <span class="mc-variable General.Liquibase variable">Liquibase</span> installed</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>message</code>
+                                                        </td>
+                                                        <td>Short descriptor of log event</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>operationStart</code>
+                                                        </td>
+                                                        <td>UTC timestamp of operation start</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>operationStop</code>
+                                                        </td>
+                                                        <td>UTC timestamp of operation end</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>rowsAffected</code>
+                                                        </td>
+                                                        <td>Number of rows in a table the change affects</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>thread</code>
+                                                        </td>
+                                                        <td>Thread being used</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>timestamp</code>
+                                                        </td>
+                                                        <td>UTC timestamp of log event</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h2><code>checks</code>
+                                            </h2>
+                                            <p>In <span class="mc-variable General.Liquibase variable">Liquibase</span> 4.25.1+, the <code>checks run</code> output delivers an expansive log of Quality Checks that can run against <span class="mc-variable General.changelog variable">changelog</span>s and databases. This allows you to dive deep into what quality checks are run, if they are customized, and more.</p>
+                                            <p>Keys that can appear in a checks <span class="mc-variable General.StructuredLog variable">Structured Log</span>:</p>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Top-level Keys</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>changelogChecks</code>
+                                                        </td>
+                                                        <td>The checks that run against the <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>databaseChecks</code>
+                                                        </td>
+                                                        <td>The checks that run against the database</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <br>
+                                            </br>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Keys within "changelogChecks" array</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>executedChecks</code>
+                                                        </td>
+                                                        <td>The checks executed against the <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>hasProLicense</code>
+                                                        </td>
+                                                        <td>The <span class="mc-variable General.changelog variable">changelog</span>s that have a Pro license key</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetsValidated</code>
+                                                        </td>
+                                                        <td>The <span class="mc-variable General.changelog variable">changelog</span>s that have valid <span class="mc-variable General.changeset variable">changeset</span>s.</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>productVersion</code>
+                                                        </td>
+                                                        <td>The version of <span class="mc-variable General.Liquibase variable">Liquibase</span> currently being used with the given <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>username</code>
+                                                        </td>
+                                                        <td>Value of username</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>issueCount</code>
+                                                        </td>
+                                                        <td>The issue count occurring in the <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>executionDate</code>
+                                                        </td>
+                                                        <td>The date each check was executed against the <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>unlicensedChangesetsCount</code>
+                                                        </td>
+                                                        <td>Number count of unlicensed <span class="mc-variable General.changeset variable">changeset</span> that exist in the given <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>unlicensedChangesets</code>
+                                                        </td>
+                                                        <td>List of unlicensed <span class="mc-variable General.changeset variable">changeset</span>s that exist in the given <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>unrecognizedChecks</code>
+                                                        </td>
+                                                        <td>Any unrecognized checks that exist in the given <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>executedChecksCount</code>
+                                                        </td>
+                                                        <td>Number count of executed checks that ran against the <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>issues</code>
+                                                        </td>
+                                                        <td>Any issues existing within the <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetsValidatedCount</code>
+                                                        </td>
+                                                        <td>Number count of validated <span class="mc-variable General.changeset variable">changeset</span>s existing in the given <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changelogFilePath</code>
+                                                        </td>
+                                                        <td>The file path of the given <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>integration</code>
+                                                        </td>
+                                                        <td><span class="mc-variable General.changelog variable">changelog</span> integrated checks </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>unparseableChangesets</code>
+                                                        </td>
+                                                        <td>List of any unparseable <span class="mc-variable General.changeset variable">changeset</span>s within the given <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>unparseableChangesetsCount</code>
+                                                        </td>
+                                                        <td>Number count of the unparseable <span class="mc-variable General.changeset variable">changeset</span>s within the given <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>checksSettingsFile</code>
+                                                        </td>
+                                                        <td>The checks settings file being utilized</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>returnCode</code>
+                                                        </td>
+                                                        <td>The return code of each issue that exists within a changelog</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <br>
+                                            </br>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Keys within each "executedChecks" object inside "changelogChecks"</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>customizations</code>
+                                                        </td>
+                                                        <td>Any customizations performed on checks executed against the <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>description</code>
+                                                        </td>
+                                                        <td>The description of the checks executed against the <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>checkName</code>
+                                                        </td>
+                                                        <td>The name of the checks executed against the <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>enabled</code>
+                                                        </td>
+                                                        <td>A list of enabled checks executed against the <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>checkShortName</code>
+                                                        </td>
+                                                        <td>The abbreviation of the checks executed against the <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>severity</code>
+                                                        </td>
+                                                        <td>The severity of the checks executed against the <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <br>
+                                            </br>
+                                            <table>
+                                                <col />
+                                                <col style="width: 194px;" />
+                                                <thead>
+                                                    <tr>
+                                                        <th>Keys within each "customizations" object inside "executedChecks"</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>constraint</code>
+                                                        </td>
+                                                        <td>Any customized constraints assigned to checks that are executed</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>objectTypes</code>
+                                                        </td>
+                                                        <td>List of existing object types within the customized executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>stripComments</code>
+                                                        </td>
+                                                        <td>Allows you to strip comments from customized, executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>exceptionsList</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>List of any exceptions within the customized, executed checks</p>
+                                                            <p>This includes:</p>
+                                                            <ul>
+                                                                <li>exception primaryClass</li>
+                                                                <li>exception primaryReason</li>
+                                                                <li>exception source</li>
+                                                                <li>exception details</li>
+                                                            </ul>
+                                                            <p>Learn more here: <a href="structured-logging.html" class="MCXref xref">Structured Logging</a></p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>constraintOperator</code>
+                                                        </td>
+                                                        <td>The constraint operator assigned to customized, executed checks </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>tableName</code>
+                                                        </td>
+                                                        <td>List of existing tables within customized, executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>columnName</code>
+                                                        </td>
+                                                        <td>List of existing columns within customized, executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changeTypeList</code>
+                                                        </td>
+                                                        <td>List of existing <span class="mc-variable General.changetypes variable">Change Type</span>s within customized, executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>maxColumns</code>
+                                                        </td>
+                                                        <td>maximum number of columns allowed within customized, executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>allowedList</code>
+                                                        </td>
+                                                        <td>the list of allowed customizations within executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>privilegeList</code>
+                                                        </td>
+                                                        <td>the list of privileges within executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>message</code>
+                                                        </td>
+                                                        <td>the executed checks message</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>operator</code>
+                                                        </td>
+                                                        <td>the operator who carries out the customized, executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>searchString</code>
+                                                        </td>
+                                                        <td>keywords that can be used to search the customized, executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>caseSensitive</code>
+                                                        </td>
+                                                        <td>Customized, executed checks that are case sensitive</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <br>
+                                            </br>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Keys within each "issues" object inside "changelogChecks"</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>changesetAuthor</code>
+                                                        </td>
+                                                        <td>the <span class="mc-variable General.changeset variable">changeset</span> author of each issue that exists within a changelog</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetFilePath</code>
+                                                        </td>
+                                                        <td>the <span class="mc-variable General.changeset variable">changeset</span> file path of each issue that exists within a changelog</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetId</code>
+                                                        </td>
+                                                        <td>the <span class="mc-variable General.changeset variable">changeset</span> ID of each issue that exists within a changelog</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>checkMessage</code>
+                                                        </td>
+                                                        <td>The message of each issue that exists within a changelog</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>checkName</code>
+                                                        </td>
+                                                        <td>The name of each issue that exists within a changelog</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>checkReturnCode</code>
+                                                        </td>
+                                                        <td>The return code of each issue that exists within a changelog</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>checkSeverity</code>
+                                                        </td>
+                                                        <td>the severity  of each issue that exists within a changelog</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>checkShortName</code>
+                                                        </td>
+                                                        <td>the abbreviated name of a changelog check from each issue</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <br>
+                                            </br>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Keys within "databaseChecks" array</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>target</code>
+                                                        </td>
+                                                        <td>the targeted database</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>executedChecks</code>
+                                                        </td>
+                                                        <td>The checks executed against the given database</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>hasProLicense</code>
+                                                        </td>
+                                                        <td>States if the database has a Pro license key, or not</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>databaseObjectsValidatedCount</code>
+                                                        </td>
+                                                        <td>The count of all objects validated within the database</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>productVersion</code>
+                                                        </td>
+                                                        <td>States the version of <span class="mc-variable General.Liquibase variable">Liquibase</span> that is being utilized in the current database</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>username</code>
+                                                        </td>
+                                                        <td>The username of who runs any database checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>issueCount</code>
+                                                        </td>
+                                                        <td>The number of existing issues</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>executionDate</code>
+                                                        </td>
+                                                        <td>The date the database check was executed on</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>unrecognizedChecks</code>
+                                                        </td>
+                                                        <td>Lists any unrecognized checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>executedChecksCount</code>
+                                                        </td>
+                                                        <td>The number of executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>issues</code>
+                                                        </td>
+                                                        <td>List of any existing issues</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>integration</code>
+                                                        </td>
+                                                        <td>Database integrated checks </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>databaseObjectsValidated</code>
+                                                        </td>
+                                                        <td>List of database objects validated</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>targetType</code>
+                                                        </td>
+                                                        <td>The type of target being used by the database</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>unparseableDatabaseObjectCount</code>
+                                                        </td>
+                                                        <td>Number of any unparseable database objects</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>checksSettingsFile</code>
+                                                        </td>
+                                                        <td>The checks settings file being utilized</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>returnCode</code>
+                                                        </td>
+                                                        <td>the check return code of database checks</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <br>
+                                            </br>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Keys within each "executedChecks" object inside "databaseChecks"</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>customizations</code>
+                                                        </td>
+                                                        <td>Any customizations performed on executed database checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>description</code>
+                                                        </td>
+                                                        <td>The description of  executed database checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>checkName</code>
+                                                        </td>
+                                                        <td>The name of executed database checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>enabled</code>
+                                                        </td>
+                                                        <td>List of the enabled database checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>checkShortName</code>
+                                                        </td>
+                                                        <td>The abbreviated name of an executed database check</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>severity</code>
+                                                        </td>
+                                                        <td>The severity of an executed database check</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <br>
+                                            </br>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Keys within each "customizations" object inside "executedChecks"</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>constraint</code>
+                                                        </td>
+                                                        <td>Constraints on the customized executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>objectTypes</code>
+                                                        </td>
+                                                        <td>Customized object types of executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>stripComments</code>
+                                                        </td>
+                                                        <td>Allows you to strip comments from customized, executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>exceptionsList</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>List of exceptions in customized, executed checks</p>
+                                                            <p>This includes:</p>
+                                                            <ul>
+                                                                <li>exception primaryClass</li>
+                                                                <li>exception primaryReason</li>
+                                                                <li>exception source</li>
+                                                                <li>exception details</li>
+                                                            </ul>
+                                                            <p>Learn more here: <a href="structured-logging.html" class="MCXref xref">Structured Logging</a></p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>constraintOperator</code>
+                                                        </td>
+                                                        <td>The constraint operator assigned to customized, executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>tableName</code>
+                                                        </td>
+                                                        <td>List of existing tables within customized, executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>columnName</code>
+                                                        </td>
+                                                        <td>List of existing columns within customized, executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changeTypeList</code>
+                                                        </td>
+                                                        <td>List of existing <span class="mc-variable General.changetypes variable">Change Type</span>s within customized, executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>maxColumns</code>
+                                                        </td>
+                                                        <td>maximum number of columns allowed within customized, executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>allowedList</code>
+                                                        </td>
+                                                        <td>the list of allowed customizations within executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>privilegeList</code>
+                                                        </td>
+                                                        <td>the list of privileges within executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>message</code>
+                                                        </td>
+                                                        <td>the executed checks message</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>operator</code>
+                                                        </td>
+                                                        <td>the operator who carries out the customized, executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>searchString</code>
+                                                        </td>
+                                                        <td>keywords that can be used to search the customized, executed checks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>caseSensitive</code>
+                                                        </td>
+                                                        <td>Customized, executed checks that are case sensitive</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <br>
+                                            </br>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Keys within each "issues" object inside "databaseChecks"</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>checkMessage</code>
+                                                        </td>
+                                                        <td>Message displayed about each issue appearing in the database</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>checkName</code>
+                                                        </td>
+                                                        <td>The name of each issue appearing in the database</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>checkReturnCode</code>
+                                                        </td>
+                                                        <td>the return code of each issue that exists within a database</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>checkSeverity</code>
+                                                        </td>
+                                                        <td>The severity of each issue within the database</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>checkShortName</code>
+                                                        </td>
+                                                        <td>The abbreviation of each issue within the database</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>databaseObjectLocation</code>
+                                                        </td>
+                                                        <td>The location of a object within the database</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>databaseObjectName</code>
+                                                        </td>
+                                                        <td>the name of an object within the database</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>databaseObjectType</code>
+                                                        </td>
+                                                        <td>the type of object within the database</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <br>
+                                            </br>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Keys within each "object" inside "databaseObjectsValidated"</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>objecttype</code>
+                                                        </td>
+                                                        <td>List of the object type that are validated in the database</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>count</code>
+                                                        </td>
+                                                        <td>Number count that are validated in the database</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>objects</code>
+                                                        </td>
+                                                        <td>List of the objects that are validated in the database</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h2><code>changelog-sync</code>
+                                            </h2>
+                                            <p>Keys that can appear in a <code><a href="../../commands/utility/changelog-sync.html" class="MCXref xref">changelog-sync</a></code> structured log:</p>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            <p>Key</p>
+                                                        </th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>changelogFile</code>
+                                                        </td>
+                                                        <td>The <span class="mc-variable General.changelog variable">changelog</span> being synced</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changelogSyncOutcome</code>
+                                                        </td>
+                                                        <td>Whether the sync was executed or failed</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetSyncCount</code>
+                                                        </td>
+                                                        <td>Number of <span class="mc-variable General.changeset variable">changeset</span>s added to the <span class="mc-variable General.databasechangelog variable">DATABASECHANGELOG</span> table</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetFilepath</code>
+                                                        </td>
+                                                        <td>Path to <span class="mc-variable General.changeset variable">changeset</span>. Repeats in every  <span class="mc-variable General.changeset variable">changeset</span> log message</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetContext</code>
+                                                        </td>
+                                                        <td>Context applied to <span class="mc-variable General.changeset variable">changeset</span>. Repeats in every  <span class="mc-variable General.changeset variable">changeset</span> log message</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetLabel</code>
+                                                        </td>
+                                                        <td>Label applied to <span class="mc-variable General.changeset variable">changeset</span>. Repeats in every  <span class="mc-variable General.changeset variable">changeset</span> log message</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetOperationStart</code>
+                                                        </td>
+                                                        <td>UTC timestamp of operation start. Repeats in every  <span class="mc-variable General.changeset variable">changeset</span> log message</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetOperationStop</code>
+                                                        </td>
+                                                        <td>UTC timestamp of operation end. Repeats in every  <span class="mc-variable General.changeset variable">changeset</span> log message</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetSyncOutcome</code>
+                                                        </td>
+                                                        <td>Outcome of <span class="mc-variable General.changeset variable">changeset</span> sync. Repeats in every  <span class="mc-variable General.changeset variable">changeset</span> log message</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>databaseChangelogSql</code>
+                                                        </td>
+                                                        <td>SQL to update the <a href="../../concepts/tracking-tables/databasechangelog-table.html" class="MCXref xref">DATABASECHANGELOG table</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>databaseChangelogTableOutcome</code>
+                                                        </td>
+                                                        <td>Outcome of update to the <span class="mc-variable General.databasechangelog variable">DATABASECHANGELOG</span> table</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h2><code>dbcl-history</code>
+                                            </h2>
+                                            <p>Keys that can appear in a <code>dbcl-history</code> structured log:</p>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            <p>Key</p>
+                                                        </th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>arguments</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>A list of arguments the user specified, including the command.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>author</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Value from the <span class="mc-variable General.changeset variable">changeset</span>&#160;<code>author</code>&#160;<span class="mc-variable General.Param/Attribute variable">attribute</span>.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>command</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Name of the command the user specified.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>contexts</code>
+                                                        </td>
+                                                        <td>
+                                                            <p><a href="../../concepts/changelogs/attributes/contexts.html">Context(s)</a> used to execute the <span class="mc-variable General.changeset variable">changeset</span>.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>description</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Short, auto-generated, human-readable description of the <span class="mc-variable General.changeset variable">changeset</span>.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>end</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Timestamp in the user's local timezone that the operation ended.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>executedSql</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>The SQL <span class="mc-variable General.Liquibase variable">Liquibase</span> executed in the operation.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>extensions</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>A list of extensions to <span class="mc-variable General.Liquibase variable">Liquibase</span>, including pre-installed drivers.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>filename</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Path to the <span class="mc-variable General.changelog variable">changelog</span>. This may be an absolute path or a relative path depending on how the <span class="mc-variable General.changelog variable">changelog</span>
+ was passed to <span class="mc-variable General.Liquibase variable">Liquibase</span>. For best results, it should be a relative path. The <a href="../../concepts/changelogs/attributes/logicalfilepath.html" class="MCXref xref">logicalFilePath</a>&#160;<span class="mc-variable General.Param/Attribute variable">attribute</span> can be used
+ on the <span class="mc-variable General.changelog variable">changelog</span> or on individual <span class="mc-variable General.changeset variable">changeset</span>s.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>hostname</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Name of the machine <span class="mc-variable General.Liquibase variable">Liquibase</span> executed the operation on.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>id</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Value from the <span class="mc-variable General.changeset variable">changeset</span>&#160;<code>id</code>&#160;<span class="mc-variable General.Param/Attribute variable">attribute</span>.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>internalCommand</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Internal name of the command <span class="mc-variable General.Liquibase variable">Liquibase</span> ran.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>labels</code>
+                                                        </td>
+                                                        <td>
+                                                            <p><a href="../../concepts/changelogs/attributes/labels.html">Label(s)</a> used to execute the <span class="mc-variable General.changeset variable">changeset</span>.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>liquibaseInterface</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>The method you used to call <span class="mc-variable General.Liquibase variable">Liquibase</span>, such as the CLI&#160;or a flow file.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>liquibaseVersion</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Version of <span class="mc-variable General.Liquibase variable">Liquibase</span> used to execute the <span class="mc-variable General.changeset variable">changeset</span>.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>md5Sum</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Checksum of the <span class="mc-variable General.changeset variable">changeset</span> when it was executed. Used on each run to ensure there have been no unexpected changes to <span class="mc-variable General.changeset variable">changeset</span>s in the <span class="mc-variable General.changelog variable">changelog</span> file. See <a href="../../concepts/changelogs/changeset-checksums.html" class="MCXref xref">Changeset Checksums</a>.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>outcome</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Description of how the <span class="mc-variable General.changeset variable">changeset</span> was executed. Possible values include <code>EXECUTED</code>, <code>FAILED</code>, <code>SKIPPED</code>, <code>RERAN</code>, and <code>MARK_RAN</code>.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>start</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Timestamp in the user's local timezone that the operation started.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>systemUser</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Name of the system account who initiated the <span class="mc-variable General.Liquibase variable">Liquibase</span> operation.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>tag</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Tracks which <span class="mc-variable General.changeset variable">changeset</span>s correspond to tag operations.</p>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h2><code>diff</code>
+                                            </h2>
+                                            <p>Keys that can appear in a <code><a href="../../commands/inspection/diff.html" class="MCXref xref">diff</a></code> and/or <code><a href="../../commands/inspection/diff-changelog.html" class="MCXref xref">diff-changelog</a></code> structured log:</p>
+                                            <table>
+                                                <col />
+                                                <col />
+                                                <col />
+                                                <thead>
+                                                    <tr>
+                                                        <th>Key</th>
+                                                        <th>Command</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>diffOutcome</code>
+                                                        </td>
+                                                        <td><code>diff</code>
+                                                        </td>
+                                                        <td>Whether the diff was successful</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>diffResultsSummary</code>
+                                                        </td>
+                                                        <td><code>diff</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Diff result info. Contains nested keys:</p>
+                                                            <ul>
+                                                                <li><code>changed</code>
+                                                                    <ul>
+                                                                        <li><code>count</code>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                                <li><code>missing</code>
+                                                                    <ul>
+                                                                        <li><code>count</code>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                                <li><code>unexpected</code>
+                                                                    <ul>
+                                                                        <li><code>count</code>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>format</code>
+                                                        </td>
+                                                        <td><code>diff</code>
+                                                        </td>
+                                                        <td>Value of <code>--format</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>outputFile</code>
+                                                        </td>
+                                                        <td><code>diff</code>
+                                                        </td>
+                                                        <td>Value of <code>--output-file</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>schema</code>
+                                                        </td>
+                                                        <td><code>diff</code>
+                                                        </td>
+                                                        <td>Value of <code>--schemas</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>diffTypes</code>
+                                                        </td>
+                                                        <td><code>diff</code>, <code>diff-changelog</code></td>
+                                                        <td>Value of <code>--diff-types</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>excludeObjects</code>
+                                                        </td>
+                                                        <td><code>diff</code>, <code>diff-changelog</code></td>
+                                                        <td>Value of <code>--exclude-objects</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>includeObjects</code>
+                                                        </td>
+                                                        <td><code>diff</code>, <code>diff-changelog</code></td>
+                                                        <td>Value of <code>--include-objects</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>liquibaseReferenceUrl</code>
+                                                        </td>
+                                                        <td><code>diff</code>, <code>diff-changelog</code></td>
+                                                        <td>Value of <code>--reference-url</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>outputSchemas</code>
+                                                        </td>
+                                                        <td><code>diff</code>, <code>diff-changelog</code></td>
+                                                        <td>Value of <code>--output-schemas</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>referenceDefaultCatalogName</code>
+                                                        </td>
+                                                        <td><code>diff</code>, <code>diff-changelog</code></td>
+                                                        <td>Value of <code>--reference-default-catalog-name</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>referenceDefaultSchemaName</code>
+                                                        </td>
+                                                        <td><code>diff</code>, <code>diff-changelog</code></td>
+                                                        <td>Value of <code>--reference-default-schema-name</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>referenceSchemas</code>
+                                                        </td>
+                                                        <td><code>diff</code>, <code>diff-changelog</code></td>
+                                                        <td>Value of <code>--reference-schemas</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>referenceUsername</code>
+                                                        </td>
+                                                        <td><code>diff</code>, <code>diff-changelog</code></td>
+                                                        <td>Value of <code>--reference-username</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetComment</code>
+                                                        </td>
+                                                        <td><code>diff-changelog</code>
+                                                        </td>
+                                                        <td>Comment applied to <span class="mc-variable General.changeset variable">changeset</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetLabel</code>
+                                                        </td>
+                                                        <td><code>diff-changelog</code>
+                                                        </td>
+                                                        <td>Label applied to <span class="mc-variable General.changeset variable">changeset</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>commandContextFilter</code>
+                                                        </td>
+                                                        <td><code>diff-changelog</code>
+                                                        </td>
+                                                        <td>Value of <code>--context-filter</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>commandLabelFilter</code>
+                                                        </td>
+                                                        <td><code>diff-changelog</code>
+                                                        </td>
+                                                        <td>Value of <code>--label-lilter</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>databaseChangelogSql</code>
+                                                        </td>
+                                                        <td><code>diff-changelog</code>
+                                                        </td>
+                                                        <td>SQL&#160;to update the <span class="mc-variable General.databasechangelog variable">DATABASECHANGELOG</span> table</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>databaseChangelogTableOutcome</code>
+                                                        </td>
+                                                        <td><code>diff-changelog</code>
+                                                        </td>
+                                                        <td>Outcome of update to the <span class="mc-variable General.databasechangelog variable">DATABASECHANGELOG</span> table</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>diffChangelogFile</code>
+                                                        </td>
+                                                        <td><code>diff-changelog</code>
+                                                        </td>
+                                                        <td><code>&lt;path/to/the/generated/changelog&gt;</code>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>includeCatalog</code>
+                                                        </td>
+                                                        <td><code>diff-changelog</code>
+                                                        </td>
+                                                        <td>Value of <code>--include-catalog</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>includeSchema</code>
+                                                        </td>
+                                                        <td><code>diff-changelog</code>
+                                                        </td>
+                                                        <td>Value of <code>--include-schema</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>includeTablespace</code>
+                                                        </td>
+                                                        <td><code>diff-changelog</code>
+                                                        </td>
+                                                        <td>Value of <code>--include-tablespace</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>schemas</code>
+                                                        </td>
+                                                        <td><code>diff-changelog</code>
+                                                        </td>
+                                                        <td>Value of the <code>--schemas</code> property</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h2><code>flow</code>
+                                            </h2>
+                                            <p>Keys that can appear in <span class="mc-variable General.StructuredLog variable">Structured Log</span>s for the <code><a href="../../commands/flow/flow.html" class="MCXref xref">flow</a></code> command:</p>
+                                            <table>
+                                                <col />
+                                                <col />
+                                                <thead>
+                                                    <tr>
+                                                        <th>Key</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>changelogFile</code>
+                                                        </td>
+                                                        <td>The <span class="mc-variable General.changelog variable">changelog</span> file you are using with the <code>flow</code> command</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>commandContextFilter</code>
+                                                        </td>
+                                                        <td>Value of <code>--context-filter</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>commandLabelFilter</code>
+                                                        </td>
+                                                        <td>Value of <code>--label-filter</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>rollbackOnError</code>
+                                                        </td>
+                                                        <td>&#160;</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h2><code>history</code>
+                                            </h2>
+                                            <p>Keys that can appear in a <span class="mc-variable General.StructuredLog variable">Structured Log</span> for the <code><a href="../../commands/change-tracking/history.html" class="MCXref xref">history</a></code> command:</p>
+                                            <table>
+                                                <col />
+                                                <col />
+                                                <thead>
+                                                    <tr>
+                                                        <th>Key</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>changelogPath</code>
+                                                        </td>
+                                                        <td>Path to the <span class="mc-variable General.changelog variable">changelog</span> you are using with the <code>history</code> command</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesets</code>
+                                                        </td>
+                                                        <td>&#160;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>history</code>
+                                                        </td>
+                                                        <td>&#160;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>updateDate</code>
+                                                        </td>
+                                                        <td>Date of last deployment</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h2><code>rollback</code>
+                                            </h2>
+                                            <p>Keys that can appear in a structured log for commands in the <code>rollback*</code> family. For information about the commands, see <a href="../../commands/rollback/rollback-by-tag.html" class="MCXref xref">rollback</a>, <a href="../../commands/rollback/rollback-count.html" class="MCXref xref">rollback-count</a>, <a href="../../commands/rollback/rollback-one-changeset.html" class="MCXref xref">rollback-one-changeset</a>, <a href="../../commands/rollback/rollback-one-update.html" class="MCXref xref">rollback-one-update</a>, and <a href="../../commands/rollback/rollback-to-date.html" class="MCXref xref">rollback-to-date</a>.</p>
+                                            <table>
+                                                <col />
+                                                <col />
+                                                <col />
+                                                <thead>
+                                                    <tr>
+                                                        <th>Key</th>
+                                                        <th>Command</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>changelogFile</code>
+                                                        </td>
+                                                        <td><code>rollback*</code>
+                                                        </td>
+                                                        <td>The <span class="mc-variable General.changelog variable">changelog</span> containing <span class="mc-variable General.changeset variable">changeset</span>s being rolled back</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetComment</code>
+                                                        </td>
+                                                        <td><code>rollback*</code>
+                                                        </td>
+                                                        <td>Comment applied to <span class="mc-variable General.changeset variable">changeset</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetLabel</code>
+                                                        </td>
+                                                        <td><code>rollback*</code>
+                                                        </td>
+                                                        <td>Label applied to <span class="mc-variable General.changeset variable">changeset</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetOperationStart</code>
+                                                        </td>
+                                                        <td><code>rollback*</code>
+                                                        </td>
+                                                        <td>UTC timestamp of operation start. Repeats in every  <span class="mc-variable General.changeset variable">changeset</span> log message</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetOperationStop</code>
+                                                        </td>
+                                                        <td><code>rollback*</code>
+                                                        </td>
+                                                        <td>UTC timestamp of operation end. Repeats in every  <span class="mc-variable General.changeset variable">changeset</span> log message</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetOutcome</code>
+                                                        </td>
+                                                        <td><code>rollback*</code>
+                                                        </td>
+                                                        <td>Individual <span class="mc-variable General.changeset variable">changeset</span> outcomes</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetSql</code>
+                                                        </td>
+                                                        <td><code>rollback*</code>
+                                                        </td>
+                                                        <td>Generated/executed SQL</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetsRolledBack</code>
+                                                        </td>
+                                                        <td><code>rollback*</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>The <span class="mc-variable General.changeset variable">changeset</span>s that were rolled back. Contains nested keys:</p>
+                                                            <ul>
+                                                                <li><code>changesetCount</code>
+                                                                </li>
+                                                                <li><code>changeset</code>
+                                                                    <ul>
+                                                                        <li><code>changesetAuthor</code>
+                                                                        </li>
+                                                                        <li><code>changesetFilepath</code>
+                                                                        </li>
+                                                                        <li><code>changesetId</code>
+                                                                        </li>
+                                                                        <li><code>changesetOutcome</code>
+                                                                        </li>
+                                                                        <li><code>deploymentId</code>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>commandContextFilter</code>
+                                                        </td>
+                                                        <td><code>rollback*</code>
+                                                        </td>
+                                                        <td>Value of <code>--context-filter</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>commandLabelFilter</code>
+                                                        </td>
+                                                        <td><code>rollback*</code>
+                                                        </td>
+                                                        <td>Value of <code>--label-filter</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>databaseChangelogSql</code>
+                                                        </td>
+                                                        <td><code>rollback*</code>
+                                                        </td>
+                                                        <td>SQL&#160;to update the <span class="mc-variable General.databasechangelog variable">DATABASECHANGELOG</span> table</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>databaseChangelogTableOutcome</code>
+                                                        </td>
+                                                        <td><code>rollback*</code>
+                                                        </td>
+                                                        <td>Outcome of update to the <span class="mc-variable General.databasechangelog variable">DATABASECHANGELOG</span> table</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>rollbackCount</code>
+                                                        </td>
+                                                        <td><code>rollback-count</code>
+                                                        </td>
+                                                        <td>Value of <code>--count</code> in <code>rollback-count</code> logs only</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>rollbackDate</code>
+                                                        </td>
+                                                        <td><code>rollback-to-date</code>
+                                                        </td>
+                                                        <td>Value of <code>--date</code> in <code>rollback-date</code> logs only</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>rollbackOneChangesetForce</code>
+                                                        </td>
+                                                        <td><code>rollback-one-changeset</code>
+                                                        </td>
+                                                        <td>Value of <code>--force</code> in <code>rollback-one-changeset</code> logs only</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>rollbackOneUpdateForce</code>
+                                                        </td>
+                                                        <td><code>rollback-one-update</code>
+                                                        </td>
+                                                        <td>Value of <code>--force</code> in <code>rollback-one-update</code> logs only</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>rollbackScript</code>
+                                                        </td>
+                                                        <td><code>rollback*</code>
+                                                        </td>
+                                                        <td>Value of <code>--rollback-script</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>rollbackToTag</code>
+                                                        </td>
+                                                        <td><code>rollback</code>
+                                                        </td>
+                                                        <td>Value of <code>--tag</code></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h2><code>status</code>
+                                            </h2>
+                                            <p>Keys that can appear in a <span class="mc-variable General.StructuredLog variable">Structured Log</span> for the <code><a href="../../commands/change-tracking/status.html" class="MCXref xref">status</a></code> command:</p>
+                                            <table>
+                                                <col />
+                                                <col />
+                                                <thead>
+                                                    <tr>
+                                                        <th>Key</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>changelogFile</code>
+                                                        </td>
+                                                        <td>The <span class="mc-variable General.changelog variable">changelog</span> potentially containing undeployed<span class="mc-variable General.changeset variable">changeset</span>s</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>commandContextFilter</code>
+                                                        </td>
+                                                        <td>Value of <code>--context-filter</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>commandLabelFilter</code>
+                                                        </td>
+                                                        <td>Value of <code>--label-filter</code></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h2><code>update</code>
+                                            </h2>
+                                            <p>Keys that can appear in structured log for commands in the <code>update*</code> family. For information about the commands, see <a href="../../commands/update/update.html" class="MCXref xref">update</a>, <a href="../../commands/update/update-count.html" class="MCXref xref">update-count</a>, <a href="../../commands/update/update-one-changeset.html" class="MCXref xref">update-one-changeset</a>, <a href="../../commands/update/update-testing-rollback.html" class="MCXref xref">update-testing-rollback</a>, and <a href="../../commands/update/update-to-tag.html" class="MCXref xref">update-to-tag</a>.</p>
+                                            <table>
+                                                <col />
+                                                <col />
+                                                <col />
+                                                <thead>
+                                                    <tr>
+                                                        <th>Key</th>
+                                                        <th>Command</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>changelogFile</code>
+                                                        </td>
+                                                        <td><code>update*</code>
+                                                        </td>
+                                                        <td>The <span class="mc-variable General.changelog variable">changelog</span> containing <span class="mc-variable General.changeset variable">changeset</span>s being deployed</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetComment</code>
+                                                        </td>
+                                                        <td><code>update*</code>
+                                                        </td>
+                                                        <td>Comment applied to <span class="mc-variable General.changeset variable">changeset</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetLabel</code>
+                                                        </td>
+                                                        <td><code>update*</code>
+                                                        </td>
+                                                        <td>Label applied to <span class="mc-variable General.changeset variable">changeset</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetOperationStart</code>
+                                                        </td>
+                                                        <td><code>update*</code>
+                                                        </td>
+                                                        <td>UTC timestamp of operation start. Repeats in every  <span class="mc-variable General.changeset variable">changeset</span> log message</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetOperationStop</code>
+                                                        </td>
+                                                        <td><code>update*</code>
+                                                        </td>
+                                                        <td>UTC timestamp of operation end. Repeats in every  <span class="mc-variable General.changeset variable">changeset</span> log message</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetSql</code>
+                                                        </td>
+                                                        <td><code>update*</code>
+                                                        </td>
+                                                        <td>Generated/executed SQL</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changesetsUpdated</code>
+                                                        </td>
+                                                        <td><code>update*</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>The <span class="mc-variable General.changeset variable">changeset</span>s that were updated. Contains nested keys:</p>
+                                                            <ul>
+                                                                <li><code>changesetCount</code>
+                                                                </li>
+                                                                <li><code>changeset</code>
+                                                                    <ul>
+                                                                        <li><code>changesetAuthor</code>
+                                                                        </li>
+                                                                        <li><code>changesetFilepath</code>
+                                                                        </li>
+                                                                        <li><code>changesetId</code>
+                                                                        </li>
+                                                                        <li><code>changesetOutcome</code>
+                                                                        </li>
+                                                                        <li><code>deploymentId</code>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>commandContextFilter</code>
+                                                        </td>
+                                                        <td><code>update*</code>
+                                                        </td>
+                                                        <td>Value of <code>--context-filter</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>commandLabelFilter</code>
+                                                        </td>
+                                                        <td><code>update*</code>
+                                                        </td>
+                                                        <td>Value of <code>--label-filter</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>databaseChangelogSql</code>
+                                                        </td>
+                                                        <td><code>update*</code>
+                                                        </td>
+                                                        <td>SQL&#160;to update the <span class="mc-variable General.databasechangelog variable">DATABASECHANGELOG</span> table</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>databaseChangelogTableOutcome</code>
+                                                        </td>
+                                                        <td><code>update*</code>
+                                                        </td>
+                                                        <td>Outcome of update to the <span class="mc-variable General.databasechangelog variable">DATABASECHANGELOG</span> table</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>rollbackOnError</code>
+                                                        </td>
+                                                        <td><code>update*</code>
+                                                        </td>
+                                                        <td>Value of <code>--rollback-on-error</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>updateSummary</code>
+                                                        </td>
+                                                        <td><code>update*</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Only if <code>--show-summary=summary</code>. Contains nested keys:</p>
+                                                            <ul>
+                                                                <li><code>value</code>
+                                                                </li>
+                                                                <li><code>run</code>
+                                                                </li>
+                                                                <li><code>runPreviously</code>
+                                                                </li>
+                                                                <li><code>skipped</code>
+                                                                    <ul>
+                                                                        <li><code>dbmsUnknown</code>
+                                                                        </li>
+                                                                        <li><code>labels</code>
+                                                                        </li>
+                                                                        <li><code>context</code>
+                                                                        </li>
+                                                                        <li><code>totalSkipped</code>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                                <li><code>totalChangesets</code>
+                                                                </li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h2><code>version</code>
+                                            </h2>
+                                            <p>Keys that can appear in a <span class="mc-variable General.StructuredLog variable">Structured Log</span> for the <code>version</code> global argument:</p>
+                                            <table style="width: 100%; margin-left: auto; margin-right: auto;">
+                                                <col />
+                                                <col />
+                                                <thead>
+                                                    <tr>
+                                                        <th>Key</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>javaHome</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Contains nested keys:</p>
+                                                            <ul>
+                                                                <li><code>path</code>
+                                                                </li>
+                                                                <li><code>version</code>
+                                                                </li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>liquibaseLibraries</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Contains nested keys:</p>
+                                                            <p><code>libraries</code>
+                                                                <ul>
+                                                                    <li><code>"name": "Apache Commons Collections",<br />"path": "internal/lib/commons-collections4.jar"</code>
+                                                                    </li>
+                                                                    <li><code>"name": "Apache Commons Lang",<br />"path": "internal/lib/commons-lang3.jar"</code>
+                                                                    </li>
+                                                                    <li><code>"name": "Apache Commons Text",<br />"path": "internal/lib/commons-text.jar"</code>
+                                                                    </li>
+                                                                    <li><code>"name": "H2 Database Engine",<br></br>"path": "internal/lib/h2.jar"</code>
+                                                                    </li>
+                                                                    <li><code>"name": "HSQLDB",<br></br>"path": "internal/lib/hsqldb.jar"</code>
+                                                                    </li>
+                                                                    <li><code>"name": "jaxb-api",<br></br>"path": "internal/lib/jaxb-api.jar"</code>
+                                                                    </li>
+                                                                    <li><code>"name": "JAXB Core",<br></br>"path": "internal/lib/jaxb-core.jar"</code>
+                                                                    </li>
+                                                                    <li><code>"name": "JAXB Runtime",<br></br>"path": "internal/lib/jaxb-runtime.jar"</code>
+                                                                    </li>
+                                                                    <li><code>"name": "Jaybird",<br></br>"path": "internal/lib/jaybird.jar"</code>
+                                                                    </li>
+                                                                    <li><code>"name": "IBM JCC JDBC 4 Driver",<br></br>"path": "internal/lib/jcc.jar"</code>
+                                                                        <br />
+                                                                    </li>
+                                                                    <li><code>"name": "Commercial Liquibase Functionality",<br></br>"path": "internal/lib/liquibase-commercial.jar"</code>
+                                                                    </li>
+                                                                    <li><code>"name": "mariadb-java-client",<br></br>"path": "internal/lib/mariadb-java-client.jar"</code>
+                                                                    </li>
+                                                                    <li><code>"name": "Microsoft JDBC Driver for SQL Server",<br></br>"path": "internal/lib/mssql-jdbc.jar"</code>
+                                                                    </li>
+                                                                    <li><code>"name": "JDBC",<br></br>"path": "internal/lib/ojdbc8.jar"</code>
+                                                                        <br />
+                                                                    </li>
+                                                                    <li><code>"name": "opencsv",<br></br>"path": "internal/lib/opencsv.jar"</code>
+                                                                    </li>
+                                                                    <li><code>"name": "picocli",<br></br>"path": "internal/lib/picocli.jar"</code>
+                                                                    </li>
+                                                                    <li><code>"name": "PostgreSQL JDBC Driver",<br></br>"path": "internal/lib/postgresql.jar"</code>
+                                                                    </li>
+                                                                    <li><code>"name": "SnakeYAML",<br></br>"path": "internal/lib/snakeyaml.jar"</code>
+                                                                        <br />
+                                                                    </li>
+                                                                    <li><code>"name": "snowflake-jdbc",<br></br>"path": "internal/lib/snowflake-jdbc.jar"</code>
+                                                                    </li>
+                                                                    <li><code>"name": "SQLite JDBC",<br></br>"path": "internal/lib/sqlite-jdbc.jar"</code>
+                                                                    </li>
+                                                                </ul>
+                                                            </p>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <!-- UserSnap Scripts -->
+                                    <!-- Feedback Button -->
+                                    <script>/* <![CDATA[ */ <!--type="text/javascript"-->
+				window.onUsersnapCXLoad = function(api) {
+				api.init();
+				}
+				var script = document.createElement('script');
+				script.defer = 1;
+				script.src = 'https://widget.usersnap.com/global/load/632b7a0e-ba7b-4613-ab8a-a34d8edf1097?onload=onUsersnapCXLoad';
+				document.getElementsByTagName('head')[0].appendChild(script);
+		/* ]]> */</script>
+                                    <!-- End Feedback Button -->
+                                    <!-- Ratings -->
+                                    <div id="widgetContainer" style="align: center;text-align: center;">
+                                    </div>
+                                    <script>/* <![CDATA[ */
+			window.onUsersnapCXLoad = function(api) {
+			// mountNode is an element in which the widget should be rendered
+			api.init({ mountNode: document.getElementById('widgetContainer') });
+			}
+			var script = document.createElement('script');
+			script.defer = 1;
+			script.src = 'https://widget.usersnap.com/embed/load/7df92c7d-5c25-4d1e-827a-75f186914119?onload=onUsersnapCXLoad';
+			document.getElementsByTagName('head')[0].appendChild(script);
+		/* ]]> */</script>
+                                    <!-- End Ratins -->
+                                    <!-- End UserSnap Scripts -->
+                                    <!-- Start Glide Footer -->
+                                    <footer class="glide">
+                                        <div class="footer-container">
+                                            <div class="footer-wrapper">
+                                                <div class="footer-left-widget">
+                                                    <div class="footer-form-widget">
+                                                        <div class="widget-inner">
+                                                            <div class="footer-logo"><a href="https://www.liquibase.com"><img src="../../z_resources/images/glide/logo-white.svg" alt="" /></a>
+                                                            </div>
+                                                            <div class="footer-socials"><a href="https://twitter.com/liquibase" class="f-twitter" target="_blank"></a><a href="https://github.com/liquibase/liquibase" class="f-github" target="_blank"></a><a href="https://www.reddit.com/r/liquibase/" class="f-reddit" target="_blank"></a><a href="https://www.linkedin.com/company/liquibase" class="f-linkedin" target="_blank"></a><a href="https://www.youtube.com/channel/UC5qMsRjObu685rTBq0PJX8w" class="f-youtube" target="_blank"></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="footer-widgets">
+                                                    <div class="footer-widget">
+                                                        <h4>Products</h4>
+                                                        <div class="menu-column-two-menu-container">
+                                                            <ul id="menu-column-two-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-15659"><a href="https://www.liquibase.com/pricing">Pricing</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-906"><a href="https://www.liquibase.com/pricing/pro">Liquibase Pro</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15600"><a target="_blank" rel="noopener" href="https://www.liquibase.org/download">Liquibase Open Source</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Solutions</h4>
+                                                        <div class="menu-column-three-menu-container">
+                                                            <ul id="menu-column-three-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-908"><a href="https://www.liquibase.com/ci-cd">CI/CD</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/compliance">Compliance</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/devsecops">DevSecOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/financial-services">Financial Services</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/gitops-database">GitOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/public-sector">Public Sector</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-907"><a href="https://www.liquibase.com/version-control">Version Control</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Resources</h4>
+                                                        <div class="menu-column-four-menu-container">
+                                                            <ul id="menu-column-four-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-916"><a href="https://www.liquibase.com/blog">Blog</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15471"><a href="https://www.liquibase.com/resources">Resource Library</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-resource_category menu-item-914"><a href="https://www.liquibase.com/resources/guides">Guides</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14975"><a href="../../index.html">Documentation</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-917"><a href="https://www.liquibase.com/support">Support</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom last-menu-item menu-item-15215"><a target="_blank" rel="noopener noreferrer" href="https://learn.liquibase.com/index">Training</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Company</h4>
+                                                        <div class="menu-column-five-menu-container">
+                                                            <ul id="menu-column-five-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-1176"><a href="https://www.liquibase.com/company">Company</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1177"><a href="https://www.liquibase.com/company/leadership">Leadership</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1070"><a href="https://www.liquibase.com/company/careers">Careers</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1071"><a href="https://www.liquibase.com/partners">Partners</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15024"><a href="https://www.liquibase.com/category/press-releases">News</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-1178"><a href="https://www.liquibase.com/contact">Contact</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                    <div class="footer-bottom">
+                                                        <div class="copyright">
+                                                            <p><span class="mc-variable General.copyright variable">© 2023 Liquibase Inc.  All Rights Reserved. 
+Liquibase is a registered trademark of Liquibase Inc.</span>
+                                                                <br /><span class="mc-variable General.PhoneNumber variable">(737) 402-7187</span>
+                                                            </p>
+                                                        </div>
+                                                        <div class="footer-menu">
+                                                            <div class="menu-footer-menu-container">
+                                                                <ul id="menu-footer-menu">
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-privacy-policy first-menu-item menu-item-902"><a href="https://www.liquibase.com/privacy-policy">Privacy Policy</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-901"><a href="https://www.liquibase.com/terms-of-use">Terms of Use</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-14933"><a href="https://www.liquibase.com/eula">EULA</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                </div>
+                                                <div class="clear">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </footer>
+                                    <!-- This script is necessary to relocate the footer so that it maintains 100% width -->
+                                    <!--       <script type="text/javascript">/*<![CDATA[*/$(document).ready(function(){ $("footer").appendTo("div.off-canvas-content.inner-wrap"); });/*]]>*/</script> -->
+                                    <!-- End Glide Footer -->
+                                </div>
+                            </div>
+                        </div>
+                    </div><a data-close="true"></a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

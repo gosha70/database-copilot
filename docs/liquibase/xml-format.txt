@@ -1,0 +1,140 @@
+Example Changelogs: XML Format
+Skip To Main Content
+Account
+Settings
+Logout
+placeholder
+Account
+Settings
+Logout
+You are here:
+Example Changelogs: XML Format
+Liquibase supports XML as a format for storing your Changelog files. There is more information about the XML format in the FAQ.
+XSD support
+XML Schema Definitions (XSDs) are available for each Liquibase version. However, if you use the earliest versions of XSD files, any new features that require new XML tags will not be available. Since there are no changelog format changes in patch versions, there are only XSD files that correspond to major.minor versions.
+Tip: See the XML Schema Definitions topic for more information.
+Liquibase contains XSD files locally and does not need to retrieve them from the internet to validate your XML. If you use custom XSD files in your changelog, Liquibase needs to download them to validate XML. By default, Liquibase does not automatically download non-local XSD files. To change this behavior, set the liquibase.secureParsing parameter to false in the Liquibase properties file, in the CLI, with JAVA_OPTS, or as an environment variable. For more information, see Working with Command Parameters.
+Alternatively, add your custom XSD to a JAR in Liquibase's classpath using the format <hostname>/<path>. For example, if your XSD has the location https://<hostname>.com/<path>/changelog.xsd, store your XSD JAR in the path /<hostname>.com/<path>/changelog.xsd.
+To disable XSD validation for your changelogs, set the validate-xml-changelog-files parameter to false.
+Liquibase extension XSDs
+If you use a Liquibase extension that includes additional change tags, check the extension documentation to find out if they provide a XSD.
+If they do not, you can use the XSD at dbchangelog-ext.xsd which allows any nested tag and attribute.
+Example
+This example changelog contains changesets that:
+Create a new person table with columns id, firstname, lastname, and state
+Add a new username column to the person table
+Create a lookup table state using data from person
+The example precondition requires the user making the deployment to be liquibase.<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+http://www.liquibase.org/xml/ns/dbchangelog-ext
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+http://www.liquibase.org/xml/ns/pro
+http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+<preConditions>
+<runningAs
+username="liquibase"/>
+</preConditions>
+<changeSet
+id="1"
+author="nvoxland">
+<createTable
+tableName="person">
+<column
+name="id"
+type="int"
+autoIncrement="true">
+<constraints
+primaryKey="true"
+nullable="false"/>
+</column>
+<column
+name="firstname"
+type="varchar(50)"/>
+<column
+name="lastname"
+type="varchar(50)">
+<constraints
+nullable="false"/>
+</column>
+<column
+name="state"
+type="char(2)"/>
+</createTable>
+</changeSet>
+<changeSet
+id="2"
+author="nvoxland">
+<addColumn
+tableName="person">
+<column
+name="username"
+type="varchar(8)"/>
+</addColumn>
+</changeSet>
+<changeSet
+id="3"
+author="nvoxland">
+<addLookupTable
+existingTableName="person"
+existingColumnName="state"
+newTableName="state"
+newColumnName="id"
+newColumnDataType="char(2)"/>
+</changeSet>
+</databaseChangeLog>
+Tip: You can add XML comments outside changesets using the format <!-- my comment -->.
+Related Links
+Customize generated SQL from an XML changeset
+Introduction to Liquibase
+Changelog
+Changeset
+Changelog Attributes
+Change Types
+Liquibase Commands
+Editions & Features
+Editions & Features
+Liquibase Open Source
+Liquibase Pro
+Solutions
+CI/CD
+Compliance
+DevSecOps
+GitOps
+Version Control
+Financial Services
+Resources
+Blog
+Best Practice Guides
+Resource Library
+Documentation
+University
+Community
+Meetup/Events
+Support
+Community
+Contributors
+Contribute Code
+Share Expertise
+Advocate
+Support
+Liquibase Legends
+Liquibase Badges
+Contact
+Company
+Company
+Careers
+Leadership
+Contact
+Â© 2025 Liquibase Inc.
+All Rights Reserved.
+Liquibase is a registered trademark of Liquibase Inc.
+(737) 402-7187
+Privacy Policy
+Terms of Use
+EULA

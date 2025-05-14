@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" class="_Skins_oss_pro" data-mc-search-type="Stem" data-mc-help-system-file-name="Default.xml" data-mc-path-to-help-system="../../" data-mc-has-content-body="True" data-mc-toc-path="Commands|Utility" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic;Default" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-searchable="False">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="msapplication-config" content="../../Skins/Favicons/browserconfig.xml" />
+        <meta name="description" content="Reference information and use cases for the set-labels command. The set-labels command sets or replaces labels on your changesets at runtime using your command line." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../Skins/Favicons/favicon-16x16.png" /><title>set-labels</title>
+        <!-- Google GA4 tag (gtag.js) -->
+        <!-- End Google GA4 tag -->
+        <!-- Google Tag Manager -->
+        <!-- End Google Tag Manager -->
+        <!-- Prism Highlighting -->
+        <!-- End Prism Highlighting -->
+        <!-- Tabs for code examples -->
+        <!--End tabs for code examples -->
+        <link href="../../Skins/Default/Stylesheets/Slideshow.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="https://docs.liquibase.com/Skins/Fluid/Stylesheets/MadCapSearch.Google.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Print.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/foundation.6.2.3.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/print.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link rel="stylesheet" href="../../z_resources/stylesheets/glidestyles.css" type="text/css" media="all" />
+        <link href="../../z_resources/stylesheets/styles.css" rel="stylesheet" type="text/css" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../Skins/Favicons/favicon-16x16.png" />
+        <link rel="canonical" href="set-labels.html" />
+        <script src="../../resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../resources/Scripts/purify.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/require.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/require.config.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/foundation.6.2.3_custom.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/plugins.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/MadCapAll.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=G-GJFFQKWLLX">
+        </script>
+        <script>/* <![CDATA[ */
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());  gtag('config', 'G-GJFFQKWLLX');
+		/* ]]> */</script>
+        <script>/* <![CDATA[ */(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&amp;l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-NTCPFS9');/* ]]> */</script>
+        <script type="text/javascript" src="../../z_resources/scripts/prism.js"> </script>
+        <script type="application/javascript" src="../../z_resources/scripts/jquery-accessible-tabs-ktc.js"> </script>
+    </head>
+    <body>
+        <div class="foundation-wrap off-canvas-wrapper">
+            <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper="">
+                <aside class="off-canvas position-right" role="navigation" id="offCanvas" data-off-canvas="" data-position="right" data-mc-ignore="true">
+                    <ul class="off-canvas-accordion vertical menu off-canvas-list" data-accordion-menu="" data-mc-back-link="Back" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="True" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True">
+                    </ul>
+                </aside>
+                <div class="off-canvas-content inner-wrap" data-off-canvas-content="">
+                    <div data-sticky-container="" class="title-bar-container">
+                        <nav class="title-bar tab-bar sticky" role="banner" data-sticky="" data-options="marginTop:0" style="width:100%" data-sticky-on="only screen and (max-width: 1279px)" data-mc-ignore="true"><a class="skip-to-content fluid-skip showOnFocus" href="#">Skip To Main Content</a>
+                            <div class="middle title-bar-section outer-row clearfix">
+                                <div class="menu-icon-container relative clearfix">
+                                    <div class="central-account-wrapper">
+                                        <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                            <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                                <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="menu-icon" aria-label="Show Navigation Panel" data-toggle="offCanvas"><span></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="title-bar-layout outer-row">
+                                <div class="logo-wrapper"><a class="logo" href="../../home.html" alt="Logo"></a>
+                                </div>
+                                <div class="navigation-wrapper nocontent">
+                                    <ul class="navigation clearfix" role="navigation" data-mc-css-tree-node-has-children="has-children" data-mc-css-sub-menu="sub-menu" data-mc-expand-event="mouseenter" data-mc-top-nav-menu="True" data-mc-max-depth="5" data-mc-include-icon="False" data-mc-include-indicator="False" data-mc-include-children="True" data-mc-include-siblings="True" data-mc-include-parent="True" data-mc-toc="True">
+                                        <li class="placeholder" style="visibility:hidden"><a>placeholder</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="central-account-wrapper">
+                                    <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                        <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                            <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="nav-search-wrapper">
+                                    <div class="nav-search row">
+                                        <form>
+                                            <div id="EaZl7IMMdkOxEcTqrymc2g" class="search-bar search-bar-container needs-pie">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="main-section">
+                        <div class="row outer-row sidenav-layout">
+                            <nav class="sidenav-wrapper">
+                                <div class="sidenav-container">
+                                    <ul class="off-canvas-accordion vertical menu sidenav" data-accordion-menu="" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu accordion-menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="False" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True" data-mc-side-nav-menu="True">
+                                    </ul>
+                                </div>
+                            </nav>
+                            <div class="body-container">
+                                <div data-mc-content-body="True">
+                                    <!-- Google Tag Manager (noscript) -->
+                                    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTCPFS9" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+                                    </noscript>
+                                    <!-- End Google Tag Manager (noscript) -->
+                                    <div class="side-content">
+                                        <form>
+                                            <div id="Vsh7lRISuEaTb50KbYCexg" class="search-bar search-bar-container needs-pie _Skins_Topics_Searchbar mc-component">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="nocontent">
+                                        <div class="MCBreadcrumbsBox_0 breadcrumbs" role="navigation" aria-label="Breadcrumbs" data-mc-breadcrumbs-divider=" &gt; " data-mc-breadcrumbs-count="3" data-mc-toc="True"><span class="MCBreadcrumbsPrefix">You are here: </span>
+                                        </div>
+                                    </div>
+                                    <!--<div>  class="topic-layout"-->
+                                    <!--AV 2023-09-13: removing duplicate nav after switch to sidenav
+		<div style="float:left; margin-right: 20px; margin-left:20px; margin-bottom: 15px;"> <MadCap:menuProxy data-mc-skin="/Project/Skins/Topics-Menu.flskn" style="mc-context-sensitive: True;mc-include-parent: True;mc-include-siblings: True;mc-include-children: True;" mc-linked-toc="/Project/TOCs/TOC.fltoc" /></div>-->
+                                    <div class="liquibase-docs-body">
+                                        <div role="main" id="mc-main-content">
+                                            <h1><code>set-labels</code>
+                                            </h1>
+                                            <p><a href="https://www.liquibase.com/trial"><img src="../../z_resources/images/logos/pro-button_32x18.jpg" class="ver_icon_size" title="This feature is part of Liquibase Pro and requires a Liquibase Pro license key" style="width: 32;height: 18;" /></a>
+                                            </p>
+                                            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>This is a <span class="mc-variable General.LBPro variable">Liquibase Pro</span> feature, so you need a <a href="../../workflows/liquibase-pro/how-to-apply-your-liquibase-pro-license-key.html" target="_blank"><span class="mc-variable General.LBPro variable">Liquibase Pro</span> License Key</a> to use it.</p>
+                                            <p>The <code data-mc-conditions="command-set-contexts-set-labels.labels">set-labels</code> command sets or replaces <MadCap:conditionalText data-mc-conditions="command-set-contexts-set-labels.labels"><a href="../../concepts/changelogs/attributes/labels.html">labels</a></MadCap:conditionalText> on your <span class="mc-variable General.changeset variable">changeset</span>s <b>using your command line</b>. This is an alternative to setting <MadCap:conditionalText data-mc-conditions="command-set-contexts-set-labels.labels">labels</MadCap:conditionalText>&#160;<b>directly in your <span class="mc-variable General.changelog variable">changelog</span></b>.</p>
+                                            <p>You can choose which <span class="mc-variable General.changeset variable">changeset</span>s to target by specifying a <span class="mc-variable General.changeset variable">changeset</span> author, ID, path, or an existing context or label filter.</p>
+                                            <p>The command works with any SQL, XML, YAML, or JSON&#160;<span class="mc-variable General.changelog variable">changelog</span>. It also works with multiple <span class="mc-variable General.changelog variable">changelog</span>s specified with the <code><a href="../../change-types/include.html" class="MCXref xref">include</a></code> or <code><a href="../../change-types/includeall.html" class="MCXref xref">includeAll</a></code> tags.  <code data-mc-conditions="command-set-contexts-set-labels.labels">set-labels</code> is available in <span class="mc-variable General.Liquibase variable">Liquibase</span> 4.23.1+.</p>
+                                            <h2>Uses</h2>
+                                            <p>If you need to apply <MadCap:conditionalText data-mc-conditions="command-set-contexts-set-labels.labels">labels</MadCap:conditionalText> to many <span class="mc-variable General.changeset variable">changeset</span>s, manually inserting them into your <span class="mc-variable General.changelog variable">changelog</span> is slow and can lead to errors. Instead, <b>use <code data-mc-conditions="command-set-contexts-set-labels.labels">set-labels</code> to quickly add or replace <MadCap:conditionalText data-mc-conditions="command-set-contexts-set-labels.labels">labels</MadCap:conditionalText> in bulk</b>.</p>
+                                            <p>By default, <span class="mc-variable General.Liquibase variable">Liquibase</span> appends any <MadCap:conditionalText data-mc-conditions="command-set-contexts-set-labels.labels">labels</MadCap:conditionalText> you specify with <code data-mc-conditions="command-set-contexts-set-labels.labels">set-labels</code> to the list of <MadCap:conditionalText data-mc-conditions="command-set-contexts-set-labels.labels">labels</MadCap:conditionalText> already on your <span class="mc-variable General.changeset variable">changeset</span>s. However, if you set <code>--force-replace</code> to <code>true</code>, <span class="mc-variable General.Liquibase variable">Liquibase</span> drops existing <MadCap:conditionalText data-mc-conditions="command-set-contexts-set-labels.labels">labels</MadCap:conditionalText> before adding the new ones.</p>
+                                            <p>The command is also useful if you want to standardize multiple similar <MadCap:conditionalText data-mc-conditions="command-set-contexts-set-labels.labels">labels</MadCap:conditionalText> or replace deprecated ones. You can specify command arguments to control the formatting <span class="mc-variable General.Liquibase variable">Liquibase</span> uses when it inserts the <MadCap:conditionalText data-mc-conditions="command-set-contexts-set-labels.labels">labels</MadCap:conditionalText> into your <span class="mc-variable General.changelog variable">changelog</span>.</p>
+                                            <p>After setting your <MadCap:conditionalText data-mc-conditions="command-set-contexts-set-labels.labels">labels</MadCap:conditionalText> with <code data-mc-conditions="command-set-contexts-set-labels.labels">set-labels</code>, you can deploy your changes with the <code><a href="../update/update.html" class="MCXref xref">update</a></code> command. While deploying, specify the <code data-mc-conditions="command-set-contexts-set-labels.labels">--<a href="../../concepts/changelogs/attributes/labels.html">labels</a></code> command argument to control which <span class="mc-variable General.changeset variable">changeset</span>s are run.</p>
+                                            <h2>Syntax</h2>
+                                            <p>To run the <code data-mc-conditions="command-set-contexts-set-labels.labels">set-labels</code> command, specify the driver, classpath, and URL in <span class="mc-variable General.Liquibase variable">Liquibase</span> properties file. For more information, see <a href="../../concepts/connections/creating-config-properties.html" class="MCXref xref">Create and Configure a liquibase.properties File</a>. You can also specify these properties in your command line.</p>
+                                            <p>Then run the <code data-mc-conditions="command-set-contexts-set-labels.labels">set-labels</code> command:</p><pre><code class="language-text">liquibase set-<MadCap:conditionalText data-mc-conditions="command-set-contexts-set-labels.labels">labels</MadCap:conditionalText> --changelog-file=example-changelog.xml --set-as=dev,test</code></pre>
+                                            <p>For example, targeting <span class="mc-variable General.changeset variable">changeset</span>s by author and existing label filter:</p><pre xml:space="preserve"><code class="language-text">liquibase set-<MadCap:conditionalText data-mc-conditions="command-set-contexts-set-labels.labels">labels</MadCap:conditionalText>
+    --set-as=<MadCap:conditionalText data-mc-conditions="command-set-contexts-set-labels.labels">rel-02-final</MadCap:conditionalText>
+    --changelog-file=release-02.sql
+    --changeset-author="bob"
+    --label-filter="rel-02"</code></pre>
+                                            <p>Replacing existing <MadCap:conditionalText data-mc-conditions="command-set-contexts-set-labels.labels">labels</MadCap:conditionalText> with <code>--force-replace</code> instead of appending them:</p><pre xml:space="preserve"><code class="language-text">liquibase set-<MadCap:conditionalText data-mc-conditions="command-set-contexts-set-labels.labels">labels</MadCap:conditionalText>
+    --set-as=<MadCap:conditionalText data-mc-conditions="command-set-contexts-set-labels.labels">rel-02-final</MadCap:conditionalText>
+    --changelog-file=release-02.sql
+    --changeset-author="bob"
+    --context-filter="dev,uat,stage"
+    --label-filter="rel-02"
+    --force-replace=true</code></pre>
+                                            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>Even though you're setting <MadCap:conditionalText data-mc-conditions="command-set-contexts-set-labels.labels">labels</MadCap:conditionalText> with this command, you can still target <span class="mc-variable General.changeset variable">changeset</span>s using both <code>context-filter</code> and <code>label-filter</code>.</p>
+                                            <h2>Global arguments</h2>
+                                            <p class="tip" data-mc-autonum="&lt;b&gt;Tip: &lt;/b&gt;"><span class="autonumber"><span><b>Tip: </b></span></span>For best results, specify all commands and parameters in the <code>--kebab-case</code> format in the CLI. If your preference is camelCase, it also works in the CLI.</p>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th>Definition</th>
+                                                        <th>Requirements</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>--license-key</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Your <span class="mc-variable General.LBPro variable">Liquibase Pro</span> license key</p>
+                                                        </td>
+                                                        <td style="font-weight: normal;"><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h2>Command arguments</h2>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th>Definition</th>
+                                                        <th>Requirements</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>--changelog-file</code>
+                                                        </td>
+                                                        <td>
+                                                            <p data-mc-conditions="command-changelog-file.root-changelog">The root <span class="mc-variable General.changelog variable">changelog</span></p>
+                                                        </td>
+                                                        <td style="font-weight: normal;"><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>--set-as</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Specifies the context(s)/label(s) to apply to the <span class="mc-variable General.changeset variable">changeset</span>s you select. Case-insensitive. Separate multiple values with commas (equivalent to <code>OR</code>) or the <code>AND</code>&#160;operator. If you use a space between multiple values, you must surround the entire string with quotes. Otherwise, quotes are optional. For example, <code>--set-as=dev</code>, <code>--set-as="(\!dev and test)" or qa</code>,  and <code>--set-as="dev, test"</code> are all valid. User-supplied regular expressions are not supported, but you can use <code>*</code>&#160;as a wildcard.</p>
+                                                        </td>
+                                                        <td style="font-weight: normal;"><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>--changeset-author</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>The name of the author for the <span class="mc-variable General.changeset variable">changeset</span>. Supports <code>*</code> as a wildcard.</p>
+                                                        </td>
+                                                        <td style="font-weight: normal;">Optional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>--changeset-id</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>The <span class="mc-variable General.changeset variable">changeset</span> ID from the <span class="mc-variable General.changelog variable">changelog</span>.</p>
+                                                        </td>
+                                                        <td style="font-weight: normal;">Optional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>--changeset-path</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>The path to the <span class="mc-variable General.changelog variable">changelog</span> containing the <span class="mc-variable General.changeset variable">changeset</span> you want to roll back.</p>
+                                                        </td>
+                                                        <td style="font-weight: normal;">Optional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>--context-filter</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Specifies the <span class="mc-variable General.changeset variable">changeset</span> contexts to match. <a href="../../concepts/changelogs/attributes/contexts.html" class="MCXref xref">Contexts</a>  are tags you can add to <span class="mc-variable General.changeset variable">changeset</span>s to control which <span class="mc-variable General.changeset variable">changeset</span>s are executed in any particular migration run.</p>
+                                                            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>If you use <span class="mc-variable General.Liquibase variable">Liquibase</span> 4.23.0 or earlier, use the syntax <code>--contexts</code> instead of <code>--context-filter</code>.</p>
+                                                        </td>
+                                                        <td style="font-weight: normal;">Optional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>--dbms</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Specifies which database type a <span class="mc-variable General.changeset variable">changeset</span> is to be used for. See valid database type names on <a href="../../start/tutorials/home.html" class="MCXref xref">Liquibase Database Tutorials</a>. </p>
+                                                        </td>
+                                                        <td style="font-weight: normal;">Optional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>--default-catalog-name</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Name of the default catalog to use for the database
+							connection</p>
+                                                        </td>
+                                                        <td style="font-weight: normal;">Optional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>--default-schema-name</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Name of the default schema to use for the database connection. If <code class="language-text">defaultSchemaName</code> is set, then  objects do not have to be fully qualified. This means you can refer to just <code class="language-text">mytable</code> instead of <code>myschema.mytable</code>.</p>
+                                                            <p class="tip" data-mc-autonum="&lt;b&gt;Tip: &lt;/b&gt;"><span class="autonumber"><span><b>Tip: </b></span></span>In <span class="mc-variable General.Liquibase variable">Liquibase</span> v4.23.0+, camelCase for <code class="language-text">defaultSchemaName</code> works successfully. If you are on an earlier version, camelCase may not work as expected.</p>
+                                                            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>The syntax <code class="language-text">liquibase.command.defaultSchemaName</code> is valid for v4.19.0+. For prior versions, use <code class="language-text">defaultSchemaName</code>.</p>
+                                                        </td>
+                                                        <td style="font-weight: normal;">Optional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>--driver</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>The JDBC driver class</p>
+                                                        </td>
+                                                        <td style="font-weight: normal;">Optional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>--driver-properties-file</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>The JDBC driver properties file</p>
+                                                        </td>
+                                                        <td style="font-weight: normal;">Optional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>--force-replace</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>If <code>true</code>, replace any existing contexts/labels with the new ones rather than appending them to the list. If you specify <code>--force-replace</code> without a value, <span class="mc-variable General.Liquibase variable">Liquibase</span> sets it to <code>true</code>. <b>Default:&#160;<code>false</code></b>.</p>
+                                                        </td>
+                                                        <td style="font-weight: normal;">Optional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>--label-filter</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Specifies the <span class="mc-variable General.changeset variable">changeset</span> labels to match. <a href="../../concepts/changelogs/attributes/labels.html" class="MCXref xref">Labels</a> are tags you can add to <span class="mc-variable General.changeset variable">changeset</span>s to control which <span class="mc-variable General.changeset variable">changeset</span>s will be executed in any migration run.</p>
+                                                        </td>
+                                                        <td style="font-weight: normal;">Optional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>--password</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Password to connect to the target database.</p>
+                                                            <p class="tip" data-mc-autonum="&lt;b&gt;Tip: &lt;/b&gt;"><span class="autonumber"><span><b>Tip: </b></span></span>It is a best practice to store sensitive data in a <a href="../../tools-integrations/extensions/secrets-management/home.html" class="MCXref xref">Secrets Management</a> tool with <span class="mc-variable General.LBPro variable">Liquibase Pro</span>.</p>
+                                                        </td>
+                                                        <td style="font-weight: normal;">Optional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>--url</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>The JDBC database connection URL. See <a href="../../workflows/liquibase-community/using-jdbc-url-in-liquibase.html" class="MCXref xref">Using JDBC URL in Liquibase</a>.</p>
+                                                        </td>
+                                                        <td style="font-weight: normal;">Optional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>--username</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>Username to connect to the target database.</p>
+                                                            <p class="tip" data-mc-autonum="&lt;b&gt;Tip: &lt;/b&gt;"><span class="autonumber"><span><b>Tip: </b></span></span>It is a best practice to store sensitive data in a <a href="../../tools-integrations/extensions/secrets-management/home.html" class="MCXref xref">Secrets Management</a> tool with <span class="mc-variable General.LBPro variable">Liquibase Pro</span>.</p>
+                                                        </td>
+                                                        <td style="font-weight: normal;">Optional</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>The <code>username</code> and <code>password</code>&#160;<span class="mc-variable General.Param/Attribute variable">attribute</span>s are not required for connections and systems which use alternate means of authentication. Also, you can specify database credentials as part of the <code>url</code>&#160;<span class="mc-variable General.Param/Attribute variable">attribute</span>.</p>
+                                            <h2>Output</h2>
+                                            <p>When successful, the <code data-mc-conditions="command-set-contexts-set-labels.labels">set-labels</code> command produces the following output:</p><pre xml:space="preserve" data-mc-conditions="command-set-contexts-set-labels.labels"><code class="language-text">* Changelog file 'changelog.xml' modified successfully.
+Liquibase command 'set-labels' was executed successfully.</code></pre>
+                                            <p>If you specify an invalid value for the <code>dbms</code> argument:</p><pre xml:space="preserve"><code class="language-text">Mismatched dbms for changeset 'createPrimaryTable::Liquibase Pro User::changelog.xml'</code></pre>
+                                            <p>When there is an ignored <span class="mc-variable General.changeset variable">changeset</span>:</p><pre xml:space="preserve"><code class="language-text">Ignoring changeset 'createSecondaryTable::Liquibase Pro User::changelog.xml'</code></pre>
+                                            <p>When there is nothing to modify:</p><pre xml:space="preserve"><code class="language-text">* Changelog file 'changelog.xml' was not modified.</code></pre>
+                                            <h2>Related links</h2>
+                                            <ul>
+                                                <li data-mc-conditions="command-set-contexts-set-labels.labels"><a href="set-contexts.html" class="MCXref xref">set-contexts</a>
+                                                </li>
+                                                <li><a href="../../concepts/changelogs/home.html" class="MCXref xref">Changelog</a>
+                                                </li>
+                                                <li><a href="../../concepts/changelogs/changeset.html" class="MCXref xref">Changeset</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- UserSnap Scripts -->
+                                    <!-- Feedback Button -->
+                                    <script>/* <![CDATA[ */ <!--type="text/javascript"-->
+				window.onUsersnapCXLoad = function(api) {
+				api.init();
+				}
+				var script = document.createElement('script');
+				script.defer = 1;
+				script.src = 'https://widget.usersnap.com/global/load/632b7a0e-ba7b-4613-ab8a-a34d8edf1097?onload=onUsersnapCXLoad';
+				document.getElementsByTagName('head')[0].appendChild(script);
+		/* ]]> */</script>
+                                    <!-- End Feedback Button -->
+                                    <!-- Ratings -->
+                                    <div id="widgetContainer" style="align: center;text-align: center;">
+                                    </div>
+                                    <script>/* <![CDATA[ */
+			window.onUsersnapCXLoad = function(api) {
+			// mountNode is an element in which the widget should be rendered
+			api.init({ mountNode: document.getElementById('widgetContainer') });
+			}
+			var script = document.createElement('script');
+			script.defer = 1;
+			script.src = 'https://widget.usersnap.com/embed/load/7df92c7d-5c25-4d1e-827a-75f186914119?onload=onUsersnapCXLoad';
+			document.getElementsByTagName('head')[0].appendChild(script);
+		/* ]]> */</script>
+                                    <!-- End Ratins -->
+                                    <!-- End UserSnap Scripts -->
+                                    <!-- Start Glide Footer -->
+                                    <footer class="glide">
+                                        <div class="footer-container">
+                                            <div class="footer-wrapper">
+                                                <div class="footer-left-widget">
+                                                    <div class="footer-form-widget">
+                                                        <div class="widget-inner">
+                                                            <div class="footer-logo"><a href="https://www.liquibase.com"><img src="../../z_resources/images/glide/logo-white.svg" alt="" /></a>
+                                                            </div>
+                                                            <div class="footer-socials"><a href="https://twitter.com/liquibase" class="f-twitter" target="_blank"></a><a href="https://github.com/liquibase/liquibase" class="f-github" target="_blank"></a><a href="https://www.reddit.com/r/liquibase/" class="f-reddit" target="_blank"></a><a href="https://www.linkedin.com/company/liquibase" class="f-linkedin" target="_blank"></a><a href="https://www.youtube.com/channel/UC5qMsRjObu685rTBq0PJX8w" class="f-youtube" target="_blank"></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="footer-widgets">
+                                                    <div class="footer-widget">
+                                                        <h4>Products</h4>
+                                                        <div class="menu-column-two-menu-container">
+                                                            <ul id="menu-column-two-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-15659"><a href="https://www.liquibase.com/pricing">Pricing</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-906"><a href="https://www.liquibase.com/pricing/pro">Liquibase Pro</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15600"><a target="_blank" rel="noopener" href="https://www.liquibase.org/download">Liquibase Open Source</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Solutions</h4>
+                                                        <div class="menu-column-three-menu-container">
+                                                            <ul id="menu-column-three-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-908"><a href="https://www.liquibase.com/ci-cd">CI/CD</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/compliance">Compliance</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/devsecops">DevSecOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/financial-services">Financial Services</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/gitops-database">GitOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/public-sector">Public Sector</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-907"><a href="https://www.liquibase.com/version-control">Version Control</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Resources</h4>
+                                                        <div class="menu-column-four-menu-container">
+                                                            <ul id="menu-column-four-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-916"><a href="https://www.liquibase.com/blog">Blog</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15471"><a href="https://www.liquibase.com/resources">Resource Library</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-resource_category menu-item-914"><a href="https://www.liquibase.com/resources/guides">Guides</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14975"><a href="../../index.html">Documentation</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-917"><a href="https://www.liquibase.com/support">Support</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom last-menu-item menu-item-15215"><a target="_blank" rel="noopener noreferrer" href="https://learn.liquibase.com/index">Training</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Company</h4>
+                                                        <div class="menu-column-five-menu-container">
+                                                            <ul id="menu-column-five-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-1176"><a href="https://www.liquibase.com/company">Company</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1177"><a href="https://www.liquibase.com/company/leadership">Leadership</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1070"><a href="https://www.liquibase.com/company/careers">Careers</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1071"><a href="https://www.liquibase.com/partners">Partners</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15024"><a href="https://www.liquibase.com/category/press-releases">News</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-1178"><a href="https://www.liquibase.com/contact">Contact</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                    <div class="footer-bottom">
+                                                        <div class="copyright">
+                                                            <p><span class="mc-variable General.copyright variable">© 2023 Liquibase Inc.  All Rights Reserved. 
+Liquibase is a registered trademark of Liquibase Inc.</span>
+                                                                <br /><span class="mc-variable General.PhoneNumber variable">(737) 402-7187</span>
+                                                            </p>
+                                                        </div>
+                                                        <div class="footer-menu">
+                                                            <div class="menu-footer-menu-container">
+                                                                <ul id="menu-footer-menu">
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-privacy-policy first-menu-item menu-item-902"><a href="https://www.liquibase.com/privacy-policy">Privacy Policy</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-901"><a href="https://www.liquibase.com/terms-of-use">Terms of Use</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-14933"><a href="https://www.liquibase.com/eula">EULA</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                </div>
+                                                <div class="clear">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </footer>
+                                    <!-- This script is necessary to relocate the footer so that it maintains 100% width -->
+                                    <!--       <script type="text/javascript">/*<![CDATA[*/$(document).ready(function(){ $("footer").appendTo("div.off-canvas-content.inner-wrap"); });/*]]>*/</script> -->
+                                    <!-- End Glide Footer -->
+                                </div>
+                            </div>
+                        </div>
+                    </div><a data-close="true"></a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

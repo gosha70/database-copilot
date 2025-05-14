@@ -1,0 +1,437 @@
+/*<meta />*/
+
+@media only screen and (max-width: 767px)
+{
+	.search-bar
+	{
+		width: 100%;
+	}
+
+	.knowledge-panel-container.micro-content-truncated-mode .micro-response
+	{
+		max-height: 200px;
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete ul
+	{
+		background-color: #ffffff;
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete li.auto-result-item a
+	{
+		
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete li.auto-result-item
+	{
+		
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete li.auto-result-content
+	{
+		
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete li.auto-result-history
+	{
+		
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete li.auto-result-item.auto-result-selected a
+	{
+		
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete li.auto-result-item.auto-result-selected
+	{
+		background-color: #f3f4f4;
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete li.auto-result-content.auto-result-selected
+	{
+		background-color: #f3f4f4;
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete li.auto-result-history.auto-result-selected
+	{
+		background-color: #f3f4f4;
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete li.auto-result-item .auto-result-description
+	{
+		
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete li.auto-result-content .auto-result-description
+	{
+		
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete li.auto-result-history .auto-result-description
+	{
+		
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete li.auto-result-item .auto-result-icon
+	{
+		
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete li.auto-result-content .auto-result-icon
+	{
+		background: transparent url('Images/icon-topic.png') no-repeat center center;
+		-pie-background: transparent url('https://docs.liquibase.com/Skins/Default/Stylesheets/Components/Skins/Default/Stylesheets/Components/Images/icon-topic.png') no-repeat center center;
+		background-size: contain;
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete li.auto-result-history .auto-result-icon
+	{
+		background: transparent url('Images/icon-search.png') no-repeat center center;
+		-pie-background: transparent url('https://docs.liquibase.com/Skins/Default/Stylesheets/Components/Skins/Default/Stylesheets/Components/Images/icon-search.png') no-repeat center center;
+		background-size: contain;
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete li.auto-result-item .auto-result-phrase
+	{
+		
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete li.auto-result-content .auto-result-phrase
+	{
+		
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete li.auto-result-history .auto-result-phrase
+	{
+		
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete li.auto-result-item .auto-result-phrase .search-result-highlight
+	{
+		
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete li.auto-result-content .auto-result-phrase .search-result-highlight
+	{
+		
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete li.auto-result-history .auto-result-phrase .search-result-highlight
+	{
+		
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete li .auto-result-remove
+	{
+		width: 17px;
+		height: 27px;
+		background: transparent url('Images/icon-remove.png') no-repeat center center;
+		-pie-background: transparent url('https://docs.liquibase.com/Skins/Default/Stylesheets/Components/Skins/Default/Stylesheets/Components/Images/icon-remove.png') no-repeat center center;
+		background-size: contain;
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-auto-complete li.auto-result-item .auto-result-separator
+	{
+		
+	}
+
+	.search-bar._Skins_Topics_Searchbar.mc-component
+	{
+		width: 100%;
+	}
+
+	.search-bar._Skins_Topics_Searchbar.mc-component .search-field
+	{
+		background-color: #ffffff;
+	}
+
+	.search-bar._Skins_Topics_Searchbar.mc-component .search-submit
+	{
+		
+	}
+
+	.search-bar._Skins_Topics_Searchbar.mc-component .search-filter
+	{
+		background: #ffffff url('Images/FilterOutline.png') no-repeat center center;
+		-pie-background: #ffffff url('https://docs.liquibase.com/Skins/Default/Stylesheets/Components/Skins/Default/Stylesheets/Components/Images/FilterOutline.png') no-repeat center center;
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-filter-content
+	{
+		top: 2em;
+		background-color: #ffffff;
+	}
+
+	.search-bar._Skins_Topics_Searchbar.mc-component .search-filter-wrapper.open
+	{
+		-pie-background: #ffffff url('https://docs.liquibase.com/Skins/Default/Stylesheets/Components/Skins/Default/Stylesheets/Components/Images/FilterOutline.png') no-repeat center center;
+		background-color: #ffffff;
+		background-repeat: no-repeat;
+	}
+
+	.search-bar._Skins_Topics_Searchbar.mc-component .search-filter:hover
+	{
+		background-color: transparent;
+	}
+
+	.search-bar._Skins_Topics_Searchbar.mc-component .search-filter.selected
+	{
+		background: transparent url('Images/Filter.png') no-repeat center center;
+		-pie-background: transparent url('https://docs.liquibase.com/Skins/Default/Stylesheets/Components/Skins/Default/Stylesheets/Components/Images/Filter.png') no-repeat center center;
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-filter-content ul li:hover
+	{
+		background-color: #ffffff;
+	}
+
+	._Skins_Topics_Searchbar.mc-component .search-filter-content ul li button:focus
+	{
+		background-color: #ffffff;
+	}
+
+	.search-bar._Skins_Topics_Searchbar.mc-component .search-field::-webkit-input-placeholder
+	{
+		
+	}
+
+	.search-bar._Skins_Topics_Searchbar.mc-component .search-field::-moz-placeholder
+	{
+		
+	}
+
+	.search-bar._Skins_Topics_Searchbar.mc-component .search-field:-moz-placeholder
+	{
+		
+	}
+
+	.search-bar._Skins_Topics_Searchbar.mc-component .search-field:-ms-input-placeholder
+	{
+		
+	}
+
+	.search-bar.search-bar-container._Skins_Topics_Searchbar.mc-component .search-submit
+	{
+		background: e29D42 url('Images/icon-searchGray-17x17.png') no-repeat center center;
+		-pie-background: e29D42 url('https://docs.liquibase.com/Skins/Default/Stylesheets/Components/Skins/Default/Stylesheets/Components/Images/icon-searchGray-17x17.png') no-repeat center center;
+	}
+
+	.search-bar.search-bar-container._Skins_Topics_Searchbar.mc-component .search-submit:hover
+	{
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-color: transparent;
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete ul
+	{
+		background-color: #ffffff;
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete li.auto-result-item a
+	{
+		
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete li.auto-result-item
+	{
+		
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete li.auto-result-content
+	{
+		
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete li.auto-result-history
+	{
+		
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete li.auto-result-item.auto-result-selected a
+	{
+		
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete li.auto-result-item.auto-result-selected
+	{
+		background-color: #d0d3d5;
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete li.auto-result-content.auto-result-selected
+	{
+		background-color: #d0d3d5;
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete li.auto-result-history.auto-result-selected
+	{
+		background-color: #d0d3d5;
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete li.auto-result-item .auto-result-description
+	{
+		
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete li.auto-result-content .auto-result-description
+	{
+		
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete li.auto-result-history .auto-result-description
+	{
+		
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete li.auto-result-item .auto-result-icon
+	{
+		
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete li.auto-result-content .auto-result-icon
+	{
+		background: transparent url('Images/icon-topic.png') no-repeat center center;
+		-pie-background: transparent url('https://docs.liquibase.com/Skins/Default/Stylesheets/Components/Skins/Default/Stylesheets/Components/Images/icon-topic.png') no-repeat center center;
+		background-size: contain;
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete li.auto-result-history .auto-result-icon
+	{
+		background: transparent url('Images/icon-search.png') no-repeat center center;
+		-pie-background: transparent url('https://docs.liquibase.com/Skins/Default/Stylesheets/Components/Skins/Default/Stylesheets/Components/Images/icon-search.png') no-repeat center center;
+		background-size: contain;
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete li.auto-result-item .auto-result-phrase
+	{
+		
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete li.auto-result-content .auto-result-phrase
+	{
+		
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete li.auto-result-history .auto-result-phrase
+	{
+		
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete li.auto-result-item .auto-result-phrase .search-result-highlight
+	{
+		
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete li.auto-result-content .auto-result-phrase .search-result-highlight
+	{
+		
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete li.auto-result-history .auto-result-phrase .search-result-highlight
+	{
+		
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete li .auto-result-remove
+	{
+		width: 17px;
+		height: 27px;
+		background: transparent url('Images/icon-remove.png') no-repeat center center;
+		-pie-background: transparent url('https://docs.liquibase.com/Skins/Default/Stylesheets/Components/Skins/Default/Stylesheets/Components/Images/icon-remove.png') no-repeat center center;
+		background-size: contain;
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-auto-complete li.auto-result-item .auto-result-separator
+	{
+		
+	}
+
+	.search-bar._Skins_Home_Searchbar.mc-component
+	{
+		width: 85%;
+	}
+
+	.search-bar._Skins_Home_Searchbar.mc-component .search-field
+	{
+		background-color: #ffffff;
+	}
+
+	.search-bar._Skins_Home_Searchbar.mc-component .search-submit
+	{
+		
+	}
+
+	.search-bar._Skins_Home_Searchbar.mc-component .search-filter
+	{
+		background: #0000ff url('Images/FilterOutline.png') no-repeat center center;
+		-pie-background: #0000ff url('https://docs.liquibase.com/Skins/Default/Stylesheets/Components/Skins/Default/Stylesheets/Components/Images/FilterOutline.png') no-repeat center center;
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-filter-content
+	{
+		top: 3em;
+		background-color: #ffffff;
+	}
+
+	.search-bar._Skins_Home_Searchbar.mc-component .search-filter-wrapper.open
+	{
+		-pie-background: #0000ff url('https://docs.liquibase.com/Skins/Default/Stylesheets/Components/Skins/Default/Stylesheets/Components/Images/FilterOutline.png') no-repeat center center;
+		background-color: #ffffff;
+		background-repeat: no-repeat;
+	}
+
+	.search-bar._Skins_Home_Searchbar.mc-component .search-filter:hover
+	{
+		background-color: #283593;
+	}
+
+	.search-bar._Skins_Home_Searchbar.mc-component .search-filter.selected
+	{
+		background: transparent url('Images/Filter.png') no-repeat center center;
+		-pie-background: transparent url('https://docs.liquibase.com/Skins/Default/Stylesheets/Components/Skins/Default/Stylesheets/Components/Images/Filter.png') no-repeat center center;
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-filter-content ul li:hover
+	{
+		background-color: #ffffff;
+	}
+
+	._Skins_Home_Searchbar.mc-component .search-filter-content ul li button:focus
+	{
+		background-color: #ffffff;
+	}
+
+	.search-bar._Skins_Home_Searchbar.mc-component .search-field::-webkit-input-placeholder
+	{
+		
+	}
+
+	.search-bar._Skins_Home_Searchbar.mc-component .search-field::-moz-placeholder
+	{
+		
+	}
+
+	.search-bar._Skins_Home_Searchbar.mc-component .search-field:-moz-placeholder
+	{
+		
+	}
+
+	.search-bar._Skins_Home_Searchbar.mc-component .search-field:-ms-input-placeholder
+	{
+		
+	}
+
+	.search-bar.search-bar-container._Skins_Home_Searchbar.mc-component .search-submit
+	{
+		background: #0000ff url('Images/search-white.png') no-repeat center center;
+		-pie-background: #0000ff url('https://docs.liquibase.com/Skins/Default/Stylesheets/Components/Skins/Default/Stylesheets/Components/Images/search-white.png') no-repeat center center;
+	}
+
+	.search-bar.search-bar-container._Skins_Home_Searchbar.mc-component .search-submit:hover
+	{
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-color: #283593;
+	}
+}
+

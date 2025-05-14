@@ -1,0 +1,165 @@
+Change Types
+Skip To Main Content
+Account
+Settings
+Logout
+placeholder
+Account
+Settings
+Logout
+You are here:
+Change Types
+A Change Type is a database-independent XML, YAML, or JSON formatted change that you can specify to update your database with Liquibase. Change Types correspond to SQL statements applied to your database, such as CREATE TABLE. You specify the Change Type you want to use within a Changeset in your Changelog.
+It is a best practice to include only one
+Change Type per changeset. Doing so avoids failed auto-commit statements that can leave the database in an unexpected state.
+This page lists all changes that you can apply to your database with the default Liquibase installation. You can also write your own changes through the extension system.
+For a guide on using Change Types with Liquibase, see Migrating with Liquibase Change Types. If your changelogs are written in SQL, see Migrating with SQL. In SQL changelogs, database changes are written using raw SQL statements within changesets.
+Notes
+Property values are string unless otherwise noted.
+Boolean parameters are defaulted to false unless otherwise noted.
+Some change types automatically create rollback statements when you run rollback commands. For more information, see Liquibase Rollback Workflow and Automatic and Custom Rollbacks.
+Entities
+Entity
+Create/Add
+Drop
+Change
+Table
+createTable
+dropTable
+setTableRemarks
+renameTable
+Column
+addColumn
+dropColumn
+renameColumn
+modifyDataType
+setColumnRemarks
+addAutoIncrement
+Index
+createIndex
+dropIndex
+View
+createView
+dropView
+renameView
+Procedure
+createProcedure
+dropProcedure
+Sequence
+createSequence
+dropSequence
+renameSequence
+alterSequence
+Function
+createFunction
+dropFunction
+Package
+createPackage
+createPackageBody
+dropPackage
+dropPackageBody
+Synonym
+createSynonym
+dropSynonym
+Trigger
+createTrigger
+enableTrigger
+dropTrigger
+disableTrigger
+renameTrigger
+Constraints
+Constraint
+Add
+Drop
+Check
+addCheckConstraint
+enableCheckConstraint
+dropCheckConstraint
+disableCheckConstraint
+Default value
+addDefaultValue
+dropDefaultValue
+Foreign key
+addForeignKeyConstraint
+dropForeignKeyConstraint
+dropAllForeignKeyConstraints
+Not null
+addNotNullConstraint
+dropNotNullConstraint
+Primary key
+addPrimaryKey
+dropPrimaryKey
+Unique key
+addUniqueConstraint
+dropUniqueConstraint
+Data
+addLookupTable
+delete
+insert
+loadData
+loadUpdateData
+mergeColumns
+update
+Miscellaneous
+customChange
+executeCommand
+markUnused
+output
+sql
+sqlFile
+stop
+tagDatabase
+Other tags
+include
+includeAll
+modifyChangeSets
+removeChangeSetProperty
+Extensions
+Liquibase Change Types for Amazon DynamoDB Pro
+Liquibase Change Types for Databricks
+Liquibase Change Types for MongoDB
+Related links
+Concepts
+Liquibase Commands
+Workflows
+Editions & Features
+Editions & Features
+Liquibase Open Source
+Liquibase Pro
+Solutions
+CI/CD
+Compliance
+DevSecOps
+GitOps
+Version Control
+Financial Services
+Resources
+Blog
+Best Practice Guides
+Resource Library
+Documentation
+University
+Community
+Meetup/Events
+Support
+Community
+Contributors
+Contribute Code
+Share Expertise
+Advocate
+Support
+Liquibase Legends
+Liquibase Badges
+Contact
+Company
+Company
+Careers
+Leadership
+Contact
+Â© 2025 Liquibase Inc.
+All Rights Reserved.
+Liquibase is a registered trademark of Liquibase Inc.
+(737) 402-7187
+Privacy Policy
+Terms of Use
+EULA

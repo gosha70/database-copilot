@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" class="_Skins_Top_Navigation" data-mc-search-type="Stem" data-mc-help-system-file-name="Default.xml" data-mc-path-to-help-system="../../" data-mc-output-analytics-server="https://api.madcapcentral.com/" data-mc-output-analytics-topic-id="1xBCeJNnhjABttjHWqHVp0ews6ckIXQPfoEC3Eq9WTGSSvaBO7/JuD/tC6o4xWNnVpdsbgfMLN20c50lIHGnWbFnOPchGLw8YYM4cQ5ecMUJDdvjBMUM8JB2IMJPxZ6jdKIeLLxZSuqFIm4JlygVSjzajS+dVEAtr+eBNxx0Lm5Q5BwMBbe43Kaby35aCJhveQuYkPJaVhhC1MnRgs3ffFuBINz0ImJc" data-mc-has-content-body="True" data-mc-toc-path="Commands|Quality Checks|Working with Quality Checks" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic;Default" data-mc-preload-images="false" data-mc-in-preview-mode="false">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="msapplication-config" content="../../Skins/Favicons/browserconfig.xml" />
+        <link rel="canonical" href="configuring-quality-checks.html" />
+        <meta name="description" content="Configuration information for quality checks. Quality checks allow you to run checks against changelogs and SQL scripts by flagging conditions and configurations you need." />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../Skins/Favicons/favicon-16x16.png" /><title>Configuring Quality Checks | Liquibase Docs</title>
+        <!-- Google Tag Manager -->
+        <!-- End Google Tag Manager -->
+        <!-- Prism Highlighting -->
+        <!-- End Prism Highlighting -->
+        <link href="../../Skins/Default/Stylesheets/Slideshow.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/foundation.6.2.3.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link rel="stylesheet" href="../../z_resources/stylesheets/glidestyles.css" type="text/css" media="all" />
+        <link href="../../z_resources/stylesheets/styles.css" rel="stylesheet" type="text/css" />
+        <link href="../../z_resources/stylesheets/tablestyles.css" rel="stylesheet" data-mc-stylesheet-type="table" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../Skins/Favicons/favicon-16x16.png" />
+        <script src="../../resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../resources/Scripts/purify.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/require.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/require.config.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/foundation.6.2.3_custom.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/plugins.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/MadCapAll.js" type="text/javascript" defer="defer">
+        </script>
+        <script>/* <![CDATA[ */(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&amp;l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-NTCPFS9');/* ]]> */</script>
+        <script type="text/javascript" src="../../z_resources/scripts/prism.js"> </script>
+    </head>
+    <body>
+        <div class="foundation-wrap off-canvas-wrapper">
+            <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper="">
+                <aside class="off-canvas position-right" role="navigation" id="offCanvas" data-off-canvas="" data-position="right" data-mc-ignore="true">
+                    <ul class="off-canvas-accordion vertical menu off-canvas-list" data-accordion-menu="" data-mc-back-link="Back" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="True" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True">
+                    </ul>
+                </aside>
+                <div class="off-canvas-content inner-wrap" data-off-canvas-content="">
+                    <div>
+                        <nav class="title-bar tab-bar" role="banner" data-mc-ignore="true"><a class="skip-to-content fluid-skip showOnFocus" href="#">Skip To Main Content</a>
+                            <div class="middle title-bar-section outer-row clearfix">
+                                <div class="menu-icon-container relative clearfix">
+                                    <div class="central-account-wrapper">
+                                        <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                            <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                                <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="menu-icon" aria-label="Show Navigation Panel" data-toggle="offCanvas"><span></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="title-bar-layout outer-row">
+                                <div class="logo-wrapper"><a class="logo" href="../../home.html" alt="Logo"></a>
+                                </div>
+                                <div class="navigation-wrapper nocontent">
+                                    <ul class="navigation clearfix" role="navigation" data-mc-css-tree-node-has-children="has-children" data-mc-css-sub-menu="sub-menu" data-mc-expand-event="mouseenter" data-mc-top-nav-menu="True" data-mc-max-depth="5" data-mc-include-icon="False" data-mc-include-indicator="False" data-mc-include-children="True" data-mc-include-siblings="True" data-mc-include-parent="True" data-mc-toc="True">
+                                        <li class="placeholder" style="visibility:hidden"><a>placeholder</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="central-account-wrapper">
+                                    <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                        <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                            <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="nav-search-wrapper">
+                                    <div class="nav-search row">
+                                        <form class="search" action="#">
+                                            <div class="search-bar search-bar-container needs-pie">
+                                                <input class="search-field needs-pie" type="search" aria-label="Search Field" placeholder="Search" />
+                                                <div class="search-filter-wrapper"><span class="invisible-label" id="search-filters-label">Filter: </span>
+                                                    <div class="search-filter" aria-haspopup="true" aria-controls="sf-content" aria-expanded="false" aria-label="Search Filter" title="All Files" role="button" tabindex="0">
+                                                    </div>
+                                                    <div class="search-filter-content" id="sf-content">
+                                                        <ul>
+                                                            <li>
+                                                                <button class="mc-dropdown-item" aria-labelledby="search-filters-label filterSelectorLabel-00001"><span id="filterSelectorLabel-00001">All Files</span>
+                                                                </button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="search-submit-wrapper" dir="ltr">
+                                                    <div class="search-submit" title="Search" role="button" tabindex="0"><span class="invisible-label">Submit Search</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="main-section">
+                        <div class="row outer-row sidenav-layout">
+                            <nav class="sidenav-wrapper">
+                                <div class="sidenav-container">
+                                    <ul class="off-canvas-accordion vertical menu sidenav" data-accordion-menu="" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu accordion-menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="False" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True" data-mc-side-nav-menu="True">
+                                    </ul>
+                                </div>
+                            </nav>
+                            <div class="body-container">
+                                <div data-mc-content-body="True">
+                                    <!-- Google Tag Manager (noscript) -->
+                                    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTCPFS9" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+                                    </noscript>
+                                    <!-- End Google Tag Manager (noscript) -->
+                                    <div class="side-content">
+                                        <form class="search" action="#">
+                                            <div class="search-bar search-bar-container needs-pie _Skins_Topics_Searchbar mc-component">
+                                                <input class="search-field needs-pie" type="search" aria-label="Search Field" placeholder="Search" />
+                                                <div class="search-filter-wrapper"><span class="invisible-label" id="search-filters-label">Filter: </span>
+                                                    <div class="search-filter" aria-haspopup="true" aria-controls="sf-content" aria-expanded="false" aria-label="Search Filter" title="All Files" role="button" tabindex="0">
+                                                    </div>
+                                                    <div class="search-filter-content" id="sf-content">
+                                                        <ul>
+                                                            <li>
+                                                                <button class="mc-dropdown-item" aria-labelledby="search-filters-label filterSelectorLabel-00001"><span id="filterSelectorLabel-00001">All Files</span>
+                                                                </button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="search-submit-wrapper" dir="ltr">
+                                                    <div class="search-submit" title="Search" role="button" tabindex="0"><span class="invisible-label">Submit Search</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="nocontent">
+                                        <div class="MCBreadcrumbsBox_0 breadcrumbs" role="navigation" aria-label="Breadcrumbs" data-mc-breadcrumbs-divider=" &gt; " data-mc-breadcrumbs-count="3" data-mc-toc="True"><span class="MCBreadcrumbsPrefix">You are here: </span>
+                                        </div>
+                                    </div>
+                                    <div class="topic-layout">
+                                        <div style="float:left; width:300px; margin-right: 20px; margin-bottom: 15px;"> <ul class="nocontent menu _Skins_Topics_Menu mc-component" data-mc-is-context-sensitive="True" data-mc-linked-toc="Data/Tocs/TOC.js" data-mc-side-menu="True" data-mc-max-depth="1" data-mc-include-icon="False" data-mc-include-indicator="False" data-mc-include-children="True" data-mc-include-siblings="True" data-mc-include-parent="True" data-mc-toc="True"></ul></div>
+                                        <div role="main" id="mc-main-content">
+                                            <h1>Configure Quality Checks</h1>
+                                            <p><span class="mc-variable General.Liquibase variable">Liquibase</span> provides a default set of checks with default settings defined in the checks settings file.</p>
+                                            <p>Quality checks are either static or dynamic. A dynamic check can have multiple configurations, whereas a static check can have one.</p>
+                                            <ul>
+                                                <li><b>A check is static</b> if the attributes of the check cannot be customized. You can enable or disable static checks. You cannot copy, customize, or delete static checks.</li>
+                                                <li><b>A check is dynamic</b> if there are settings you can customize. Dynamic checks contain values possible to modify according to your needs.<ul><li>You can copy, customize, and reset dynamic checks but cannot delete them.</li><li>You can copy, customize, delete, and reset the copy of a dynamic check to the parent check’s default settings.</li></ul></li>
+                                                <li><b>All checks</b> can be enabled or disabled. <span class="mc-variable General.LBPro variable">Liquibase Pro</span> users can run unlimited enabled checks, and <span class="mc-variable General.LBCommunity variable">Liquibase Community</span> users can run the first 5 enabled checks.</li>
+                                            </ul>
+                                            <p>For now, <span class="mc-variable General.Liquibase variable">Liquibase</span> provides the following checks:</p>
+                                            <ul>
+                                                <li><a href="#Checks" class="MCXref xref">Checks  for changeset elements</a>
+                                                    <ul>
+                                                        <li><a href="#Ensure" class="MCXref xref">Ensure changesets have a label or context assigned</a>
+                                                        </li>
+                                                        <li><a href="#Ensure3" class="MCXref xref">Ensure changesets include a comment</a>
+                                                        </li>
+                                                        <li><a href="#Ensure2" class="MCXref xref">Ensure changesets include a rollback</a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li><a href="#Checks2" class="MCXref xref">Checks for DROP and TRUNCATE statements</a>
+                                                    <ul>
+                                                        <li><a href="#Detect2" class="MCXref xref">Detect dropped tables</a>
+                                                        </li>
+                                                        <li><a href="#Detect3" class="MCXref xref">Detect dropped columns</a>
+                                                        </li>
+                                                        <li><a href="#Detect6" class="MCXref xref">Detect TRUNCATE statements</a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li><a href="#GRANT" class="MCXref xref">Checks for GRANT and REVOKE privileges</a>
+                                                    <ul>
+                                                        <li><a href="#Detect" class="MCXref xref">Detect GRANT statements</a>
+                                                        </li>
+                                                        <li><a href="#Detect4" class="MCXref xref">Detect REVOKE statements</a>
+                                                        </li>
+                                                        <li><a href="#Check" class="MCXref xref">Detect when granting specific privileges</a>
+                                                        </li>
+                                                        <li><a href="#Detect7" class="MCXref xref">Detect GRANT WITH ADMIN OPTION and GRANT WITH GRANT OPTION statements</a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li><a href="#Checks3" class="MCXref xref">Checks for data</a>
+                                                    <ul>
+                                                        <li><a href="#Detect5" class="MCXref xref">Detect data type modification</a>
+                                                        </li>
+                                                        <li><a href="#Check3" class="MCXref xref">Check SQL for a specific pattern</a>
+                                                        </li>
+                                                        <li><a href="#Check2" class="MCXref xref">Check table column count</a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                            <h2><a name="Checks"></a>Checks  for <span class="mc-variable General.changeset variable">changeset</span> elements</h2>
+                                            <h3><a name="Ensure"></a>Ensure <span class="mc-variable General.changeset variable">changeset</span>s have a label or context assigned</h3>
+                                            <table style="width: 100%;mc-table-style: url('../../z_resources/stylesheets/tablestyles.css');" class="TableStyle-TableStyles" cellspacing="0">
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 100px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 500px;" />
+                                                <thead>
+                                                    <tr class="TableStyle-TableStyles-Head-Header1">
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1"><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th class="TableStyle-TableStyles-HeadD-Column1-Header1">Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Short name</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1">
+                                                            <ul>
+                                                                <li style="text-align: left;"><code>ChangesetLabelCheck</code> for labels</li>
+                                                                <li style="text-align: left;"><code>ChangesetContextCheck</code> for contexts</li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body2">Description</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body2">
+                                                            <p>The checks enforce the <span class="mc-variable General.Liquibase variable">Liquibase</span> recommendation that labels or contexts be assigned to each <span class="mc-variable General.changeset variable">changeset</span> to provide better deployment control and to enhance traceability of efforts across <span class="mc-variable General.changeset variable">changeset</span>s.</p>
+                                                            <p>For example, you have a <span class="mc-variable General.changelog variable">changelog</span> file with at least one <span class="mc-variable General.changeset variable">changeset</span> that does not have labels or contexts defined. When you execute <code>liquibase checks run</code> against that <span class="mc-variable General.changelog variable">changelog</span>, you will receive an alert message about the <span class="mc-variable General.changeset variable">changeset</span> with no label or context.</p>
+                                                            <p>Additionally, see the following check variation:</p>
+                                                            <ul>
+                                                                <li style="text-align: left;">One label or context defined on a <span class="mc-variable General.changeset variable">changeset</span></li>
+                                                                <li style="text-align: left;">Multiple labels or contexts defined on a <span class="mc-variable General.changeset variable">changeset</span></li>
+                                                                <li style="text-align: left;">No labels or contexts defined on a <span class="mc-variable General.changeset variable">changeset</span></li>
+                                                                <li style="text-align: left;">An inherited label or context from <code>include</code> or <code>include all</code></li>
+                                                            </ul>
+                                                            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>Labels are not inherited from the parent <span class="mc-variable General.changelog variable">changelog</span>, so none of the <span class="mc-variable General.changeset variable">changeset</span>s in an included <span class="mc-variable General.changelog variable">changelog</span> will automatically get a label. Therefore, the quality checks will warn that the child <span class="mc-variable General.changeset variable">changeset</span>s do not contain a label unless the label has been explicitly added to the child <span class="mc-variable General.changelog variable">changelog</span><i>’s</i> <span class="mc-variable General.changeset variable">changeset</span>.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Type </td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1">Static</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body2">Enabled by default</td>
+                                                        <td class="TableStyle-TableStyles-BodyA-Column1-Body2">Yes</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h3><a name="Ensure3"></a>Ensure <span class="mc-variable General.changeset variable">changeset</span>s include a comment</h3>
+                                            <table style="width: 100%;mc-table-style: url('../../z_resources/stylesheets/tablestyles.css');" class="TableStyle-TableStyles" cellspacing="0">
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 100px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 500px;" />
+                                                <thead>
+                                                    <tr class="TableStyle-TableStyles-Head-Header1">
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1"><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th class="TableStyle-TableStyles-HeadD-Column1-Header1">Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Short name</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1"><code>ChangesetCommentCheck</code>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body2">Description</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body2">
+                                                            <p>The check enforces the <span class="mc-variable General.Liquibase variable">Liquibase</span> recommendation that comments be added to each <span class="mc-variable General.changeset variable">changeset</span> to document the purpose of a <span class="mc-variable General.changeset variable">changeset</span> for other consumers of that <span class="mc-variable General.changelog variable">changelog</span>.</p>
+                                                            <p>For example, you have a <span class="mc-variable General.changelog variable">changelog</span> file  with at least one <span class="mc-variable General.changeset variable">changeset</span> that does not have a comment added to it. When you execute <code>liquibase checks run</code> against that <span class="mc-variable General.changelog variable">changelog</span>, you will receive an alert message about the <span class="mc-variable General.changeset variable">changeset</span> with no comment.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Type </td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1">Static</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body2">Enabled by default</td>
+                                                        <td class="TableStyle-TableStyles-BodyA-Column1-Body2">Yes</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h3><a name="Ensure2"></a>Ensure <span class="mc-variable General.changeset variable">changeset</span>s include a rollback</h3>
+                                            <table style="width: 100%;mc-table-style: url('../../z_resources/stylesheets/tablestyles.css');" class="TableStyle-TableStyles" cellspacing="0">
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 100px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 500px;" />
+                                                <thead>
+                                                    <tr class="TableStyle-TableStyles-Head-Header1">
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1"><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th class="TableStyle-TableStyles-HeadD-Column1-Header1">Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Short name</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1"><code>RollbackRequired</code>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body2">Description</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body2">
+                                                            <p>The check detects when a <span class="mc-variable General.changeset variable">changeset</span> does not have a rollback defined so that you can deploy and revert schema changes when needed.</p>
+                                                            <p>For example, you have a <span class="mc-variable General.changelog variable">changelog</span> file  with at least one <span class="mc-variable General.changeset variable">changeset</span> that does not have a rollback added to it. When you execute <code>liquibase  checks run</code> against that <span class="mc-variable General.changelog variable">changelog</span>, you will receive an alert message about the <span class="mc-variable General.changeset variable">changeset</span> with no rollback.</p>
+                                                            <p class="tip" data-mc-autonum="&lt;b&gt;Tip: &lt;/b&gt;"><span class="autonumber"><span><b>Tip: </b></span></span><span class="mc-variable General.Liquibase variable">Liquibase</span> recommends writing explicit rollback code for a <span class="mc-variable General.changeset variable">changeset</span>, where possible. While <span class="mc-variable General.Liquibase variable">Liquibase</span> does generate automatic rollback code for many <span class="mc-variable General.changetypes variable">Change Type</span>s, this check triggers when rollback code is not included.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Type </td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1">Static</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body2">Enabled by default</td>
+                                                        <td class="TableStyle-TableStyles-BodyA-Column1-Body2">Yes</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h2><a name="Checks2"></a>Checks for <code>DROP</code> and <code>TRUNCATE</code> statements</h2>
+                                            <h3><a name="Detect2"></a>Detect dropped tables</h3>
+                                            <table style="width: 100%;mc-table-style: url('../../z_resources/stylesheets/tablestyles.css');" class="TableStyle-TableStyles" cellspacing="0">
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 100px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 500px;" />
+                                                <thead>
+                                                    <tr class="TableStyle-TableStyles-Head-Header1">
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1"><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th class="TableStyle-TableStyles-HeadD-Column1-Header1">Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Short name</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1"><code>ChangeDropTableWarn</code>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body2">Description</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body2">
+                                                            <p>The check warns when a table is being dropped. This ensures that dropping the table will not lead to unintentional loss of data. 
+For example, you have one of the following:</p>
+                                                            <ul>
+                                                                <li style="text-align: left;">A formatted SQL <span class="mc-variable General.changelog variable">changelog</span> file with the <code>DROP TABLE</code> statement</li>
+                                                                <li style="text-align: left;">A JSON, YAML, or XML <span class="mc-variable General.changelog variable">changelog</span> file with the <code>dropTable</code> <span class="mc-variable General.changeset variable">changeset</span></li>
+                                                                <li style="text-align: left;">A JSON, YAML, or XML <span class="mc-variable General.changelog variable">changelog</span> file that includes the <code>sql</code>, <code>sqlFile</code>, or <code>pro:sqlplus</code> <span class="mc-variable General.changetypes variable">Change Type</span>, and there is the statement that contains <code>DROP TABLE</code></li>
+                                                            </ul>
+                                                            <p>When you execute <code>liquibase checks run</code> against that <span class="mc-variable General.changelog variable">changelog</span>, you will receive an alert message about the <span class="mc-variable General.changeset variable">changeset</span> with a table being dropped.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Type </td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1">Static</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body2">Enabled by default</td>
+                                                        <td class="TableStyle-TableStyles-BodyA-Column1-Body2">Yes</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h3><a name="Detect3"></a>Detect dropped columns</h3>
+                                            <table style="width: 100%;mc-table-style: url('../../z_resources/stylesheets/tablestyles.css');" class="TableStyle-TableStyles" cellspacing="0">
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 100px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 500px;" />
+                                                <thead>
+                                                    <tr class="TableStyle-TableStyles-Head-Header1">
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1"><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th class="TableStyle-TableStyles-HeadD-Column1-Header1">Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Short name</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1"><code>ChangeDropColumnWarn</code>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body2">Description</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body2">
+                                                            <p>The check warns when a column is being dropped. This ensures that dropping the column will not lead to unintentional loss of data. 
+For example, you have one of the following:</p>
+                                                            <ul>
+                                                                <li style="text-align: left;">A formatted SQL <span class="mc-variable General.changelog variable">changelog</span> file with the <code>ALTER TABLE TABLE_NAME DROP COLUMN</code> statement</li>
+                                                                <li style="text-align: left;">A JSON, YAML, or XML <span class="mc-variable General.changelog variable">changelog</span> file with the <code>dropColumn</code> <span class="mc-variable General.changeset variable">changeset</span></li>
+                                                                <li style="text-align: left;">A JSON, YAML, or XML <span class="mc-variable General.changelog variable">changelog</span> file that includes the <code>sql</code>, <code>sqlFile</code>, or <code>pro:sqlplus</code> <span class="mc-variable General.changetypes variable">Change Type</span>, and there is the statement that contains <code>ALTER TABLE TABLE_NAME DROP COLUMN</code></li>
+                                                            </ul>
+                                                            <p>When you execute <code>liquibase checks run</code> against that <span class="mc-variable General.changelog variable">changelog</span>, you will receive an alert message about the <span class="mc-variable General.changeset variable">changeset</span> with a column being dropped.</p>
+                                                            <p>Additionally, see the check variations:</p>
+                                                            <ul>
+                                                                <li style="text-align: left;">Statement does not contain the <code>COLUMN</code> keyword: <code>ALTER TABLE TABLE_NAME DROP &lt;column_name&gt;</code></li>
+                                                                <li style="text-align: left;">Statement contains a column list: <code>ALTER TABLE TABLE_NAME DROP (&lt;column1_name&gt;,&lt;column2_name&gt;)</code></li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Type</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1">Static</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body2">Enabled by default</td>
+                                                        <td class="TableStyle-TableStyles-BodyA-Column1-Body2">Yes</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h3><a name="Detect6"></a>Detect <code>TRUNCATE</code> statements</h3>
+                                            <table style="width: 100%;mc-table-style: url('../../z_resources/stylesheets/tablestyles.css');" class="TableStyle-TableStyles" cellspacing="0">
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 100px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 500px;" />
+                                                <thead>
+                                                    <tr class="TableStyle-TableStyles-Head-Header1">
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1"><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th class="TableStyle-TableStyles-HeadD-Column1-Header1">Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Short name</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1"><code>SqlTruncateWarn</code>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body2">Description</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body2">
+                                                            <p>The check warns when generated or raw SQL contains <code>TRUNCATE</code> statements. This ensures that  dropping the column will not lead to an unintentional  loss of data.</p>
+                                                            <p>For example, you have a <span class="mc-variable General.changelog variable">changelog</span> file  with one or more <span class="mc-variable General.changeset variable">changeset</span>s that include the <code>sql</code>, <code>sqlFile</code>, or <code>pro:sqlplus</code> <span class="mc-variable General.changetypes variable">Change Type</span>, and there is a statement with <code>TRUNCATE TABLE table_name</code>.</p>
+                                                            <p>When you execute <code>liquibase checks run</code> against that <span class="mc-variable General.changelog variable">changelog</span>, you will receive an alert message about the <span class="mc-variable General.changeset variable">changeset</span> with the <code>TRUNCATE</code> statement. However, the check does not affect <code>TRUNCATE</code> in comments or table names.</p>
+                                                            <p>Additionally, the check will warn if the statement does not contain the <code>TABLE</code> keyword: <code>TRUNCATE table_name</code>.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Type</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1">Static</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body2">Enabled by default</td>
+                                                        <td class="TableStyle-TableStyles-BodyA-Column1-Body2">Yes</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h2><a name="GRANT"></a>Checks for <code>GRANT</code> and <code>REVOKE</code> privileges</h2>
+                                            <h3><a name="Detect"></a>Detect <code>GRANT</code> statements</h3>
+                                            <table style="width: 100%;mc-table-style: url('../../z_resources/stylesheets/tablestyles.css');" class="TableStyle-TableStyles" cellspacing="0">
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 100px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 500px;" />
+                                                <thead>
+                                                    <tr class="TableStyle-TableStyles-Head-Header1">
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1"><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th class="TableStyle-TableStyles-HeadD-Column1-Header1">Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Short name</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1"><code>SqlGrantWarn</code>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body2">Description</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body2">
+                                                            <p>The check warns when generated or raw SQL contains <code>GRANT</code> statements so that you can ensure that the privilege being granted will not lead to security issues.</p>
+                                                            <p>For example, you have a <span class="mc-variable General.changelog variable">changelog</span> file with at least one <span class="mc-variable General.changeset variable">changeset</span> that includes the <code>sql</code>, <code>sqlFile</code>, or <code>pro:sqlplus</code> <span class="mc-variable General.changetypes variable">Change Type</span>, and there is a statement that contains <code>GRANT &lt;privilege name&gt;</code>. When you execute <code>liquibase checks run</code> against that <span class="mc-variable General.changelog variable">changelog</span>, you will receive an alert message about the <span class="mc-variable General.changeset variable">changeset</span> with privileges.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Type</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1">Static</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body2">Enabled by default</td>
+                                                        <td class="TableStyle-TableStyles-BodyA-Column1-Body2">Yes</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h3><a name="Detect4"></a>Detect <code>REVOKE</code> statements</h3>
+                                            <table style="width: 100%;mc-table-style: url('../../z_resources/stylesheets/tablestyles.css');" class="TableStyle-TableStyles" cellspacing="0">
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 100px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 500px;" />
+                                                <thead>
+                                                    <tr class="TableStyle-TableStyles-Head-Header1">
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1"><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th class="TableStyle-TableStyles-HeadD-Column1-Header1">Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Short name</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1"><code>SqlRevokeWarn</code>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body2">Description</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body2">
+                                                            <p>The check warns when generated or raw SQL contains <code>REVOKE</code> statements so that you can ensure that the privilege being revoked will not lead to data access and dependency issues.</p>
+                                                            <p>For example, you have a <span class="mc-variable General.changelog variable">changelog</span> file  with at least one <span class="mc-variable General.changeset variable">changeset</span> that includes the <code>sql</code>, <code>sqlFile</code>, or <code>pro:sqlplus</code> <span class="mc-variable General.changetypes variable">Change Type</span>, and there is a statement that contains <code>REVOKE &lt;privilege name&gt;</code>. When you execute <code>liquibase checks run</code> against that <span class="mc-variable General.changelog variable">changelog</span>, you will receive an alert message about the <span class="mc-variable General.changeset variable">changeset</span> with privileges.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Type</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1">Static</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body2">Enabled by default</td>
+                                                        <td class="TableStyle-TableStyles-BodyA-Column1-Body2">Yes</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h3><a name="Check"></a>Detect when granting specific privileges</h3>
+                                            <table style="width: 100%;mc-table-style: url('../../z_resources/stylesheets/tablestyles.css');" class="TableStyle-TableStyles" cellspacing="0">
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 100px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 500px;" />
+                                                <thead>
+                                                    <tr class="TableStyle-TableStyles-Head-Header1">
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1"><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th class="TableStyle-TableStyles-HeadD-Column1-Header1">Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Short name</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1"><code>SqlGrantSpecificPrivsWarn</code>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body2">Description</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body2">
+                                                            <p>The check warns when a <span class="mc-variable General.changeset variable">changeset</span> contains SQL that grants specific privileges to a user or role.</p>
+                                                            <p><b>Uses</b>
+                                                            </p>
+                                                            <p>You may have a <span class="mc-variable General.changelog variable">changelog</span> file with one or more <span class="mc-variable General.changeset variable">changeset</span>s that contain the <code>sql</code>, <code>sqlFile</code>, or <code>pro:sqlplus</code> <span class="mc-variable General.changetypes variable">Change Type</span> and the <code>GRANT &lt;privilege name&gt; to &lt;user or role&gt;</code> statements.</p>
+                                                            <p>When  you execute <code>liquibase checks run</code> against that <span class="mc-variable General.changelog variable">changelog</span>, you will receive an alert message about the <span class="mc-variable General.changeset variable">changeset</span>s with the privileges for users or roles that exist in the list provided during customization.</p>
+                                                            <p>To enable <code>SqlGrantSpecificPrivsWarn</code>, you need to run the <code>copy</code> subcommand and <code>customize</code> the check:</p><pre xml:space="preserve"><code class="language-text">liquibase copy --check-name=SqlGrantSpecificPrivsWarn</code></pre>
+                                                            <p>Follow the CLI prompt to customize the check, specifying one or more privileges separated by commas. If the privilege includes spaces, enclose it in double quotes:</p><pre xml:space="preserve"><code class="language-text">SELECT, "DROP ANY TABLE", INSERT</code></pre>
+                                                            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>See the <a href="#Configur" class="MCXref xref">Configurable attributes for specific privileges</a> table for the <span class="mc-variable General.Param/Attribute variable">attribute</span>s you can customize.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Type</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1">Dynamic</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body2">Enabled by default</td>
+                                                        <td class="TableStyle-TableStyles-BodyA-Column1-Body2">Yes</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h4><a name="Configur"></a>Configurable <span class="mc-variable General.Param/Attribute variable">attribute</span>s for specific privileges</h4>
+                                            <table style="width: 100%;mc-table-style: url('../../z_resources/stylesheets/tablestyles.css');" class="TableStyle-TableStyles" cellspacing="0">
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 120px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 120px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 120px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 120px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 120px;" />
+                                                <thead>
+                                                    <tr class="TableStyle-TableStyles-Head-Header1">
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1">Name</th>
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1">Type</th>
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1">Description</th>
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1">Validation</th>
+                                                        <th class="TableStyle-TableStyles-HeadD-Column1-Header1">Default value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body1"><code>PrivilegeList</code>
+                                                        </td>
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body1"><code>List</code>
+                                                        </td>
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body1">The list of database or system privileges that should produce a  warning  when granted to a user or role</td>
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body1">
+                                                            <ul>
+                                                                <li style="text-align: left;">Alphanumeric characters </li>
+                                                                <li style="text-align: left;">Spaces</li>
+                                                            </ul>
+                                                        </td>
+                                                        <td class="TableStyle-TableStyles-BodyA-Column1-Body1">There is no default value</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h3><a name="Detect7"></a>Detect <code>GRANT WITH ADMIN OPTION</code> and <code>GRANT WITH GRANT OPTION</code> statements</h3>
+                                            <table style="width: 100%;mc-table-style: url('../../z_resources/stylesheets/tablestyles.css');" class="TableStyle-TableStyles" cellspacing="0">
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 100px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 500px;" />
+                                                <thead>
+                                                    <tr class="TableStyle-TableStyles-Head-Header1">
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1"><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th class="TableStyle-TableStyles-HeadD-Column1-Header1">Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Short name</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1">
+                                                            <ul>
+                                                                <li style="text-align: left;"><code>SqlGrantAdminWarn</code>, which detects <code>GRANT WITH ADMIN OPTION</code></li>
+                                                                <li style="text-align: left;"><code>SqlGrantWithGrantAdminWarn</code>, which detects <code>GRANT WITH GRANT OPTION</code></li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body2">Description</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body2">
+                                                            <p>The checks warn when generated or raw SQL contains the <code>GRANT</code> statements that include the <code>WITH ADMIN OPTION</code> clause or the <code>WITH GRANT OPTION</code> class. This ensures that the privilege being granted will not lead to security issues.</p>
+                                                            <p>For example, you have a <span class="mc-variable General.changelog variable">changelog</span> file with one or more <span class="mc-variable General.changeset variable">changeset</span>s that include the <code>sql</code>, <code>sqlFile</code>, or <code>pro:sqlplus</code> <span class="mc-variable General.changetypes variable">Change Type</span>, and there is a statement that follows the pattern of  <code>GRANT &lt;privilege name&gt; TO &lt;role or user name&gt; WITH ADMIN OPTION</code> or <code>GRANT &lt;privilege name&gt; TO &lt;role or user name&gt; WITH GRANT OPTION</code>.</p>
+                                                            <p>When you execute <code>liquibase checks run</code> against that <span class="mc-variable General.changelog variable">changelog</span>, you will receive an alert message about the <span class="mc-variable General.changeset variable">changeset</span> with the privilege you want to grant.</p>
+                                                            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>The privilege name and role or username  can be any privileges, roles, or users. The privilege name can be multiple tokens or words, and the role and username can be a comma-separated list of roles and users.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Type</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1">Static</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body2">Enabled by default</td>
+                                                        <td class="TableStyle-TableStyles-BodyA-Column1-Body2">Yes</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h2><a name="Checks3"></a>Checks for data</h2>
+                                            <h3><a name="Detect5"></a>Detect data type modification</h3>
+                                            <table style="width: 100%;mc-table-style: url('../../z_resources/stylesheets/tablestyles.css');" class="TableStyle-TableStyles" cellspacing="0">
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 100px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 500px;" />
+                                                <thead>
+                                                    <tr class="TableStyle-TableStyles-Head-Header1">
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1"><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th class="TableStyle-TableStyles-HeadD-Column1-Header1">Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Short name</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1"><code>ModifyDataTypeWarn</code>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body2">Description</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body2">
+                                                            <p>The check warns when a change will result in modification of a data type so that you can ensure that modifying the data type will not lead to unintentional loss of data.
+For example, you have one of the following:</p>
+                                                            <ul>
+                                                                <li style="text-align: left;">A formatted SQL <span class="mc-variable General.changelog variable">changelog</span> file with the <code>ALTER TABLE MODIFY COLUMN</code> statement</li>
+                                                                <li style="text-align: left;">A JSON, YAML, or XML <span class="mc-variable General.changelog variable">changelog</span> file with a <code>modifyDataType</code> <span class="mc-variable General.changeset variable">changeset</span></li>
+                                                                <li style="text-align: left;">A JSON, YAML, or XML <span class="mc-variable General.changelog variable">changelog</span> file that includes the <code>sql</code>, <code>sqlFile</code>, or <code>pro:sqlplus</code> <span class="mc-variable General.changetypes variable">Change Type</span>, and there is the statement that contains <code>ALTER TABLE MODIFY COLUMN</code></li>
+                                                            </ul>
+                                                            <p>When you execute <code>liquibase checks run</code> against that <span class="mc-variable General.changelog variable">changelog</span>, you will receive an alert message about the <span class="mc-variable General.changeset variable">changeset</span> that may modify the data.</p>
+                                                            <p>Additionally, see the check variations:</p>
+                                                            <ul>
+                                                                <li style="text-align: left;">Statement does not contain the <code>COLUMN</code> keyword: <code>ALTER TABLE MODIFY &lt;column_name&gt;</code></li>
+                                                                <li style="text-align: left;">Statement contains additional <code>ALTER</code> instead of <code>MODIFY</code>:   <code>ALTER TABLE ALTER COLUMN</code></li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Type</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1">Static</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body2">Enabled by default</td>
+                                                        <td class="TableStyle-TableStyles-BodyA-Column1-Body2">Yes</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h3>Check object names for a specific pattern</h3>
+                                            <table style="width: 100%;mc-table-style: url('../../z_resources/stylesheets/tablestyles.css');" class="TableStyle-TableStyles" cellspacing="0">
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 100px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 500px;" />
+                                                <thead>
+                                                    <tr class="TableStyle-TableStyles-Head-Header1">
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1"><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th class="TableStyle-TableStyles-HeadD-Column1-Header1">Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Short name</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1">
+                                                            <ul>
+                                                                <li style="text-align: left;"><code>ObjectNameMustMatch</code>, which detects whether the object name matches the specified pattern</li>
+                                                                <li style="text-align: left;"><code>ObjectNameMustNotMatch</code>, which detects whether the object name does not match the specified pattern</li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body2">Description</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body2">
+                                                            <p>The checks confirm that object names do or do not conform to the specified pattern.</p>
+                                                            <p>For example, you have a <span class="mc-variable General.changelog variable">changelog</span> file with one or more <span class="mc-variable General.changeset variable">changeset</span>s that include the <code>sql</code>, <code>sqlFile</code>, or <code>pro:sqlplus</code><span class="mc-variable General.changetypes variable">Change Type</span>, and there is a statement that follows the pattern of  <code>GRANT &lt;privilege name&gt; TO &lt;role or user name&gt; WITH ADMIN OPTION</code> or <code>GRANT &lt;privilege name&gt; TO &lt;role or user name&gt; WITH GRANT OPTION</code>.</p>
+                                                            <p>When you execute <code>liquibase checks run</code> against that <span class="mc-variable General.changelog variable">changelog</span>, you will receive an alert message about the <span class="mc-variable General.changeset variable">changeset</span> with the privilege you want to grant.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Type</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1">Static</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body2">Enabled by default</td>
+                                                        <td class="TableStyle-TableStyles-BodyA-Column1-Body2">Yes</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h3><a name="Check3"></a>Check SQL for a specific pattern</h3>
+                                            <table style="width: 100%;mc-table-style: url('../../z_resources/stylesheets/tablestyles.css');" class="TableStyle-TableStyles" cellspacing="0">
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 100px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 500px;" />
+                                                <thead>
+                                                    <tr class="TableStyle-TableStyles-Head-Header1">
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1"><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th class="TableStyle-TableStyles-HeadD-Column1-Header1">Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Short name</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1"><code>SqlUserDefinedPatternCheck</code>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body2">Description</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body2">
+                                                            <p>The check scans generated or raw SQL for the presence of specific patterns so that you can prevent security and velocity issues as early as possible.</p>
+                                                            <h4>Uses</h4>
+                                                            <p>You may have a JSON, YAML, or XML <span class="mc-variable General.changelog variable">changelog</span> file with one or more <span class="mc-variable General.changeset variable">changeset</span>s that contain raw SQL or produce generated SQL that matches a regular expression. When you execute <code>liquibase checks run</code> against that <span class="mc-variable General.changelog variable">changelog</span>, <span class="mc-variable General.Liquibase variable">Liquibase</span> generates or accesses the SQL generated for the <span class="mc-variable General.changelog variable">changelog</span> and checks for a match against the defined regular expression. After this, you will receive an alert message about the <span class="mc-variable General.changeset variable">changeset</span> affected.</p>
+                                                            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span><span class="mc-variable General.Liquibase variable">Liquibase</span> uses the <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/regex/Pattern.html">java.util.regex</a> engine to match regular expressions.</p>
+                                                            <p>You may also have a formatted SQL <span class="mc-variable General.changelog variable">changelog</span> file to check <span class="mc-variable General.changeset variable">changeset</span>s that have labels, but those labels do not match the check configuration.</p>
+                                                            <p>To use the <code>SqlUserDefinedPatternCheck</code> check with the specific SQL, you must copy and customize it:</p><pre xml:space="preserve"><code class="language-text">liquibase copy --check-name=SqlUserDefinedPatternCheck</code></pre>
+                                                            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>See the <a href="#Configur2" class="MCXref xref">Configurable attributes for SQL that contains a specific pattern</a> table for the <span class="mc-variable General.Param/Attribute variable">attribute</span>s you can customize.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Restrictions</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1">
+                                                            <p>You cannot delete or reset the <code>SqlUserDefinedPatternCheck</code> check if it is an original check, not a copy of the check.</p>
+                                                            <p>You cannot reset a customized copy of the <code>SqlUserDefinedPatternCheck</code> check for the initial value because the check does not have a default value for the <code>SearchString</code> <span class="mc-variable General.Param/Attribute variable">attribute</span>. If you no longer need to run this check, delete or disable it.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body2">Type</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body2">Dynamic</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body1">Enabled by default</td>
+                                                        <td class="TableStyle-TableStyles-BodyA-Column1-Body1">No</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h4><a name="Configur2"></a>Configurable <span class="mc-variable General.Param/Attribute variable">attribute</span>s for SQL that contains a specific pattern</h4>
+                                            <table style="width: 100%;mc-table-style: url('../../z_resources/stylesheets/tablestyles.css');" class="TableStyle-TableStyles" cellspacing="0">
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 120px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 120px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 120px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 120px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 120px;" />
+                                                <thead>
+                                                    <tr class="TableStyle-TableStyles-Head-Header1">
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1">Name</th>
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1">Type</th>
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1">Description</th>
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1">Validation</th>
+                                                        <th class="TableStyle-TableStyles-HeadD-Column1-Header1">Default value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1"><code>SearchString</code>
+                                                        </td>
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1"><code>String</code>
+                                                        </td>
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">The substring or regular expression to match with the one in the <span class="mc-variable General.changelog variable">changelog</span> file</td>
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1"><code>SearchString</code> should be a valid string or a <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/regex/Pattern.html">regular expression</a>.</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1">There is no default value</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body2"><code>StripComments</code> </td>
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body2"><code>String</code>
+                                                        </td>
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body2">The <span class="mc-variable General.Param/Attribute variable">attribute</span> to strip comments from SQL before searching for the string.</td>
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body2">
+                                                            <p style="text-align: center;">Yes/No</p>
+                                                        </td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body2">The default value is <code>N</code> (no)</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body1"><code>Message</code>
+                                                        </td>
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body1"><code>String</code>
+                                                        </td>
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body1">The message you want to print when the check detects a pattern match</td>
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body1">There is no validation</td>
+                                                        <td class="TableStyle-TableStyles-BodyA-Column1-Body1">The default value is the following:
+A match for regular expression <code>&lt;SearchString value&gt;</code> was detected in <span class="mc-variable General.changeset variable">changeset</span> <code>&lt;changeset id&gt;</code></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h3><a name="Check2"></a>Check table column count</h3>
+                                            <table style="width: 100%;mc-table-style: url('../../z_resources/stylesheets/tablestyles.css');" class="TableStyle-TableStyles" cellspacing="0">
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 100px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 500px;" />
+                                                <thead>
+                                                    <tr class="TableStyle-TableStyles-Head-Header1">
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1"><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th class="TableStyle-TableStyles-HeadD-Column1-Header1">Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Short name</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1"><code>TableColumnLimit</code>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body2">Description</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body2">
+                                                            <p>The check ensures that no table has more than a threshold number of columns.  </p>
+                                                            <h4>Uses</h4>
+                                                            <p>You may have a <span class="mc-variable General.changelog variable">changelog</span> file with one or more <span class="mc-variable General.changeset variable">changeset</span>s that contain a table with <code>N</code> columns in which <code>N &gt; MAX_COLUMNS</code>. When you execute <code>liquibase checks run</code> against that <span class="mc-variable General.changelog variable">changelog</span>, you will receive an alert message about the <span class="mc-variable General.changeset variable">changeset</span> with the exceeded limit.</p>
+                                                            <p>You can copy and customize the <code>TableColumnLimit</code> check  to your specific column limit threshold by running: </p><pre xml:space="preserve"><code class="language-text">liquibase copy --check-name=TableColumnLimit</code></pre>
+                                                            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>See the <a href="#Configur3" class="MCXref xref">Configurable attributes for a table column count limit</a> table for the <span class="mc-variable General.Param/Attribute variable">attribute</span>s you can customize.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body1">Restrictions</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body1">
+                                                            <p>You cannot delete or reset the <code>TableColumnLimit</code> check if it is an original check, not a copy of the check.</p>
+                                                            <p>You cannot reset a customized copy of the <code>TableColumnLimit</code> check for the initial value. If you no longer need to run this check, delete or disable it.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body2">
+                                                        <td class="TableStyle-TableStyles-BodyE-Column1-Body2">Type</td>
+                                                        <td class="TableStyle-TableStyles-BodyD-Column1-Body2">Dynamic</td>
+                                                    </tr>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body1">Enabled by default</td>
+                                                        <td class="TableStyle-TableStyles-BodyA-Column1-Body1">Yes</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h4><a name="Configur3"></a>Configurable <span class="mc-variable General.Param/Attribute variable">attribute</span>s for a table column count limit</h4>
+                                            <table style="width: 100%;mc-table-style: url('../../z_resources/stylesheets/tablestyles.css');" class="TableStyle-TableStyles" cellspacing="0">
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 120px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 120px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 120px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 120px;" />
+                                                <col class="TableStyle-TableStyles-Column-Column1" style="width: 120px;" />
+                                                <thead>
+                                                    <tr class="TableStyle-TableStyles-Head-Header1">
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1">Name</th>
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1">Type</th>
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1">Description</th>
+                                                        <th class="TableStyle-TableStyles-HeadE-Column1-Header1">Validation</th>
+                                                        <th class="TableStyle-TableStyles-HeadD-Column1-Header1">Default value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="TableStyle-TableStyles-Body-Body1">
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body1"><code>MAX_COLUMNS</code>
+                                                        </td>
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body1"><code>INT</code>
+                                                        </td>
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body1">The substring or <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/regex/Pattern.html">regular expression</a> to match</td>
+                                                        <td class="TableStyle-TableStyles-BodyB-Column1-Body1">There is no validation</td>
+                                                        <td class="TableStyle-TableStyles-BodyA-Column1-Body1">The default value is 50</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h2>Related links</h2>
+                                            <ul>
+                                                <li><a href="workflows/home.html" class="MCXref xref">Working with Quality Checks</a>
+                                                    <ul>
+                                                        <li><a href="workflows/home.html" class="MCXref xref">Getting Started with the checks Command</a>
+                                                        </li>
+                                                        <li><a href="workflows/use-checks-settings-config-file.html" class="MCXref xref">Using the Checks Settings Configuration File</a>
+                                                        </li>
+                                                        <li><a href="home.html" class="MCXref xref"> Quality Checks Commands</a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- UserSnap Script -->
+                                    <script type="text/javascript">/* <![CDATA[ */
+			(function() { var s = document.createElement("script"); s.type = "text/javascript"; s.async = true; s.src = '//api.usersnap.com/load/b2c335ee-34ad-477a-9959-a981d32e505c.js';
+			var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x); })();
+		/* ]]> */</script>
+                                    <!-- End UserSnap Script -->
+                                    <!-- Start Glide Footer -->
+                                    <footer class="glide">
+                                        <div class="footer-container">
+                                            <div class="footer-wrapper">
+                                                <div class="footer-left-widget">
+                                                    <div class="footer-form-widget">
+                                                        <div class="widget-inner">
+                                                            <div class="footer-logo"><a href="https://www.liquibase.com"><img src="../../z_resources/images/glide/logo-white.svg" alt="" /></a>
+                                                            </div>
+                                                            <div class="footer-socials"><a href="https://twitter.com/liquibase" class="f-twitter" target="_blank"></a><a href="https://github.com/liquibase/liquibase" class="f-github" target="_blank"></a><a href="https://www.reddit.com/r/liquibase/" class="f-reddit" target="_blank"></a><a href="https://www.linkedin.com/company/liquibase" class="f-linkedin" target="_blank"></a><a href="https://www.youtube.com/channel/UC5qMsRjObu685rTBq0PJX8w" class="f-youtube" target="_blank"></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="footer-widgets">
+                                                    <div class="footer-widget">
+                                                        <h4>Products</h4>
+                                                        <div class="menu-column-two-menu-container">
+                                                            <ul id="menu-column-two-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-15659"><a href="https://www.liquibase.com/pricing">Pricing</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-903"><a href="https://www.liquibase.com/pricing/enterprise">Liquibase Enterprise</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-906"><a href="https://www.liquibase.com/pricing/pro">Liquibase Pro</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15600"><a target="_blank" rel="noopener" href="https://www.liquibase.org/download">Liquibase Open Source</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-15871"><a target="_blank" rel="noopener" href="https://hub.liquibase.com">Liquibase Hub</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Solutions</h4>
+                                                        <div class="menu-column-three-menu-container">
+                                                            <ul id="menu-column-three-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-908"><a href="https://www.liquibase.com/ci-cd">CI/CD</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/compliance">Compliance</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/devsecops">DevSecOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/financial-services">Financial Services</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/gitops-database">GitOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/public-sector">Public Sector</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-907"><a href="https://www.liquibase.com/version-control">Version Control</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Resources</h4>
+                                                        <div class="menu-column-four-menu-container">
+                                                            <ul id="menu-column-four-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-916"><a href="https://www.liquibase.com/blog">Blog</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15471"><a href="https://www.liquibase.com/resources">Resource Library</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-resource_category menu-item-914"><a href="https://www.liquibase.com/resources/guides">Guides</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14975"><a href="../../index.html">Documentation</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-917"><a href="https://www.liquibase.com/support">Support</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom last-menu-item menu-item-15215"><a target="_blank" rel="noopener noreferrer" href="https://learn.liquibase.com/index">Training</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Company</h4>
+                                                        <div class="menu-column-five-menu-container">
+                                                            <ul id="menu-column-five-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-1176"><a href="https://www.liquibase.com/company">Company</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1177"><a href="https://www.liquibase.com/company/leadership">Leadership</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1070"><a href="https://www.liquibase.com/company/careers">Careers</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1071"><a href="https://www.liquibase.com/partners">Partners</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15024"><a href="https://www.liquibase.com/category/press-releases">News</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-1178"><a href="https://www.liquibase.com/contact">Contact</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                    <div class="footer-bottom">
+                                                        <div class="copyright">
+                                                            <p><span class="mc-variable General.copyright variable">© 2022 Liquibase Inc.  All Rights Reserved. 
+Liquibase is a registered trademark of Liquibase Inc.</span>
+                                                                <br /><span class="mc-variable General.PhoneNumber variable">(737) 402-7187</span>
+                                                            </p>
+                                                        </div>
+                                                        <div class="footer-menu">
+                                                            <div class="menu-footer-menu-container">
+                                                                <ul id="menu-footer-menu">
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-privacy-policy first-menu-item menu-item-902"><a href="https://www.liquibase.com/privacy-policy">Privacy Policy</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-901"><a href="https://www.liquibase.com/terms-of-use">Terms of Use</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-14933"><a href="https://www.liquibase.com/eula">EULA</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                </div>
+                                                <div class="clear">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </footer>
+                                    <!-- This script is necessary to relocate the footer so that it maintains 100% width -->
+                                    <script type="text/javascript">/*<![CDATA[*/$(document).ready(function(){ $("footer").appendTo("div.off-canvas-content.inner-wrap"); });/*]]>*/</script>
+                                    <!-- End Glide Footer -->
+                                </div>
+                            </div>
+                        </div>
+                    </div><a data-close="true"></a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

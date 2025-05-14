@@ -1,0 +1,389 @@
+createTable
+Skip To Main Content
+Account
+Settings
+Logout
+placeholder
+Account
+Settings
+Logout
+You are here:
+createTable
+The createTable Change Type creates a table.
+Uses
+You can typically use the createTable Change Type when you want to create a table in your changelog file and then deploy
+it to your database. It can include columns and another values listed in this documentation.
+Running the createTable Change Type
+To run this Change Type, follow these steps:
+Add the Change Type to your changeset, as shown in the examples on this page.
+Specify any required attributes. Use the table on this page to see which ones your database requires.
+Deploy your changeset by running the update command:liquibase update
+Now, you should see a new table.
+Running the createTable Change Type with dynamic values
+If you want to set and dynamically pass a specific attribute in your changelog, you can add ${your-attribute} to one or more of your changesets, and then run those changesets as shown in the following examples:<changeSet id="1" author="liquibase">
+<createTable tableName="department">
+<column name="id" type="int">
+<constraints primaryKey="true"/>
+</column>
+<column name="dept" type="varchar(${dep.size})">
+<constraints nullable="false"/>
+</column>
+<column name="emp_id" type="int">
+<constraints nullable="false"/>
+</column>
+</createTable>
+</changeSet>liquibase -Ddep.size=50 update<changeSet id="2" author="liquibase">
+<createTable catalogName="department2"
+remarks="A String"
+schemaName="public"
+tableName="person"
+tablespace="${tablespace}">
+<column name="address" type="varchar(255)"/>
+</createTable>
+</changeSet>liquibase -Dtablespace='tablespaceQA' update
+Note: For more information, see Substituting Properties in Changelogs.
+Available attributes
+Name
+Description
+Required for
+Supports
+catalogName
+Name of the catalog
+all
+ifNotExists
+Liquibase 4.26.0+. If true, creates the table only if it does not already exist. Appends IF NOT EXISTS syntax to SQL query.
+asany, cockroachdb, databricks, db2, db2z, derby, edb, h2, hsqldb, informix, ingres, mariadb, mssql, mysql, postgresql, sqlite, sybase
+remarks
+A short descriptive comment
+all
+rowDependencies
+Liquibase 4.29.0+. In an Oracle database, specifies whether to create the table with row-level dependency tracking. If true, appends ROWDEPENDENCIES to the SQL statement deployed by Liquibase. Default: false.
+oracle
+schemaName
+Name of the schema
+all
+tableName
+Name of the table
+all
+all
+tablespace
+Name of the tablespace to use to create the table in
+all
+tableType
+Liquibase 4.19.0+. Allows users to define tables with modifiers of the format: CREATE [options] TABLE, where tableType indicates the [options]. For example, if tableType=TEMPORARY, then the SQL Liquibase generates becomes CREATE TEMPORARY TABLE.
+databricks, h2, hana, oracle, mariadb, mysql, postgresql, snowflake
+Nested tags
+Name
+Description
+Required for
+Supports
+Multiple allowed
+column
+Column definitions.
+You may use Databricks ARRAY<INT> and ARRAY<STRING>, MAP, and STRUCT variable types on the column object.
+Note: YAML and JSON changelogs using the column tag must nest it within a columns tag.
+all
+all
+yes
+extendedTableProperties
+Specifies additional properties on a table you're creating, such as whether to create clustered or partitioned columns.
+databricks
+no
+Examples
+SQL example
+YAML example
+JSON example
+XML example
+--liquibase formatted sql
+--changeset liquibase-docs:createTable-example
+CREATE
+TABLE
+department.person
+(address
+VARCHAR(255)
+NULL)
+COMMENT='A String';
+ALTER
+TABLE
+department.person
+COMMENT
+=
+'A String';
+General example:databaseChangeLog:
+-
+changeSet:
+id:
+createTable-example
+author:
+liquibase-docs
+changes:
+-
+createTable:
+catalogName:
+department
+columns:
+-
+column:
+name:
+address
+type:
+varchar(255)
+remarks:
+A String
+schemaName:
+public
+tableName:
+person
+tablespace:
+A String
+Databricks example:databaseChangeLog:
+- changeSet:
+id: 1
+author: your.name
+changes:
+- createTable:
+tableName: test_table_complex_types
+columns:
+- column:
+name: my_arrs
+type: ARRAY<STRING>
+- column:
+name: my_arrbi
+type: ARRAY<BIGINT>
+- column:
+name: my_map
+type: MAP<STRING, BIGINT>
+- column:
+name: my_struct
+type: 'STRUCT<FIELD1: STRING NOT NULL, FIELD2: INT>'
+extendedTableProperties:
+clusterColumns: my_arrs, my_arrbi
+tableFormat: delta
+tableLocation: s3://databricks-external-folder/test_table_properties
+tblProperties: 'this.is.my.key'=12,'this.is.my.key2'=true
+General example:{
+"databaseChangeLog": [
+{
+"changeSet": {
+"id": "createTable-example",
+"author": "liquibase-docs",
+"changes": [
+{
+"createTable": {
+"catalogName": "department",
+"columns": [
+{
+"column": {
+"name": "address",
+"type": "varchar(255)"
+}
+}
+],
+"remarks": "A String",
+"schemaName": "public",
+"tableName": "person",
+"tablespace": "A String"
+}
+}
+]
+}
+}
+]
+}
+Databricks example:{
+"databaseChangeLog": [
+{
+"changeSet": {
+"id": "1",
+"author": "your.name",
+"changes": [
+{
+"createTable": {
+"tableName": "test_table_complex_types",
+"columns": [
+{
+"column": {
+"name": "my_arrs",
+"type": "ARRAY<STRING>"
+}
+},
+{
+"column": {
+"name": "my_arrbi",
+"type": "ARRAY<BIGINT>"
+}
+},
+{
+"column": {
+"name": "my_map",
+"type": "MAP<STRING, BIGINT>"
+}
+},
+{
+"column": {
+"name": "my_struct",
+"type": "STRUCT<FIELD1: STRING NOT NULL, FIELD2: INT>"
+}
+}
+],
+"extendedTableProperties": {
+"clusterColumns": "my_arrs, my_arrbi",
+"tableFormat": "delta",
+"tableLocation": "s3://databricks-external-folder/test_table_properties",
+"tblProperties": "'this.is.my.key'=12,'this.is.my.key2'=true"
+}
+}
+}
+]
+}
+}
+]
+}
+General example:<databaseChangeLog
+xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+http://www.liquibase.org/xml/ns/dbchangelog-ext
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+http://www.liquibase.org/xml/ns/pro
+http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+<changeSet
+author="liquibase-docs"
+id="createTable-example">
+<createTable catalogName="department"
+remarks="A String"
+schemaName="public"
+tableName="person"
+tablespace="A String">
+<column
+name="address"
+type="varchar(255)"/>
+</createTable>
+</changeSet>
+</databaseChangeLog>
+Databricks example:<databaseChangeLog
+xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+http://www.liquibase.org/xml/ns/dbchangelog-ext
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+http://www.liquibase.org/xml/ns/pro
+http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+<changeSet author="your.name" id="1">
+<createTable tableName="test_table_complex_types">
+<column name="my_arrs" type="ARRAY&lt;STRING&gt;" />
+<column name="my_arrbi" type="ARRAY&lt;BIGINT&gt;" />
+<column name="my_map" type="MAP&lt;STRING, BIGINT&gt;" />
+<column name="my_struct" type="STRUCT&lt;FIELD1: STRING NOT NULL, FIELD2: INT&gt;" />
+<databricks:extendedTableProperties clusterColumns="my_arrs, my_arrbi"
+tableFormat="delta"
+tableLocation="s3://databricks-external-folder/test_table_properties"
+tblProperties="'this.is.my.key'=12,'this.is.my.key2'=true"/>
+</createTable>
+</changeSet>
+</databaseChangeLog>
+Database support
+Database
+Notes
+Auto Rollback
+DB2/LUW
+Supported
+Yes
+DB2/z
+Supported
+Yes
+Derby
+Supported
+Yes
+Firebird
+Supported
+Yes
+Google BigQuery
+Supported
+Yes
+H2
+Supported
+Yes
+HyperSQL
+Supported
+Yes
+INGRES
+Supported
+Yes
+Informix
+Supported
+Yes
+MariaDB
+Supported
+Yes
+MySQL
+Supported
+Yes
+Oracle
+Supported
+Yes
+PostgreSQL
+Supported
+Yes
+Snowflake
+Supported
+Yes
+SQL Server
+Supported
+Yes
+SQLite
+Supported
+Yes
+Sybase
+Supported
+Yes
+Sybase Anywhere
+Supported
+Yes
+Editions & Features
+Editions & Features
+Liquibase Open Source
+Liquibase Pro
+Solutions
+CI/CD
+Compliance
+DevSecOps
+GitOps
+Version Control
+Financial Services
+Resources
+Blog
+Best Practice Guides
+Resource Library
+Documentation
+University
+Community
+Meetup/Events
+Support
+Community
+Contributors
+Contribute Code
+Share Expertise
+Advocate
+Support
+Liquibase Legends
+Liquibase Badges
+Contact
+Company
+Company
+Careers
+Leadership
+Contact
+Â© 2025 Liquibase Inc.
+All Rights Reserved.
+Liquibase is a registered trademark of Liquibase Inc.
+(737) 402-7187
+Privacy Policy
+Terms of Use
+EULA

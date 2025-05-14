@@ -1,0 +1,158 @@
+Why Spring
+Overview
+Microservices
+Reactive
+Event
+              Driven
+Cloud
+Web
+              Applications
+Serverless
+Batch
+Learn
+Overview
+Quickstart
+Guides
+Blog
+Projects
+Overview
+Spring Boot
+Spring Framework
+Spring Cloud
+Spring Cloud Data Flow
+Spring Data
+Spring Integration
+Spring Batch
+Spring Security
+View all projects
+DEVELOPMENT TOOLS
+Spring Tools 4
+Spring Initializr
+Academy
+Courses
+Get Certified
+Solutions
+Overview
+Spring Runtime
+Spring Consulting
+Spring Academy For Teams
+Security Advisories
+Community
+Overview
+Events
+Team
+light
+Spring Data JPA
+3.4.5
+Search
+Overview
+Upgrading Spring Data
+JPA
+Getting Started
+Core concepts
+Defining Repository Interfaces
+Configuration
+Persisting Entities
+Defining Query Methods
+JPA Query Methods
+Value Expressions Fundamentals
+Projections
+Stored Procedures
+Specifications
+Query by Example
+Transactionality
+Locking
+Auditing
+Merging persistence units
+CDI Integration
+Custom Repository Implementations
+Publishing Events from Aggregate Roots
+Null Handling of Repository Methods
+Spring Data Extensions
+Repository query keywords
+Repository query return types
+Frequently Asked Questions
+Glossary
+Envers
+Introduction
+Configuration
+Usage
+Javadoc
+Wiki
+Search
+Edit this Page
+GitHub Project
+Stack Overflow
+Spring Data JPA
+Overview
+Spring Data JPA
+Spring Data JPA provides repository support for the Jakarta Persistence API (JPA).
+It eases development of applications with a consistent programming model that need to access JPA data sources.
+JPA
+JPA and JPA Repositories
+Envers
+Support for Envers Revision Repositories
+Wiki
+What’s New,
+Upgrade Notes, Supported Versions, additional cross-version information.
+Oliver Gierke, Thomas Darimont, Christoph Strobl, Mark Paluch, Jay Bryant, Greg Turnquist
+© 2008-2025 VMware, Inc.
+Copies of this document may be made for your own use and for distribution to others, provided that you do not charge any fee for such copies and further provided that each copy contains this Copyright Notice, whether distributed in print or electronically.
+Spring Data Commons
+Stable
+3.4.5
+3.3.11
+3.2.12
+Preview
+4.0.0-M2
+3.5.0-RC1
+Snapshot
+4.0.0-SNAPSHOT
+3.5.0-SNAPSHOT
+3.4.6-SNAPSHOT
+3.3.12-SNAPSHOT
+Spring Data JPA
+Stable
+3.4.5
+3.3.11
+3.2.12
+Preview
+4.0.0-M2
+3.5.0-RC1
+Snapshot
+4.0.0-SNAPSHOT
+3.5.0-SNAPSHOT
+3.4.6-SNAPSHOT
+3.3.12-SNAPSHOT
+Related Spring Documentation
+Spring Framework
+Spring Data
+Spring Data Cassandra
+Spring Data Commons
+Spring Data Couchbase
+Spring Data Elasticsearch
+Spring Data JPA
+Spring Data KeyValue
+Spring Data LDAP
+Spring Data MongoDB
+Spring Data Neo4j
+Spring Data Redis
+Spring Data JDBC & R2DBC
+Spring Data REST
+Spring GraphQL
+All Docs...
+Copyright © 2005 -
+Broadcom. All Rights Reserved. The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+Terms of Use
+•
+Privacy
+•
+Trademark Guidelines
+•
+Thank you
+•
+Your California Privacy Rights
+•
+Cookie Settings
+Apache®, Apache Tomcat®, Apache Kafka®, Apache Cassandra™, and Apache Geode™ are trademarks or registered trademarks of the Apache Software Foundation in the United States and/or other countries. Java™, Java™ SE, Java™ EE, and OpenJDK™ are trademarks of Oracle and/or its affiliates. Kubernetes® is a registered trademark of the Linux Foundation in the United States and other countries. Linux® is the registered trademark of Linus Torvalds in the United States and other countries. Windows® and Microsoft® Azure are registered trademarks of Microsoft Corporation. “AWS” and “Amazon Web Services” are trademarks or registered trademarks of Amazon.com Inc. or its affiliates. All other trademarks and copyrights are property of their respective owners and are only mentioned for informative purposes. Other names may be trademarks of their respective owners.
+Search in all Spring Docs

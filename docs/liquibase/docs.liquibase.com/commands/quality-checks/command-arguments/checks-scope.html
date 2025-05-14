@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" class="_Skins_oss_pro" data-mc-search-type="Stem" data-mc-help-system-file-name="Default.xml" data-mc-path-to-help-system="../../../" data-mc-has-content-body="True" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic;Default" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-searchable="False">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="msapplication-config" content="../../../Skins/Favicons/browserconfig.xml" />
+        <meta name="description" content="Reference information and use cases for the check-scope parameter. It can be applied to the checks run command which allows the user to check either the changelog or database against any enabled checks." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../../Skins/Favicons/favicon-16x16.png" /><title>checks-scope</title>
+        <!-- Google GA4 tag (gtag.js) -->
+        <!-- End Google GA4 tag -->
+        <!-- Google Tag Manager -->
+        <!-- End Google Tag Manager -->
+        <!-- Prism Highlighting -->
+        <!-- End Prism Highlighting -->
+        <!-- Tabs for code examples -->
+        <!--End tabs for code examples -->
+        <link href="../../../Skins/Default/Stylesheets/Slideshow.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="https://docs.liquibase.com/Skins/Fluid/Stylesheets/MadCapSearch.Google.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Default/Stylesheets/Components/Styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Default/Stylesheets/Components/Tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Default/Stylesheets/Components/Mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Default/Stylesheets/Components/Print.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Fluid/stylesheets/foundation.6.2.3.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Fluid/stylesheets/styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Fluid/stylesheets/tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Fluid/stylesheets/mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Fluid/stylesheets/print.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link rel="stylesheet" href="../../../z_resources/stylesheets/glidestyles.css" type="text/css" media="all" />
+        <link href="../../../z_resources/stylesheets/styles.css" rel="stylesheet" type="text/css" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../../Skins/Favicons/favicon-16x16.png" />
+        <link rel="canonical" href="checks-scope.html" />
+        <script src="../../../resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../resources/Scripts/purify.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../../resources/Scripts/require.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../../resources/Scripts/require.config.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../../resources/Scripts/foundation.6.2.3_custom.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../../resources/Scripts/plugins.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../../resources/Scripts/MadCapAll.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=G-GJFFQKWLLX">
+        </script>
+        <script>/* <![CDATA[ */
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());  gtag('config', 'G-GJFFQKWLLX');
+		/* ]]> */</script>
+        <script>/* <![CDATA[ */(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&amp;l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-NTCPFS9');/* ]]> */</script>
+        <script type="text/javascript" src="../../../z_resources/scripts/prism.js"> </script>
+        <script type="application/javascript" src="../../../z_resources/scripts/jquery-accessible-tabs-ktc.js"> </script>
+    </head>
+    <body>
+        <div class="foundation-wrap off-canvas-wrapper">
+            <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper="">
+                <aside class="off-canvas position-right" role="navigation" id="offCanvas" data-off-canvas="" data-position="right" data-mc-ignore="true">
+                    <ul class="off-canvas-accordion vertical menu off-canvas-list" data-accordion-menu="" data-mc-back-link="Back" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="True" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True">
+                    </ul>
+                </aside>
+                <div class="off-canvas-content inner-wrap" data-off-canvas-content="">
+                    <div data-sticky-container="" class="title-bar-container">
+                        <nav class="title-bar tab-bar sticky" role="banner" data-sticky="" data-options="marginTop:0" style="width:100%" data-sticky-on="only screen and (max-width: 1279px)" data-mc-ignore="true"><a class="skip-to-content fluid-skip showOnFocus" href="#">Skip To Main Content</a>
+                            <div class="middle title-bar-section outer-row clearfix">
+                                <div class="menu-icon-container relative clearfix">
+                                    <div class="central-account-wrapper">
+                                        <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                            <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                                <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="menu-icon" aria-label="Show Navigation Panel" data-toggle="offCanvas"><span></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="title-bar-layout outer-row">
+                                <div class="logo-wrapper"><a class="logo" href="../../../home.html" alt="Logo"></a>
+                                </div>
+                                <div class="navigation-wrapper nocontent">
+                                    <ul class="navigation clearfix" role="navigation" data-mc-css-tree-node-has-children="has-children" data-mc-css-sub-menu="sub-menu" data-mc-expand-event="mouseenter" data-mc-top-nav-menu="True" data-mc-max-depth="5" data-mc-include-icon="False" data-mc-include-indicator="False" data-mc-include-children="True" data-mc-include-siblings="True" data-mc-include-parent="True" data-mc-toc="True">
+                                        <li class="placeholder" style="visibility:hidden"><a>placeholder</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="central-account-wrapper">
+                                    <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                        <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                            <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="nav-search-wrapper">
+                                    <div class="nav-search row">
+                                        <form>
+                                            <div id="EaZl7IMMdkOxEcTqrymc2g" class="search-bar search-bar-container needs-pie">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="main-section">
+                        <div class="row outer-row sidenav-layout">
+                            <nav class="sidenav-wrapper">
+                                <div class="sidenav-container">
+                                    <ul class="off-canvas-accordion vertical menu sidenav" data-accordion-menu="" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu accordion-menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="False" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True" data-mc-side-nav-menu="True">
+                                    </ul>
+                                </div>
+                            </nav>
+                            <div class="body-container">
+                                <div data-mc-content-body="True">
+                                    <!-- Google Tag Manager (noscript) -->
+                                    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTCPFS9" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+                                    </noscript>
+                                    <!-- End Google Tag Manager (noscript) -->
+                                    <div class="side-content">
+                                        <form>
+                                            <div id="0An8IFCMjkmkQS_GJrTvGw" class="search-bar search-bar-container needs-pie _Skins_Topics_Searchbar mc-component">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!--<div>  class="topic-layout"-->
+                                    <!--AV 2023-09-13: removing duplicate nav after switch to sidenav
+		<div style="float:left; margin-right: 20px; margin-left:20px; margin-bottom: 15px;"> <MadCap:menuProxy data-mc-skin="/Project/Skins/Topics-Menu.flskn" style="mc-context-sensitive: True;mc-include-parent: True;mc-include-siblings: True;mc-include-children: True;" mc-linked-toc="/Project/TOCs/TOC.fltoc" /></div>-->
+                                    <div class="liquibase-docs-body">
+                                        <div role="main" id="mc-main-content">
+                                            <h1><code class="language-text">checks-scope</code>
+                                            </h1><a href="https://www.liquibase.com/trial"><img src="../../../z_resources/images/logos/pro-button_32x18.jpg" class="ver_icon_size" title="This feature is part of Liquibase Pro and requires a Liquibase Pro license key" style="width: 32;height: 18;" /></a>
+                                            <p><code class="language-text">checks-scope</code> is a parameter that can be applied to the <code class="language-text">checks <a href="../subcommands/run.html" class="MCXref xref">run</a></code> subcommand. It allows the user to check either the <span class="mc-variable General.changelog variable">changelog</span> or database against any enabled checks.</p>
+                                            <h2 id="uses">Uses</h2>
+                                            <p>When you run <code class="language-text">checks-scope=changelog</code>, <span class="mc-variable General.Liquibase variable">Liquibase</span> checks each <span class="mc-variable General.changeset variable">changeset</span> in the <span class="mc-variable General.changelog variable">changelog</span> to see if any of those <span class="mc-variable General.changeset variable">changeset</span>s trigger any enabled checks.</p>
+                                            <p>When you run <code class="language-text">checks-scope=database</code>, <span class="mc-variable General.Liquibase variable">Liquibase</span> checks each database object to see if any of those objects trigger any enabled checks.</p>
+                                            <p>Both the <span class="mc-variable General.changelog variable">changelog</span> and database can be checked by themselves or at the same time. Users may choose between <code class="language-text">changelog</code>, <code class="language-text">database</code>, or <code class="language-text">database, changelog</code> to run the enabled checks against. If <code class="language-text">checks-scope</code> is not specified, <span class="mc-variable General.Liquibase variable">Liquibase</span> defaults to running <span class="mc-variable General.changelog variable">changelog</span> checks.</p>
+                                            <h2>Syntax</h2>
+                                            <p>A check can be one scope or dual-scoped. When executed, the command can be used in any of the following ways:</p><pre xml:space="preserve"><code class="lang-text">--checks-scope=changelog
+--checks-scope=database
+--checks-scope=changelog, database
+--checks-scope=database, changelog</code></pre>
+                                            <p>For example:</p><pre xml:space="preserve"><code class="language-text">liquibase checks run --checks-scope=changelog --changelog-file=&lt;example-changelog.xml&gt;</code></pre>
+                                            <h2>checks-scope attributes</h2>
+                                            <p>The following table identifies attributes that can be used with the <code class="language-text">checks-scope</code> parameter. Note that <code class="language-text">checks-scope</code> works on all <span class="mc-variable General.changelog variable">changelog</span> types (SQL, XML, YAML, and JSON), but not all <a href="../checks/home.html" title="Learn more about Quality Checks here">quality checks</a> work on all <span class="mc-variable General.changelog variable">changelog</span> types. It is best practice to review which quality checks work on the <span class="mc-variable General.changelog variable">changelog</span> type you are using.</p>
+                                            <table>
+                                                <col style="width: auto;" />
+                                                <col style="width: auto;" />
+                                                <col style="width: 202px;" />
+                                                <thead>
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Syntax</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code class="language-text"><span class="mc-variable General.changelog variable">changelog</span></code>
+                                                        </td>
+                                                        <td>
+                                                            <p>CLI:</p>
+                                                            <p><code class="language-text">--checks-scope=changelog</code>
+                                                            </p>
+                                                            <p>Property:</p>
+                                                            <p><code class="language-text">liquibase.command.checksscope=changelog</code>
+                                                            </p>
+                                                            <p>Environment Variable:</p>
+                                                            <p><code class="language-text">LIQUIBASE_COMMAND_CHECKS_SCOPE="changelog"</code>
+                                                            </p>
+                                                        </td>
+                                                        <td>Specifies the <span class="mc-variable General.changelog variable">changelog</span> subset of checks  to run.</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code class="language-text">database</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>CLI:</p>
+                                                            <p><code class="language-text">--checks-scope=database</code>
+                                                            </p>
+                                                            <p>Property:</p>
+                                                            <p><code class="language-text">liquibase.command.checksscope=database</code>
+                                                            </p>
+                                                            <p>Environment Variable:</p>
+                                                            <p><code class="language-text">LIQUIBASE_COMMAND_CHECKS_SCOPE="database"</code>
+                                                            </p>
+                                                        </td>
+                                                        <td>Specifies the database subset of checks  to run.</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h3>Checks that can run against databases, changelogs, or both are listed in the table below.</h3>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />Dual Scope Checks</a></span>
+                                                <div class="MCDropDownBody dropDownBody">
+                                                    <table>
+                                                        <col style="width: auto;" />
+                                                        <col style="width: auto;" />
+                                                        <col style="width: 202px;" />
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Name</th>
+                                                                <th>Description</th>
+                                                                <th>Scope</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><code class="language-text">TableColumnLimit</code>
+                                                                </td>
+                                                                <td>
+                                                                    <p>Ensures that no table has more than a threshold number of columns.</p>
+                                                                </td>
+                                                                <td class="center">Database and <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code class="language-text">ObjectNameMustMatch</code>
+                                                                </td>
+                                                                <td>This check confirms the listed object names conform to the supplied pattern.</td>
+                                                                <td class="center">Database and <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code class="language-text">ObjectNameMustNotMatch</code>
+                                                                </td>
+                                                                <td>This check confirms the listed object names do not match the supplied pattern.</td>
+                                                                <td class="center">Database and <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code class="language-text">TableCommentPatternCheck</code>
+                                                                </td>
+                                                                <td>This check triggers when specific user-supplied patterns are found in Table Comments</td>
+                                                                <td class="center">Database and <span class="mc-variable General.changelog variable">changelog</span></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />Database Only Checks</a></span>
+                                                <div class="MCDropDownBody dropDownBody">
+                                                    <table>
+                                                        <col style="width: auto;" />
+                                                        <col style="width: auto;" />
+                                                        <col style="width: 202px;" />
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Name</th>
+                                                                <th>Description</th>
+                                                                <th>Scope</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><code class="language-text">TableCommentCheck</code>
+                                                                </td>
+                                                                <td>This database check flags any table which does not have a comment. (Note: This is not a check for a Liquibase changelog comment.)         </td>
+                                                                <td class="center">Database</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code class="language-text">ConstraintMustExist</code>
+                                                                </td>
+                                                                <td>Check for and alert when specified table does not contain the required constraint(s). </td>
+                                                                <td class="center">Database</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />Changelog Only Checks</a></span>
+                                                <div class="MCDropDownBody dropDownBody">
+                                                    <table>
+                                                        <col style="width: auto;" />
+                                                        <col style="width: auto;" />
+                                                        <col style="width: 202px;" />
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Name</th>
+                                                                <th>Description</th>
+                                                                <th>Scope</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><code class="language-text">RequireChangesetIDisUUID</code>
+                                                                </td>
+                                                                <td>This check confirms the listed object names do not match the supplied pattern.</td>
+                                                                <td class="center"><span class="mc-variable General.changelog variable">changelog</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code class="language-text">PrimaryKeyOnCreateTable</code>
+                                                                </td>
+                                                                <td>	
+This check warns when a create table action doesnt also include a primary key.</td>
+                                                                <td class="center"><span class="mc-variable General.changelog variable">changelog</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code class="language-text">ChangesetCommentCheck</code>
+                                                                </td>
+                                                                <td>The check enforces the Liquibase recommendation that comments be added to each changeset to document the purpose of a changeset for other consumers of that changelog.</td>
+                                                                <td class="center"><span class="mc-variable General.changelog variable">changelog</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code class="language-text">ChangesetContextCheck</code>
+                                                                </td>
+                                                                <td>The checks enforce the Liquibase recommendation that  contexts are assigned to each changeset to provide better deployment control and to enhance traceability of efforts across changesets.</td>
+                                                                <td class="center"><span class="center mc-variable General.changelog variable">changelog</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code class="language-text">ChangesetLabelCheck</code>
+                                                                </td>
+                                                                <td>The checks enforce the Liquibase recommendation that labels are assigned to each changeset to provide better deployment control and to enhance traceability of efforts across changesets.</td>
+                                                                <td class="center"><span class="mc-variable General.changelog variable">changelog</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code class="language-text">RollbackRequired</code>
+                                                                </td>
+                                                                <td>The check detects when a changeset does not have a rollback defined so that you can deploy and revert schema changes when needed.</td>
+                                                                <td class="center"><span class="mc-variable General.changelog variable">changelog</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code class="language-text">SqlGrantAdminWarn</code>
+                                                                </td>
+                                                                <td>The checks warn when generated or raw SQL contains the GRANT statements that include the WITH ADMIN OPTION clause or the WITH GRANT OPTION class. This ensures that the privilege being granted will not lead to security issues.</td>
+                                                                <td class="center"><span class="mc-variable General.changelog variable">changelog</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code class="language-text">PostgresNonReservedKeywords</code>
+                                                                </td>
+                                                                <td>Disallow Postgres non-reserved keywords from being used in database object names. </td>
+                                                                <td class="center"><span class="mc-variable General.changelog variable">changelog</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code class="language-text">PostgresReservedKeywords</code>
+                                                                </td>
+                                                                <td>	
+Disallow POSTGRES reserved keywords from being used in database object names. </td>
+                                                                <td class="center"><span class="mc-variable General.changelog variable">changelog</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code class="language-text">SQLServerReservedKeywords</code>
+                                                                </td>
+                                                                <td>Disallow SQL Server reserved keywords from being used in database object names. </td>
+                                                                <td class="center"><span class="mc-variable General.changelog variable">changelog</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code class="language-text">SQLServerFutureReservedKeywords</code>
+                                                                </td>
+                                                                <td>Disallow SQL Server’s Future reserved keywords from being used in database object names. </td>
+                                                                <td class="center"><span class="mc-variable General.changelog variable">changelog</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="height: 23px;">
+                                                                <td><code class="language-text">SQLServerODBCReservedKeywords</code>
+                                                                </td>
+                                                                <td>Disallow SQL Server’s ODBC reserved keywords from being used in database object names. </td>
+                                                                <td class="center"><span class="mc-variable General.changelog variable">changelog</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="height: 23px;">
+                                                                <td><code class="language-text">OracleReservedKeywords</code>
+                                                                </td>
+                                                                <td>	
+Disallow Oracle reserved keywords from being used in database object names. </td>
+                                                                <td class="center"><span class="mc-variable General.changelog variable">changelog</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="height: 23px;">
+                                                                <td><code class="language-text">SqlGrantOptionWarn</code>
+                                                                </td>
+                                                                <td>This check warns a user when SQL&#160;contains 'GRANT' statements that include the 'WITH&#160;GRANT&#160;OPTION' clause so that they can ensure that the privilege being granted won't lead to security issues.</td>
+                                                                <td class="center"><span class="mc-variable General.changelog variable">changelog</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="height: 23px;">
+                                                                <td><code class="language-text">ChangeTruncateTableWarn</code>
+                                                                </td>
+                                                                <td>The ChangeTruncateTableWarn check warns when a table is truncated with TRUNCATE TABLE statements. This ensures that dropping the column will not lead to an unintentional loss of data.</td>
+                                                                <td class="center"><span class="mc-variable General.changelog variable">changelog</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="height: 23px;">
+                                                                <td><code class="language-text">SqlGrantSpecificPrivsWarn</code>
+                                                                </td>
+                                                                <td>The check warns when a changeset contains SQL that grants specific privileges to a user or role.</td>
+                                                                <td class="center"><span class="mc-variable General.changelog variable">changelog</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code class="language-text">SqlUserDefinedPatternCheck</code>
+                                                                </td>
+                                                                <td>	
+The check scans generated or raw SQL for the presence of specific patterns so that you can prevent security and velocity issues as early as possible.</td>
+                                                                <td class="center"><span class="mc-variable General.changelog variable">changelog</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code class="language-text">ModifyDataTypeWarn</code>
+                                                                </td>
+                                                                <td>	
+The check warns when a change will result in modification of a data type so that you can ensure that modifying the data type will not lead to unintentional loss of data.</td>
+                                                                <td class="center"><span class="mc-variable General.changelog variable">changelog</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code class="language-text">ChangeDropColumnWarn</code>
+                                                                </td>
+                                                                <td>The check warns when a table is being dropped. This ensures that dropping the table will not lead to unintentional loss of data. </td>
+                                                                <td class="center"><span class="mc-variable General.changelog variable">changelog</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code class="language-text">ChangeDropTableWarn</code>
+                                                                </td>
+                                                                <td>The check warns when a table is being dropped. This ensures that dropping the table will not lead to unintentional loss of data. </td>
+                                                                <td class="center"><span class="mc-variable General.changelog variable">changelog</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code class="language-text">SqlRevokeWarn</code>
+                                                                </td>
+                                                                <td>The check warns when generated or raw SQL contains REVOKE statements so that you can ensure that the privilege being revoked will not lead to data access and dependency issues.</td>
+                                                                <td class="center"><span class="mc-variable General.changelog variable">changelog</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code class="language-text">SqlGrantWarn</code>
+                                                                </td>
+                                                                <td>The check warns when generated or raw SQL contains GRANT statements so that you can ensure that the privilege being granted will not lead to security issues.</td>
+                                                                <td class="center"><span class="mc-variable General.changelog variable">changelog</span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <h2>checks-scope changelog procedure<br /></h2>
+                                            <p>This example covers how to run <code class="language-text">checks-scope</code> against a <span class="mc-variable General.changelog variable">changelog</span>. It begins with a <span class="mc-variable General.changelog variable">changelog</span> that contains a <a href="../../../change-types/create-table.html" class="MCXref xref">createTable</a> <span class="mc-variable General.changeset variable">changeset</span> and no checks enabled. Once the process is complete, the resulting checks will display successfully.</p>
+                                            <ul>
+                                                <li>With a <span class="mc-variable General.changelog variable">changelog</span> that has a <code class="language-text">createTable</code> <span class="mc-variable General.changeset variable">changeset</span> with two columns, enable the <code class="language-text">TableColumnLimit</code> check in your command line:</li><pre><code class="language-text">liquibase checks enable --check-name=TableColumnLimit</code></pre>
+                                                <li>Run the <code class="language-text">liquibase checks run --checks-scope=changelog</code> command.</li>
+                                                <li>Run <code class="language-text">liquibase checks bulk-set --disable</code> to disable any enabled checks. Liquibase will ask if you are sure you want to disable all checks.</li>
+                                                <li>Type <code class="language-text">Y</code> to confirm you want to disable all checks.</li>
+                                                <li>Run <code class="language-text">liquibase checks customize --check-name=TableColumnLimit</code>.</li>
+                                                <li>Set the severity as desired.</li>
+                                                <li>Set the Max Columns to 2.</li>
+                                                <li>Enable the check.</li>
+                                                <li>Run <code class="language-text">liquibase checks run --checks-scope=changelog --changelog-file=yourName-createTable-changelog.xml</code>.</li>
+                                            </ul>
+                                            <h2>checks-scope database procedure</h2>
+                                            <p>Users can establish which database the checks will be run against by specifying the desired database in the <code class="language-text">url</code> parameter within the <code class="language-text"><span class="mc-variable General.liquiPropFile variable">liquibase.properties</span></code> file or the environment variable equivalent. The database is typically a JDBC connection string. A <a href="../../inspection/snapshot%EF%B9%96.html" class="MCXref xref">snapshot</a>, which is a reference to a <span class="mc-variable General.Liquibase variable">Liquibase</span>-created file describing the database, is automatically created if a live JDBC URL is used and any database-scoped checks are enabled. A snapshot can also be created manually by establishing an offline database URL.</p>
+                                            <p>Users should be aware that some data types and settings change when checks-scope database is performed. Some examples are listed below.<br /></p>
+                                            <ul>
+                                                <li>Integers may become Numeric</li>
+                                                <li>Varchar(max setting can become a clob setting)</li>
+                                            </ul>
+                                            <h3>Automatically create a snapshot and run checks</h3>
+                                            <p>Users can automatically create a snapshot of the database if they use a live database URL and enable a database-scoped check:</p>
+                                            <ol>
+                                                <li value="1">Establish the <code class="language-text">url</code> and <code class="language-text">referenceUrl</code> in the <code class="language-text"><span class="mc-variable General.liquiPropFile variable">liquibase.properties</span></code> file:</li><pre xml:space="preserve"><code class="language-text">liquibase.command.url: jdbc:h2:tcp://localhost:9090/mem:dev
+liquibase.command.referenceUrl: jdbc:h2:tcp://localhost:9090/mem:integration</code></pre>
+                                                <p>This establishes the automatic snapshot.</p>
+                                                <li value="2">Run the <code class="language-text">liquibase checks run --checks-scope database</code> command.</li>
+                                            </ol>
+                                            <h3>Manually create a snapshot and run checks</h3>
+                                            <p>Users can take a snapshot of their database manually and run checks against it if they prefer using an offline database URL. They must first establish a snapshot and then enter the offline location in their <code class="language-text"><span class="mc-variable General.liquiPropFile variable">liquibase.properties</span></code> file to run the command successfully:</p>
+                                            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>This snapshot is not permanently retained.</p>
+                                            <ol>
+                                                <li value="1"> Run <code class="language-text">liquibase --output-file=mySnapshot.json snapshot --snapshotFormat=json</code> to create a snapshot. Replace <code class="language-text">mySnapshot.json</code> and <code class="language-text">=json</code> with the desired snapshot file title and format.</li>
+                                                <li value="2">Add the offline snapshot URL to the <code class="language-text"><span class="mc-variable General.liquiPropFile variable">liquibase.properties</span></code> file: </li><pre xml:space="preserve">liquibase.command.url: offline:DB_SHORTNAME?snapshot=mySnapshot.json</pre>
+                                                <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>Replace <code class="language-text">DB_SHORTNAME</code> with the database type being used (SQL, XML, YAML, or JSON). Also replace  <code class="language-text">mySnapshot.json</code> with the desired snapshot file title and format.</p>
+                                                <p>The type of database is determined from the <code class="language-text">url</code> property if at least one database scope check is enabled. If the database cannot be determined, <span class="mc-variable General.Liquibase variable">Liquibase</span> automatically generates SQL to check against using H2.</p>
+                                                <li value="3">Run the <code class="language-text">checks-scope</code> command:</li><pre><code class="language-text">liquibase checks run --checks-scope=database --url offline:oracle?snapshot=mySnapshot.json</code></pre>
+                                            </ol>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />Output</a></span>
+                                                <div class="MCDropDownBody dropDownBody">
+                                                    <h3><code class="language-text">checks-scope changelog</code> example</h3><pre xml:space="preserve"><code class="language-text">Starting Liquibase at 16:35:11 (version [Core: //DAT-9298/2516/e42617/2022-05-11 19:02+0000, Pro: DAT-9298/1208/56ac6a/2022-05-11T18:56:15Z] #2516 built at 2022-05-11 19:02+0000)
+Liquibase Version: [Core: //DAT-9298/2516/e42617/2022-05-11 19:02+0000, Pro: DAT-9298/1208/56ac6a/2022-05-11T18:56:15Z]
+Liquibase Empire [Core: //DAT-9298/2516/e42617/2022-05-11 19:02+0000, Pro: DAT-9298/1208/56ac6a/2022-05-11T18:56:15Z] by Liquibase licensed to Dev until Sat Dec 30 21:59:59 MST 2023
+Executing Quality Checks against amber-createTable-changelog.xml
+
+Executing all changelog checks because a valid license key was found!
+
+CHANGELOG CHECKS
+----------------
+Checks completed validation of the changelog and found the following issues:
+Changeset ID:       1::createTableforSynonym-PROSCHEMA
+Changeset Filepath: amber-createTable-changelog.xml
+Check Name:         Check Table Column Count (TableColumnLimit)
+Check Severity:     MINOR (Return code: 1)
+Message:            Table must not have more than 2 columns.
+
+Changesets Validated:
+ID: 1::createTableforSynonym-PROSCHEMA; Author: Liquibase Pro User; File path: amber-createTable-changelog.xml
+Checks run against each changeset:
+Check Table Column Count
+
+Liquibase command 'checks run' was executed successfully.</code></pre>
+                                                    <h3><code class="language-text">checks-scope database</code> example</h3><pre xml:space="preserve"><code class="language-text">Starting Liquibase at 12:18:24 (version [Core: //DAT-9298/2516/e42617/2022-05-11 19:02+0000, Pro: DAT-9298/1208/56ac6a/2022-05-11T18:56:15Z] #2516 built at 2022-05-11 19:02+0000)
+Liquibase Version: [Core: //DAT-9298/2516/e42617/2022-05-11 19:02+0000, Pro: DAT-9298/1208/56ac6a/2022-05-11T18:56:15Z]
+Liquibase Empire [Core: //DAT-9298/2516/e42617/2022-05-11 19:02+0000, Pro: DAT-9298/1208/56ac6a/2022-05-11T18:56:15Z] by Liquibase licensed to Dev until Sat Dec 30 21:59:59 MST 2023
+Executing Quality Checks against database jdbc:h2:tcp://localhost:9090/mem:dev
+
+Executing all database checks because a valid license key was found!
+
+INFO This command might not yet capture Liquibase Pro additional object types on h2
+Database objects Validated:
+Catalog             : 1
+Schema              : 1
+
+Checks run against database jdbc:h2:tcp://localhost:9090/mem:dev:
+Check Table Column Count
+
+Liquibase command 'checks run' was executed successfully.</code></pre>
+                                                    <h3><code class="language-text">checks-scope</code> with offline snapshot URL</h3><pre xml:space="preserve"><code class="language-text">
+Liquibase Community 4.9.1 by Liquibase
+Database snapshot for jdbc:h2:tcp://localhost:9090/mem:integration
+-----------------------------------------------------------------
+Database type: H2
+Database version: 2.1.210 (2022-01-17)
+Database user: DBUSER
+Included types:
+liquibase.structure.core.Catalog
+liquibase.structure.core.Column
+liquibase.structure.core.ForeignKey
+liquibase.structure.core.Index
+liquibase.structure.core.PrimaryKey
+liquibase.structure.core.Schema
+liquibase.structure.core.Sequence
+liquibase.structure.core.Table
+liquibase.structure.core.UniqueConstraint
+liquibase.structure.core.View
+Liquibase command 'snapshot-reference' was executed successfully.</code></pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- UserSnap Scripts -->
+                                    <!-- Feedback Button -->
+                                    <script>/* <![CDATA[ */ <!--type="text/javascript"-->
+				window.onUsersnapCXLoad = function(api) {
+				api.init();
+				}
+				var script = document.createElement('script');
+				script.defer = 1;
+				script.src = 'https://widget.usersnap.com/global/load/632b7a0e-ba7b-4613-ab8a-a34d8edf1097?onload=onUsersnapCXLoad';
+				document.getElementsByTagName('head')[0].appendChild(script);
+		/* ]]> */</script>
+                                    <!-- End Feedback Button -->
+                                    <!-- Ratings -->
+                                    <div id="widgetContainer" style="align: center;text-align: center;">
+                                    </div>
+                                    <script>/* <![CDATA[ */
+			window.onUsersnapCXLoad = function(api) {
+			// mountNode is an element in which the widget should be rendered
+			api.init({ mountNode: document.getElementById('widgetContainer') });
+			}
+			var script = document.createElement('script');
+			script.defer = 1;
+			script.src = 'https://widget.usersnap.com/embed/load/7df92c7d-5c25-4d1e-827a-75f186914119?onload=onUsersnapCXLoad';
+			document.getElementsByTagName('head')[0].appendChild(script);
+		/* ]]> */</script>
+                                    <!-- End Ratins -->
+                                    <!-- End UserSnap Scripts -->
+                                    <!-- Start Glide Footer -->
+                                    <footer class="glide">
+                                        <div class="footer-container">
+                                            <div class="footer-wrapper">
+                                                <div class="footer-left-widget">
+                                                    <div class="footer-form-widget">
+                                                        <div class="widget-inner">
+                                                            <div class="footer-logo"><a href="https://www.liquibase.com"><img src="../../../z_resources/images/glide/logo-white.svg" alt="" /></a>
+                                                            </div>
+                                                            <div class="footer-socials"><a href="https://twitter.com/liquibase" class="f-twitter" target="_blank"></a><a href="https://github.com/liquibase/liquibase" class="f-github" target="_blank"></a><a href="https://www.reddit.com/r/liquibase/" class="f-reddit" target="_blank"></a><a href="https://www.linkedin.com/company/liquibase" class="f-linkedin" target="_blank"></a><a href="https://www.youtube.com/channel/UC5qMsRjObu685rTBq0PJX8w" class="f-youtube" target="_blank"></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="footer-widgets">
+                                                    <div class="footer-widget">
+                                                        <h4>Products</h4>
+                                                        <div class="menu-column-two-menu-container">
+                                                            <ul id="menu-column-two-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-15659"><a href="https://www.liquibase.com/pricing">Pricing</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-906"><a href="https://www.liquibase.com/pricing/pro">Liquibase Pro</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15600"><a target="_blank" rel="noopener" href="https://www.liquibase.org/download">Liquibase Open Source</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Solutions</h4>
+                                                        <div class="menu-column-three-menu-container">
+                                                            <ul id="menu-column-three-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-908"><a href="https://www.liquibase.com/ci-cd">CI/CD</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/compliance">Compliance</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/devsecops">DevSecOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/financial-services">Financial Services</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/gitops-database">GitOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/public-sector">Public Sector</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-907"><a href="https://www.liquibase.com/version-control">Version Control</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Resources</h4>
+                                                        <div class="menu-column-four-menu-container">
+                                                            <ul id="menu-column-four-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-916"><a href="https://www.liquibase.com/blog">Blog</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15471"><a href="https://www.liquibase.com/resources">Resource Library</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-resource_category menu-item-914"><a href="https://www.liquibase.com/resources/guides">Guides</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14975"><a href="../../../index.html">Documentation</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-917"><a href="https://www.liquibase.com/support">Support</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom last-menu-item menu-item-15215"><a target="_blank" rel="noopener noreferrer" href="https://learn.liquibase.com/index">Training</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Company</h4>
+                                                        <div class="menu-column-five-menu-container">
+                                                            <ul id="menu-column-five-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-1176"><a href="https://www.liquibase.com/company">Company</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1177"><a href="https://www.liquibase.com/company/leadership">Leadership</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1070"><a href="https://www.liquibase.com/company/careers">Careers</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1071"><a href="https://www.liquibase.com/partners">Partners</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15024"><a href="https://www.liquibase.com/category/press-releases">News</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-1178"><a href="https://www.liquibase.com/contact">Contact</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                    <div class="footer-bottom">
+                                                        <div class="copyright">
+                                                            <p><span class="mc-variable General.copyright variable">© 2023 Liquibase Inc.  All Rights Reserved. 
+Liquibase is a registered trademark of Liquibase Inc.</span>
+                                                                <br /><span class="mc-variable General.PhoneNumber variable">(737) 402-7187</span>
+                                                            </p>
+                                                        </div>
+                                                        <div class="footer-menu">
+                                                            <div class="menu-footer-menu-container">
+                                                                <ul id="menu-footer-menu">
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-privacy-policy first-menu-item menu-item-902"><a href="https://www.liquibase.com/privacy-policy">Privacy Policy</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-901"><a href="https://www.liquibase.com/terms-of-use">Terms of Use</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-14933"><a href="https://www.liquibase.com/eula">EULA</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                </div>
+                                                <div class="clear">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </footer>
+                                    <!-- This script is necessary to relocate the footer so that it maintains 100% width -->
+                                    <!--       <script type="text/javascript">/*<![CDATA[*/$(document).ready(function(){ $("footer").appendTo("div.off-canvas-content.inner-wrap"); });/*]]>*/</script> -->
+                                    <!-- End Glide Footer -->
+                                </div>
+                            </div>
+                        </div>
+                    </div><a data-close="true"></a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

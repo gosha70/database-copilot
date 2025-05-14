@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" class="_Skins_oss_pro" data-mc-search-type="Stem" data-mc-help-system-file-name="Default.xml" data-mc-path-to-help-system="../../" data-mc-has-content-body="True" data-mc-toc-path="[%=System.LinkedHeader%]|Schema Change Workflows" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic;Default" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-searchable="False">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="msapplication-config" content="../../Skins/Favicons/browserconfig.xml" />
+        <meta name="description" content="This page explains how to generate SQL in Liquibase to update your database schemas." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../Skins/Favicons/favicon-16x16.png" /><title>Generating SQL to Update Database Schemas</title>
+        <!-- Google GA4 tag (gtag.js) -->
+        <!-- End Google GA4 tag -->
+        <!-- Google Tag Manager -->
+        <!-- End Google Tag Manager -->
+        <!-- Prism Highlighting -->
+        <!-- End Prism Highlighting -->
+        <!-- Tabs for code examples -->
+        <!--End tabs for code examples -->
+        <link href="../../Skins/Default/Stylesheets/Slideshow.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="https://docs.liquibase.com/Skins/Fluid/Stylesheets/MadCapSearch.Google.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Print.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/foundation.6.2.3.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/print.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link rel="stylesheet" href="../../z_resources/stylesheets/glidestyles.css" type="text/css" media="all" />
+        <link href="../../z_resources/stylesheets/styles.css" rel="stylesheet" type="text/css" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../Skins/Favicons/favicon-16x16.png" />
+        <link rel="canonical" href="generate-sql-update-schemas.html" />
+        <script src="../../resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../resources/Scripts/purify.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/require.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/require.config.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/foundation.6.2.3_custom.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/plugins.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/MadCapAll.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=G-GJFFQKWLLX">
+        </script>
+        <script>/* <![CDATA[ */
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());  gtag('config', 'G-GJFFQKWLLX');
+		/* ]]> */</script>
+        <script>/* <![CDATA[ */(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&amp;l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-NTCPFS9');/* ]]> */</script>
+        <script type="text/javascript" src="../../z_resources/scripts/prism.js"> </script>
+        <script type="application/javascript" src="../../z_resources/scripts/jquery-accessible-tabs-ktc.js"> </script>
+    </head>
+    <body>
+        <div class="foundation-wrap off-canvas-wrapper">
+            <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper="">
+                <aside class="off-canvas position-right" role="navigation" id="offCanvas" data-off-canvas="" data-position="right" data-mc-ignore="true">
+                    <ul class="off-canvas-accordion vertical menu off-canvas-list" data-accordion-menu="" data-mc-back-link="Back" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="True" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True">
+                    </ul>
+                </aside>
+                <div class="off-canvas-content inner-wrap" data-off-canvas-content="">
+                    <div data-sticky-container="" class="title-bar-container">
+                        <nav class="title-bar tab-bar sticky" role="banner" data-sticky="" data-options="marginTop:0" style="width:100%" data-sticky-on="only screen and (max-width: 1279px)" data-mc-ignore="true"><a class="skip-to-content fluid-skip showOnFocus" href="#">Skip To Main Content</a>
+                            <div class="middle title-bar-section outer-row clearfix">
+                                <div class="menu-icon-container relative clearfix">
+                                    <div class="central-account-wrapper">
+                                        <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                            <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                                <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="menu-icon" aria-label="Show Navigation Panel" data-toggle="offCanvas"><span></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="title-bar-layout outer-row">
+                                <div class="logo-wrapper"><a class="logo" href="../../home.html" alt="Logo"></a>
+                                </div>
+                                <div class="navigation-wrapper nocontent">
+                                    <ul class="navigation clearfix" role="navigation" data-mc-css-tree-node-has-children="has-children" data-mc-css-sub-menu="sub-menu" data-mc-expand-event="mouseenter" data-mc-top-nav-menu="True" data-mc-max-depth="5" data-mc-include-icon="False" data-mc-include-indicator="False" data-mc-include-children="True" data-mc-include-siblings="True" data-mc-include-parent="True" data-mc-toc="True">
+                                        <li class="placeholder" style="visibility:hidden"><a>placeholder</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="central-account-wrapper">
+                                    <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                        <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                            <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="nav-search-wrapper">
+                                    <div class="nav-search row">
+                                        <form>
+                                            <div id="EaZl7IMMdkOxEcTqrymc2g" class="search-bar search-bar-container needs-pie">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="main-section">
+                        <div class="row outer-row sidenav-layout">
+                            <nav class="sidenav-wrapper">
+                                <div class="sidenav-container">
+                                    <ul class="off-canvas-accordion vertical menu sidenav" data-accordion-menu="" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu accordion-menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="False" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True" data-mc-side-nav-menu="True">
+                                    </ul>
+                                </div>
+                            </nav>
+                            <div class="body-container">
+                                <div data-mc-content-body="True">
+                                    <!-- Google Tag Manager (noscript) -->
+                                    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTCPFS9" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+                                    </noscript>
+                                    <!-- End Google Tag Manager (noscript) -->
+                                    <div class="side-content">
+                                        <form>
+                                            <div id="dnLUTh-sEkWMf17MLhSsQQ" class="search-bar search-bar-container needs-pie _Skins_Topics_Searchbar mc-component">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="nocontent">
+                                        <div class="MCBreadcrumbsBox_0 breadcrumbs" role="navigation" aria-label="Breadcrumbs" data-mc-breadcrumbs-divider=" &gt; " data-mc-breadcrumbs-count="3" data-mc-toc="True"><span class="MCBreadcrumbsPrefix">You are here: </span>
+                                        </div>
+                                    </div>
+                                    <!--<div>  class="topic-layout"-->
+                                    <!--AV 2023-09-13: removing duplicate nav after switch to sidenav
+		<div style="float:left; margin-right: 20px; margin-left:20px; margin-bottom: 15px;"> <MadCap:menuProxy data-mc-skin="/Project/Skins/Topics-Menu.flskn" style="mc-context-sensitive: True;mc-include-parent: True;mc-include-siblings: True;mc-include-children: True;" mc-linked-toc="/Project/TOCs/TOC.fltoc" /></div>-->
+                                    <div class="liquibase-docs-body">
+                                        <div role="main" id="mc-main-content">
+                                            <h1 id="generating-sql-to-update-database-schemas">Generating SQL to Update Database Schemas</h1>
+                                            <div align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/3rUUZunCcBA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+                                            </div>
+                                            <p>There are two reasons you would want to generate SQL in <span class="mc-variable General.Liquibase variable">Liquibase</span>.</p>
+                                            <ol>
+                                                <li value="1">You need to know exactly what is being done to your database.</li>
+                                                <li value="2">Your company policies prevent you from using <span class="mc-variable General.Liquibase variable">Liquibase</span> in certain environments.</li>
+                                            </ol>
+                                            <p>Generating SQL can be helpful when you want to update your database schemas, but want to view those database changes before applying them. There are several commands that generate deployable SQL, these are:</p>
+                                            <h2 id="update-sql-command">update-sql command</h2>
+                                            <p>Running the <code class="highlighter-rouge">update-sql</code> command tells <span class="mc-variable General.Liquibase variable">Liquibase</span> to evaluate all the <span class="mc-variable General.changeset variable">changeset</span>s in your <span class="mc-variable General.changelog variable">changelog</span>, then generates the corresponding SQL for what will be deployed to the database so you can preview the changes.</p>
+                                            <p>To use the <code class="highlighter-rouge">update-sql</code> command, type the following into your command prompt:</p><pre xml:space="preserve"><code class="language-bash" data-lang="bash">liquibase update-sql --changelog-file=changelog.xml</code></pre>
+                                            <details>
+                                                <summary style="font-size: 125%;color: blue;">SQL output example </summary>
+                                                <figure class="highlight"><pre xml:space="preserve"><code class="language-sql" data-lang="sql">-- *********************************************************************  
+-- Update Database Script  
+-- *********************************************************************  
+-- Change Log: changelog.xml
+-- Ran at: 11/15/19 1:56 PM  
+-- Against: datical_login@jdbc:sqlserver://3.219.82.47:1433;sslProtocol=TLS;jaasConfigurationName=SQLJDBCDriver;statementPoolingCacheSize=10;serverPreparedStatementDiscardThreshold=10;enablePrepareOnFirstPreparedStatementCall=false;fips=false;socketTimeout=0;authentication=NotSpecified;authenticationScheme=nativeAuthentication;xopenStates=false;sendTimeAsDatetime=true;trustStoreType=JKS;trustServerCertificate=false;TransparentNetworkIPResolution=true;serverNameAsACE=false;sendStringParametersAsUnicode=true;selectMethod=direct;responseBuffering=adaptive;queryTimeout=-1;packetSize=8000;multiSubnetFailover=false;loginTimeout=15;lockTimeout=-1;lastupdate-count=true;encrypt=false;disableStatementPooling=false;databaseName=proCatalog;columnEncryptionSetting=Disabled;applicationName=Microsoft JDBC Driver for SQL Server;applicationIntent=readwrite;
+-- Liquibase version: 3.8.2  
+-- *********************************************************************  
+
+USE  proCatalog;  
+GO  
+
+-- Lock Database  
+UPDATE  DATABASECHANGELOGLOCK  SET  LOCKED  =  1,  LOCKEDBY  =  'Erzsebet-PC (192.168.0.34)',  LOCKGRANTED  =  '2019-11-15T13:56:05.17'  WHERE  ID  =  1  AND  LOCKED  =  0  
+GO  
+
+-- Changeset changelog.xml::3::dropSynonym-proCatalog::Liquibase Pro User
+DROP  SYNONYM  [privateSynonymOnTable]  
+GO  
+
+INSERT  INTO  DATABASECHANGELOG  (ID,  AUTHOR,  FILENAME,  DATEEXECUTED,  ORDEREXECUTED,  MD5SUM,  DESCRIPTION,  COMMENTS,  EXECTYPE,  CONTEXTS,  LABELS,  LIQUIBASE,  DEPLOYMENT_ID)  VALUES  ('3::dropSynonym-proCatalog',  'Liquibase Pro User',  'changelog.xml',  GETDATE(),  17,  '8:82a49a1df297832e0e5c014c7dba5d97',  'dropSynonym synonymName=privateSynonymOnTable',  '',  'EXECUTED',  NULL,  'dropprivatesynonym,lbl-syn',  '3.8.2-DAT-3598-SNP',  '3847767930')
+GO  
+
+-- Changeset changelog.xml::4::dropPublicSynonym::Liquibase Pro User
+DROP  SYNONYM  [publicSynonymOnTable]  
+GO  
+
+INSERT  INTO  DATABASECHANGELOG  (ID,  AUTHOR,  FILENAME,  DATEEXECUTED,  ORDEREXECUTED,  MD5SUM,  DESCRIPTION,  COMMENTS,  EXECTYPE,  CONTEXTS,  LABELS,  LIQUIBASE,  DEPLOYMENT_ID)  VALUES  ('4::dropPublicSynonym',  'Liquibase Pro User',  'changelog.xml',  GETDATE(),  18,  '8:e46072543816816b16fff4fdded56068',  'dropSynonym synonymName=publicSynonymOnTable',  '',  'EXECUTED',  NULL,  'droppublicsynonym,lbl-syn',  '3.8.2-DAT-3598-SNP',  '3847767930')
+GO  
+
+-- Changeset changelog.xml::2::dropView-proCatalog::Liquibase Pro User
+DROP  VIEW  persons_view  
+GO  
+
+INSERT  INTO  DATABASECHANGELOG  (ID,  AUTHOR,  FILENAME,  DATEEXECUTED,  ORDEREXECUTED,  MD5SUM,  DESCRIPTION,  COMMENTS,  EXECTYPE,  CONTEXTS,  LABELS,  LIQUIBASE,  DEPLOYMENT_ID)  VALUES  ('2::dropView-proCatalog',  'Liquibase Pro User',  'changelog.xml',  GETDATE(),  19,  '8:6b7030bf90f5164b6f261814d4180ade',  'dropView viewName=persons_view',  '',  'EXECUTED',  NULL,  'dropview,lbl-view',  '3.8.2-DAT-3598-SNP',  '3847767930')
+GO  
+
+-- Changeset changelog.xml::2::dropProc-proCatalog::Liquibase Pro User
+DROP  PROCEDURE  printHelloWorld  
+GO  
+
+INSERT  INTO  DATABASECHANGELOG  (ID,  AUTHOR,  FILENAME,  DATEEXECUTED,  ORDEREXECUTED,  MD5SUM,  DESCRIPTION,  COMMENTS,  EXECTYPE,  CONTEXTS,  LABELS,  LIQUIBASE,  DEPLOYMENT_ID)  VALUES  ('2::dropProc-proCatalog',  'Liquibase Pro User',  'changelog.xml',  GETDATE(),  20,  '8:b8e93c02e6d2ba004261da39c7a7b578',  'dropProcedure procedureName=printHelloWorld',  '',  'EXECUTED',  NULL,  'dropprocedure,lbl-proc',  '3.8.2-DAT-3598-SNP',  '3847767930')
+GO  
+
+-- Changeset changelog.xml::2::rollbackFunction-proCatalog::Liquibase Pro User
+USE  [proCatalog2]  
+GO  
+
+CREATE  FUNCTION  [dbo].[emailFunction]()  
+RETURNS  VARCHAR(100)  
+AS  
+BEGIN  
+DECLARE  @rtEmail  VARCHAR  
+SET  @rtEmail='random@datical.com'  
+RETURN  @rtEmail  
+END  
+GO  
+
+USE  [proCatalog2]  
+GO  
+
+INSERT  INTO  DATABASECHANGELOG  (ID,  AUTHOR,  FILENAME,  DATEEXECUTED,  ORDEREXECUTED,  MD5SUM,  DESCRIPTION,  COMMENTS,  EXECTYPE,  CONTEXTS,  LABELS,  LIQUIBASE,  DEPLOYMENT_ID)  VALUES  ('2::rollbackFunction-proCatalog',  'Liquibase Pro User',  'changelog.xml',  GETDATE(),  21,  '8:ae8e2abb341cf5fce706d5a69deb3387',  'sql; createFunction functionName=emailFunction; sql',  '',  'EXECUTED',  NULL,  'rollbackfunction,lbl-func',  '3.8.2-DAT-3598-SNP',  '3847767930')
+GO  
+
+-- Changeset changelog.xml::2::dropFunc-proCatalog::Liquibase Pro User
+DROP  FUNCTION  emailFunction  
+GO  
+
+INSERT  INTO  DATABASECHANGELOG  (ID,  AUTHOR,  FILENAME,  DATEEXECUTED,  ORDEREXECUTED,  MD5SUM,  DESCRIPTION,  COMMENTS,  EXECTYPE,  CONTEXTS,  LABELS,  LIQUIBASE,  DEPLOYMENT_ID)  VALUES  ('2::dropFunc-proCatalog',  'Liquibase Pro User',  'changelog.xml',  GETDATE(),  22,  '8:7b7e55cacd71d5affda392508f3cb17a',  'dropFunction functionName=emailFunction',  '',  'EXECUTED',  NULL,  'dropfunction,lbl-func',  '3.8.2-DAT-3598-SNP',  '3847767930')
+GO  
+
+-- Changeset changelog.xml::3::disableTrigger-proCatalog::Liquibase Pro User
+DISABLE  TRIGGER  table_trigger    ON  primary_table  
+GO  
+
+INSERT  INTO  DATABASECHANGELOG  (ID,  AUTHOR,  FILENAME,  DATEEXECUTED,  ORDEREXECUTED,  MD5SUM,  DESCRIPTION,  COMMENTS,  EXECTYPE,  CONTEXTS,  LABELS,  LIQUIBASE,  DEPLOYMENT_ID)  VALUES  ('3::disableTrigger-proCatalog',  'Liquibase Pro User',  'changelog.xml',  GETDATE(),  23,  '8:b16d51e844e972a72f45809a9b7b8336',  'disableTrigger tableName=primary_table, triggerName=table_trigger',  '',  'EXECUTED',  NULL,  'disabletrigger,lbl-trig',  '3.8.2-DAT-3598-SNP',  '3847767930')
+GO  
+
+-- Changeset changelog.xml::4::enableTrigger-proCatalog::Liquibase Pro User
+ENABLE  TRIGGER  table_trigger    ON  primary_table  
+GO  
+
+INSERT  INTO  DATABASECHANGELOG  (ID,  AUTHOR,  FILENAME,  DATEEXECUTED,  ORDEREXECUTED,  MD5SUM,  DESCRIPTION,  COMMENTS,  EXECTYPE,  CONTEXTS,  LABELS,  LIQUIBASE,  DEPLOYMENT_ID)  VALUES  ('4::enableTrigger-proCatalog',  'Liquibase Pro User',  'changelog.xml',  GETDATE(),  24,  '8:780e362d158fe05bf9617a86b2b8f6d9',  'enableTrigger tableName=primary_table, triggerName=table_trigger',  '',  'EXECUTED',  NULL,  'enabletrigger,lbl-trig',  '3.8.2-DAT-3598-SNP',  '3847767930')
+GO  
+
+-- Changeset changelog.xml::5::renameTrigger-proCatalog::Liquibase Pro User
+sp_rename  'proCatalog.table_trigger',  'table_trigger_deux'  
+GO  
+
+INSERT  INTO  DATABASECHANGELOG  (ID,  AUTHOR,  FILENAME,  DATEEXECUTED,  ORDEREXECUTED,  MD5SUM,  DESCRIPTION,  COMMENTS,  EXECTYPE,  CONTEXTS,  LABELS,  LIQUIBASE,  DEPLOYMENT_ID)  VALUES  ('5::renameTrigger-proCatalog',  'Liquibase Pro User',  'changelog.xml',  GETDATE(),  25,  '8:916bb9a6ced89805b4c2a946d7a62496',  'renameTrigger newTriggerName=table_trigger_deux, oldTriggerName=table_trigger',  '',  'EXECUTED',  NULL,  'renametrigger,lbl-trig',  '3.8.2-DAT-3598-SNP',  '3847767930')
+GO  
+
+-- Changeset changelog.xml::6::dropCatalogTrigger-proCatalog::Liquibase Pro User
+DROP  TRIGGER  db_trigger  
+GO  
+
+INSERT  INTO  DATABASECHANGELOG  (ID,  AUTHOR,  FILENAME,  DATEEXECUTED,  ORDEREXECUTED,  MD5SUM,  DESCRIPTION,  COMMENTS,  EXECTYPE,  CONTEXTS,  LABELS,  LIQUIBASE,  DEPLOYMENT_ID)  VALUES  ('6::dropCatalogTrigger-proCatalog',  'Liquibase Pro User',  'changelog.xml',  GETDATE(),  26,  '8:2deca539397c8a4d5b42c5c2c60b2fd8',  'dropTrigger triggerName=db_trigger',  '',  'EXECUTED',  NULL,  'dropcatalogtrigger,lbl-trig',  '3.8.2-DAT-3598-SNP',  '3847767930')
+GO  
+
+-- Changeset changelog.xml::7::dropTrigger-proCatalog::Liquibase Pro User
+DROP  TRIGGER  table_trigger_deux  
+GO  
+
+INSERT  INTO  DATABASECHANGELOG  (ID,  AUTHOR,  FILENAME,  DATEEXECUTED,  ORDEREXECUTED,  MD5SUM,  DESCRIPTION,  COMMENTS,  EXECTYPE,  CONTEXTS,  LABELS,  LIQUIBASE,  DEPLOYMENT_ID)  VALUES  ('7::dropTrigger-proCatalog',  'Liquibase Pro User',  'changelog.xml',  GETDATE(),  27,  '8:e3dd925e4c1d8c5da328726d092945ec',  'dropTrigger triggerName=table_trigger_deux',  '',  'EXECUTED',  NULL,  'droptrigger,lbl-trig',  '3.8.2-DAT-3598-SNP',  '3847767930')
+GO  
+
+-- Changeset changelog.xml::4::dropCC-proCatalog::Liquibase Pro User
+ALTER  TABLE  Persons  DROP  CONSTRAINT  chk_Person  
+GO  
+
+INSERT  INTO  DATABASECHANGELOG  (ID,  AUTHOR,  FILENAME,  DATEEXECUTED,  ORDEREXECUTED,  MD5SUM,  DESCRIPTION,  COMMENTS,  EXECTYPE,  CONTEXTS,  LABELS,  LIQUIBASE,  DEPLOYMENT_ID)  VALUES  ('4::dropCC-proCatalog',  'Liquibase Pro User',  'changelog.xml',  GETDATE(),  28,  '8:bdcd47644f81e75b61649c57adf9817a',  'dropCheckConstraint constraintName=chk_Person, tableName=Persons',  '',  'EXECUTED',  NULL,  'dropcheckconstraint,lbl-cc',  '3.8.2-DAT-3598-SNP',  '3847767930')
+GO  
+
+-- Changeset changelog.xml::namespaceDatical::Datical (generated)
+INSERT  INTO  DATABASECHANGELOG  (ID,  AUTHOR,  FILENAME,  DATEEXECUTED,  ORDEREXECUTED,  MD5SUM,  DESCRIPTION,  COMMENTS,  EXECTYPE,  CONTEXTS,  LABELS,  LIQUIBASE,  DEPLOYMENT_ID,  TAG)  VALUES  ('namespaceDatical',  '<span class="mc-variable General.Liquibase variable">Liquibase</span> (generated)',  'changelog.xml',  GETDATE(),  29,  '8:d7f6cfe3454adb7c8f76de668dfc091e',  'tagDatabase',  '',  'EXECUTED',  NULL,  'namespacetest',  '3.8.2-DAT-3598-SNP',  '3847767930',  'namespaceTest')
+GO  
+
+-- Changeset changelog.xml::namespaceAppdba::addCC-proCatalog::Liquibase Pro User
+ALTER  TABLE  [Persons]  ADD  CONSTRAINT  [chk_Person]  CHECK  (([P_Id]&gt;(0)  AND  [City]='Austin'))  
+GO  
+
+INSERT  INTO  DATABASECHANGELOG  (ID,  AUTHOR,  FILENAME,  DATEEXECUTED,  ORDEREXECUTED,  MD5SUM,  DESCRIPTION,  COMMENTS,  EXECTYPE,  CONTEXTS,  LABELS,  LIQUIBASE,  DEPLOYMENT_ID)  VALUES  ('namespaceAppdba::addCC-proCatalog',  'Liquibase Pro User',  'changelog.xml',  GETDATE(),  30,  '8:5e664002fca240883e6728a3078023a4',  'addCheckConstraint constraintName=chk_Person, tableName=Persons',  '',  'EXECUTED',  NULL,  'namespacetest',  '3.8.2-DAT-3598-SNP',  '3847767930')
+GO  
+
+-- Changeset changelog.xml::namespaceFunction::createFunction-proCatalog::Liquibase Pro User
+CREATE  FUNCTION  [dbo].[emailFunction]()  
+RETURNS  VARCHAR(100)  
+AS  
+BEGIN  
+DECLARE  @rtEmail  VARCHAR  
+SET  @rtEmail='random@datical.com'  
+RETURN  @rtEmail  
+END  
+GO  
+
+INSERT  INTO  DATABASECHANGELOG  (ID,  AUTHOR,  FILENAME,  DATEEXECUTED,  ORDEREXECUTED,  MD5SUM,  DESCRIPTION,  COMMENTS,  EXECTYPE,  CONTEXTS,  LABELS,  LIQUIBASE,  DEPLOYMENT_ID)  VALUES  ('namespaceFunction::createFunction-proCatalog',  'Liquibase Pro User',  'changelog.xml',  GETDATE(),  31,  '8:bfdb067647d26bce7755de59000a2440',  'createFunction functionName=emailFunction',  '',  'EXECUTED',  NULL,  'namespacetest',  '3.8.2-DAT-3598-SNP',  '3847767930')
+GO  
+
+-- Changeset changelog.xml::1::columnOrder123-PROSCHEMA::Liquibase Pro User
+CREATE  TABLE  COLUMN_ORDER  (COLUMN1  varchar(20),  COLUMN2  varchar(20),  COLUMN3  varchar(20))  
+GO  
+
+INSERT  INTO  DATABASECHANGELOG  (ID,  AUTHOR,  FILENAME,  DATEEXECUTED,  ORDEREXECUTED,  MD5SUM,  DESCRIPTION,  COMMENTS,  EXECTYPE,  CONTEXTS,  LABELS,  LIQUIBASE,  DEPLOYMENT_ID)  VALUES  ('1::columnOrder123-PROSCHEMA',  'Liquibase Pro User',  'changelog.xml',  GETDATE(),  32,  '8:1f702550fb575ee944eabf8261565651',  'createTable tableName=COLUMN_ORDER',  '',  'EXECUTED',  NULL,  'urldb',  '3.8.2-DAT-3598-SNP',  '3847767930')
+GO  
+
+-- Changeset changelog.xml::1::columnOrder231-PROSCHEMA::Liquibase Pro User
+CREATE  TABLE  column_order  (column2  varchar(20),  column3  varchar(20),  column1  varchar(20))  
+GO  
+
+INSERT  INTO  DATABASECHANGELOG  (ID,  AUTHOR,  FILENAME,  DATEEXECUTED,  ORDEREXECUTED,  MD5SUM,  DESCRIPTION,  COMMENTS,  EXECTYPE,  CONTEXTS,  LABELS,  LIQUIBASE,  DEPLOYMENT_ID)  VALUES  ('1::columnOrder231-PROSCHEMA',  'Liquibase Pro User',  'changelog.xml',  GETDATE(),  33,  '8:39f420962f02a3a1d0ec2f2548b628ad',  'createTable tableName=column_order',  '',  'EXECUTED',  NULL,  'refurldb',  '3.8.2-DAT-3598-SNP',  '3847767930')
+GO  
+
+-- Release Database Lock  
+UPDATE  DATABASECHANGELOGLOCK  SET  LOCKED  =  0,  LOCKEDBY  =  NULL,  LOCKGRANTED  =  NULL  WHERE  ID  =  1  
+GO</code></pre>
+                                                </figure>
+                                            </details>
+                                            <h2 id="update-sql-command-with-the-labels-parameter">update-sql command with the labels parameter</h2>
+                                            <p>The <code class="highlighter-rouge">update-sql</code> command allows you to also run a <code class="highlighter-rouge">--labels</code> parameter to determine which <span class="mc-variable General.changeset variable">changeset</span>s in the <span class="mc-variable General.changelog variable">changelog</span> to evaluate based on its label. You can view your labels in your <span class="mc-variable General.changelog variable">changelog</span>.</p>
+                                            <details>
+                                                <summary style="font-size: 125%;color: blue;">Changelog example</summary><pre xml:space="preserve"><code class="language-xml" data-lang="xml">&lt;?xml version="1.1" encoding="UTF-8" standalone="no"?&gt;
+<code>&lt;databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+        http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"&gt;</code>
+&lt;!-- SETUP: Create tables and function for other objects to use. --&gt;  
+  &lt;changeSet  author="Liquibase Pro User"    id="1::createTableforSynonym-proschema"  labels="setup"  objectQuotingStrategy="QUOTE_ALL_OBJECTS"&gt;  
+    &lt;createTable  schemaName="proschema"  tableName="primary_table"&gt;  
+      &lt;column  name="name"  type="CHAR(20)"/&gt;  
+    &lt;/createTable&gt;  
+  &lt;/changeSet&gt;  
+
+  &lt;changeSet  author="Liquibase Pro User"  id="2::createTableforView-proschema"  labels="setup"  objectQuotingStrategy="QUOTE_ALL_OBJECTS"&gt;  
+    &lt;createTable  schemaName="proschema"  tableName="account"&gt;  
+      &lt;column  name="acct_num"  type="NUMBER(20,0)"/&gt;  
+      &lt;column  name="amoount"  type="NUMBER(10,2)"/&gt;  
+    &lt;/createTable&gt;  
+  &lt;/changeSet&gt;  
+
+  &lt;changeSet  author="Liquibase Pro User"  id="3::createTableforCC-proschema"  labels="setup"  objectQuotingStrategy="QUOTE_ALL_OBJECTS"&gt;  
+    &lt;createTable  schemaName="proschema"  tableName="suppliers"&gt;  
+      &lt;column  name="supplier_id"  type="NUMBER(4, 0)"/&gt;  
+      &lt;column  name="supplier_name"  type="VARCHAR2(50 BYTE)"/&gt;  
+    &lt;/createTable&gt;  
+  &lt;/changeSet&gt;  
+
+  &lt;changeSet  author="Liquibase Pro User"  id="4::functionForTrigger"  objectQuotingStrategy="QUOTE_ALL_OBJECTS"  labels="setup"&gt;  
+    &lt;pro:createFunction  path="sql/postgres_setup_function.sql"  functionName="canned_spam"  schemaName="proschema"/&gt;  
+    &lt;rollback&gt;  
+      &lt;sqlFile  endDelimiter=";"  path="sql/postgres_setup_rollback.sql"  splitStatements="true"  stripComments="true"/&gt;  
+    &lt;/rollback&gt;  
+  &lt;/changeSet&gt;           
+
+  &lt;!--SYNONYM - Not supported in Postgres Community --&gt;  
+
+  &lt;!-- VIEW --&gt;  
+  &lt;!-- Views are not coming from the Pro extension, but exist in Community, and we should validate view changes work after our changes. --&gt;      
+  &lt;changeSet  author="Liquibase Pro User"  id="1::createView-PROSCHEMA"  objectQuotingStrategy="QUOTE_ALL_OBJECTS"  labels="createView,lbl-view"&gt;  
+    &lt;createView  fullDefinition="true"  path="sql/postgres_master_view.sql"  schemaName="proschema"  viewName="view1"/&gt;  
+  &lt;/changeSet&gt;  
+
+  &lt;changeSet  author="Liquibase Pro User"  id="2::dropView-proschema"  labels="dropView,lbl-view"&gt;  
+    &lt;dropView  viewName="view1"  schemaName="proschema"/&gt;  
+  &lt;/changeSet&gt;  
+
+  &lt;!-- PROCEDURE --&gt;  
+  &lt;!-- Procedures are not coming from the Pro extension, but exist in Community, and we should validate procedure changes work after our changes. --&gt;      
+  &lt;changeSet  author="Liquibase Pro User"  id="1::createProc-proschema"  objectQuotingStrategy="QUOTE_ALL_OBJECTS"  labels="createProcedure,lbl-proc"&gt;  
+    &lt;createProcedure  path="sql/postgres_master_proc.sql"  procedureName="simple_proc"  schemaName="proschema"/&gt;  
+  &lt;/changeSet&gt;  
+
+  &lt;changeSet  author="Liquibase Pro User"  id="2::dropProc-proschema"  labels="dropProcedure,lbl-proc"&gt;  
+    &lt;dropProcedure  procedureName="simple_proc"  schemaName="proschema"/&gt;  
+  &lt;/changeSet&gt;    
+
+  &lt;!-- FUNCTION --&gt;  
+  &lt;changeSet  author="Liquibase Pro User"  id="1::createFunction-proschema"  objectQuotingStrategy="QUOTE_ALL_OBJECTS"  labels="createFunction,rollbackFunction, lbl-func"&gt;  
+    &lt;pro:createFunction  functionName="last_updated"  path="sql/postgres_master_function.sql"  schemaName="proschema"/&gt;  
+    &lt;rollback&gt;  
+      &lt;sqlFile  endDelimiter=";"  path="sql/postgres_master_rollback.sql"  splitStatements="true"  stripComments="true"/&gt;  
+    &lt;/rollback&gt;  
+  &lt;/changeSet&gt;  
+
+  &lt;changeSet  author="Liquibase Pro User"  id="2::dropFunc-proschema"  labels="dropFunction,lbl-func"&gt;  
+    &lt;pro:dropFunction  functionName="last_updated"  schemaName="proschema"/&gt;  
+  &lt;/changeSet&gt;    
+
+  &lt;!-- TRIGGER --&gt;    
+  &lt;changeSet  author="Liquibase Pro User"  id="1::addTrigger-proschema"  objectQuotingStrategy="QUOTE_ALL_OBJECTS"  labels="createTrigger,lbl-trg"&gt;  
+    &lt;pro:createTrigger  disabled="false"  path="sql/postgres_master_trigger.sql"  schemaName="proschema"  tableName="primary_table"  triggerName="dinner_time"/&gt;  
+  &lt;/changeSet&gt;  
+
+  &lt;changeSet  author="Liquibase Pro User"  id="2::disableTrigger-proschema"  labels="disableTrigger,lbl-trig"&gt;  
+    &lt;pro:disableTrigger  triggerName="dinner_time"  tableName="primary_table"  schemaName="proschema"/&gt;  
+  &lt;/changeSet&gt;  
+
+  &lt;changeSet  author="Liquibase Pro User"  id="3::enableTrigger-proschema"  labels="enableTrigger,lbl-trig"&gt;  
+    &lt;pro:enableTrigger  triggerName="dinner_time"  tableName="primary_table"  schemaName="proschema"/&gt;  
+  &lt;/changeSet&gt;  
+
+  &lt;changeSet  author="Liquibase Pro User"  id="4::renameTrigger-proschema"  labels="renameTrigger,lbl-trg"&gt;  
+    &lt;pro:renameTrigger  oldTriggerName="dinner_time"  newTriggerName="midnight_snack"  tableName="primary_table"  schemaName="proschema"/&gt;  
+  &lt;/changeSet&gt;    
+
+  &lt;changeSet  author="Liquibase Pro User"  id="5::dropTrigger-proschema"  labels="dropTrigger,lbl-trg"&gt;  
+    &lt;pro:dropTrigger  triggerName="midnight_snack"  schemaName="proschema"  tableName="primary_table"/&gt;  
+  &lt;/changeSet&gt;  
+
+  &lt;!-- CHECK CONSTRAINT --&gt;  
+  &lt;!-- disable/enableCheckConstraint are not supported on Postgres. --&gt;  
+  &lt;changeSet  author="Liquibase Pro User"  id="1::addCC-proschema"  objectQuotingStrategy="QUOTE_ALL_OBJECTS"  labels="addCheckConstraint,lbl-cc"&gt;  
+    &lt;pro:addCheckConstraint  constraintName="check_supplier_id"  schemaName="proschema"  disabled="false"  tableName="suppliers"&gt;supplier_id BETWEEN 100 and 9999&lt;/pro:addCheckConstraint&gt;  
+  &lt;/changeSet&gt;    
+
+  &lt;changeSet  author="Liquibase Pro User"  id="4::dropCC-PROSCHEMA"  labels="dropCheckConstraint,lbl-cc"&gt;  
+    &lt;pro:dropCheckConstraint  constraintName="check_supplier_id"  tableName="suppliers"  schemaName="proschema"/&gt;  
+  &lt;/changeSet&gt;      
+
+&lt;/databaseChangeLog&gt;</code></pre>
+                                            </details>
+                                            <p>To use the <code class="highlighter-rouge">update-sql</code> command with the labels parameter, type the following into your command prompt:</p><pre xml:space="preserve"><code class="language-bash" data-lang="bash">liquibase update-sql --changelog-file=changelog.xml --output-file=update-sql.txt --labelFilter=setup</code></pre>
+                                            <details>
+                                                <summary style="font-size: 125%;color: blue;">SQL output example</summary>
+The following is an example of the <code>update-sql</code> command output with the labels parameter enabled:
+
+
+<figure class="highlight"><pre xml:space="preserve"><code class="language-sql" data-lang="sql">-- *********************************************************************  
+-- Update Database Script  
+-- *********************************************************************  
+-- Change Log: changelog.xml  
+-- Ran at: 11/12/19 3:48 PM  
+-- Against: jenkinsci@jdbc:postgresql://localhost:5432/jenkinsci  
+-- Liquibase version: 3.8.1  
+-- *********************************************************************  
+
+-- Create Database Lock Table  
+CREATE  TABLE  public.databasechangeloglock  (ID  INTEGER  NOT  NULL,  LOCKED  BOOLEAN  NOT  NULL,  LOCKGRANTED  TIMESTAMP  WITHOUT  TIME  ZONE,  LOCKEDBY  VARCHAR(255),  CONSTRAINT  DATABASECHANGELOGLOCK_PKEY  PRIMARY  KEY  (ID));  
+
+-- Initialize Database Lock Table  
+DELETE  FROM  public.databasechangeloglock;  
+
+INSERT  INTO  public.databasechangeloglock  (ID,  LOCKED)  VALUES  (1,  FALSE);  
+
+-- Lock Database  
+UPDATE  public.databasechangeloglock  SET  LOCKED  =  TRUE,  LOCKEDBY  =  '172.18.0.1 (172.18.0.1)',  LOCKGRANTED  =  '2019-11-12 15:48:30.445'  WHERE  ID  =  1  AND  LOCKED  =  FALSE;  
+
+-- Create Database Change Log Table  
+CREATE  TABLE  public.databasechangelog  (ID  VARCHAR(255)  NOT  NULL,  AUTHOR  VARCHAR(255)  NOT  NULL,  FILENAME  VARCHAR(255)  NOT  NULL,  DATEEXECUTED  TIMESTAMP  WITHOUT  TIME  ZONE  NOT  NULL,  ORDEREXECUTED  INTEGER  NOT  NULL,  EXECTYPE  VARCHAR(10)  NOT  NULL,  MD5SUM  VARCHAR(35),  DESCRIPTION  VARCHAR(255),  COMMENTS  VARCHAR(255),  TAG  VARCHAR(255),  LIQUIBASE  VARCHAR(20),  CONTEXTS  VARCHAR(255),  LABELS  VARCHAR(255),  DEPLOYMENT_ID  VARCHAR(10));  
+
+-- Changeset changelog.xml::1::createTableforSynonym-proschema::Liquibase Pro User  
+CREATE  TABLE  "proschema"."primary_table"  ("name"  CHAR(20));  
+
+INSERT  INTO  public.databasechangelog  (ID,  AUTHOR,  FILENAME,  DATEEXECUTED,  ORDEREXECUTED,  MD5SUM,  DESCRIPTION,  COMMENTS,  EXECTYPE,  CONTEXTS,  LABELS,  LIQUIBASE,  DEPLOYMENT_ID)  VALUES  ('1::createTableforSynonym-proschema',  'Liquibase Pro User',  'changelog.xml',  NOW(),  1,  '8:2e63963bef0a14594b566e06c3eabe2d',  'createTable tableName=primary_table',  '',  'EXECUTED',  NULL,  'setup',  '3.8.1-local-SNP',  '3595312173');  
+
+-- Changeset changelog.xml::2::createTableforView-proschema::Liquibase Pro User  
+CREATE  TABLE  "proschema"."account"  ("acct_num"  numeric(20,  0),  "amoount"  numeric(10,  2));  
+
+INSERT  INTO  public.databasechangelog  (ID,  AUTHOR,  FILENAME,  DATEEXECUTED,  ORDEREXECUTED,  MD5SUM,  DESCRIPTION,  COMMENTS,  EXECTYPE,  CONTEXTS,  LABELS,  LIQUIBASE,  DEPLOYMENT_ID)  VALUES  ('2::createTableforView-proschema',  'Liquibase Pro User',  'changelog.xml',  NOW(),  2,  '8:344a50de118d3db500c0b28b76e14e81',  'createTable tableName=account',  '',  'EXECUTED',  NULL,  'setup',  '3.8.1-local-SNP',  '3595312173');  
+
+-- Changeset changelog.xml::3::createTableforCC-proschema::Liquibase Pro User  
+CREATE  TABLE  "proschema"."suppliers"  ("supplier_id"  numeric(4,  0),  "supplier_name"  VARCHAR(50));  
+
+INSERT  INTO  public.databasechangelog  (ID,  AUTHOR,  FILENAME,  DATEEXECUTED,  ORDEREXECUTED,  MD5SUM,  DESCRIPTION,  COMMENTS,  EXECTYPE,  CONTEXTS,  LABELS,  LIQUIBASE,  DEPLOYMENT_ID)  VALUES  ('3::createTableforCC-proschema',  'Liquibase Pro User',  'changelog.xml',  NOW(),  3,  '8:19236a09a645a2fecd0707b7e3efe4c1',  'createTable tableName=suppliers',  '',  'EXECUTED',  NULL,  'setup',  '3.8.1-local-SNP',  '3595312173');  
+
+-- Changeset changelog.xml::4::functionForTrigger::Liquibase Pro User  
+SET  SEARCH_PATH=proschema;  
+
+CREATE  OR  REPLACE  FUNCTION  "proschema".canned_spam()  
+    RETURNS  trigger  
+    SET  SCHEMA  'proschema'  
+    AS  $$  
+        BEGIN  
+            RAISE  NOTICE  'Canned Spam in a frying pan: ick';  
+            RETURN  NEW;  
+        END  ;  
+    $$  
+LANGUAGE  plpgsql;  
+
+INSERT  INTO  public.databasechangelog  (ID,  AUTHOR,  FILENAME,  DATEEXECUTED,  ORDEREXECUTED,  MD5SUM,  DESCRIPTION,  COMMENTS,  EXECTYPE,  CONTEXTS,  LABELS,  LIQUIBASE,  DEPLOYMENT_ID)  VALUES  ('4::functionForTrigger',  'Liquibase Pro User',  'changelog.xml',  NOW(),  4,  '8:d26a1492fbf2b697a634dad498a87096',  'createFunction functionName=canned_spam',  '',  'EXECUTED',  NULL,  'setup',  '3.8.1-local-SNP',  '3595312173');  
+
+-- Release Database Lock  
+UPDATE  public.databasechangeloglock  SET  LOCKED  =  FALSE,  LOCKEDBY  =  NULL,  LOCKGRANTED  =  NULL  WHERE  ID  =  1;</code></pre></figure></details>
+                                            <h2 id="futurerollbacksql-command">future-rollback-sql command</h2>
+                                            <p>The <code class="highlighter-rouge">future-rollback-sql</code> command generates SQL that reverses changes you applied while using the <code class="highlighter-rouge">update-sql</code> command.</p>
+                                            <p>To run the <code class="highlighter-rouge">future-rollback-sql</code> command, type the following into your command prompt:</p><pre xml:space="preserve"><code class="language-bash" data-lang="bash">liquibase future-rollback-sql --changelog-file=changelog.xml</code></pre>
+                                            <details>
+                                                <summary style="font-size: 125%;color: blue;">SQL output example</summary><pre xml:space="preserve"><code class="language-sql" data-lang="sql">
+C:\dev\DaticalDB-testing\liquibase-pro-cli-project\postgres_lbpro_master&gt;..\liquibase future-rollback-sql --changelog-file=changelog.xml --labelFilter=setup
+Liquibase Pro 3.8.10-DAT-4254-SNAPSHOT by <span class="mc-variable General.Liquibase variable">Liquibase</span> licensed to Liquibase Pro Customer until Tue Nov 03 19:00:00 CST 2020
+Rolling Back Changeset:changelog.xml::4::functionForTrigger::Liquibase Pro User
+-- *********************************************************************
+-- SQL to roll back currently unexecuted changes
+-- *********************************************************************
+-- Change Log: changelog.xml
+-- Ran at: 5/5/20 11:30 AM
+-- Against: daticaluser1@jdbc:postgresql://localhost:5432/goku
+-- Liquibase version: 3.8.10-DAT-4254-SNAPSHOT
+-- *********************************************************************
+-- Lock Database
+UPDATE public.databasechangeloglock SET LOCKED = TRUE, LOCKEDBY = 'gemfire-PC (192.168.50.82)', LOCKGRANTED = '2020-05-05 11:30:27.729' WHERE ID = 1 AND LOCKED = FALSE;
+-- Rolling Back ChangeSet: changelog.xml::4::functionForTrigger::Liquibase Pro User
+DROP FUNCTION "proschema".canned_spam CASCADE;
+DELETE FROM "public"."databasechangelog" WHERE ID = '4::functionForTrigger' AND AUTHOR = 'Liquibase Pro User' AND FILENAME = 'changelog.xml';
+-- Release Database Lock
+UPDATE public.databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = NULL WHERE ID = 1;</code></pre>
+                                            </details>
+                                            <h4 id="note-for-liquibase-pro-users">Note for <span class="mc-variable General.LBPro variable">Liquibase Pro</span> Users</h4>
+                                            <p><span class="mc-variable General.LBPro variable">Liquibase Pro</span> allows users to also produce deployable SQL for Stored Logic. If you are a <span class="mc-variable General.LBPro variable">Liquibase Pro</span> user, and you are trying to run the <code class="highlighter-rouge">future-rollback-sql</code> command, make sure you add a <code class="highlighter-rouge">&lt;rollback&gt;</code> tag to your <span class="mc-variable General.changeset variable">changeset</span>s so you output the correct SQL, as:</p><pre xml:space="preserve"><code class="language-xml" data-lang="xml">&lt;changeSet  author="Liquibase Pro User"  id="1::createFunction-proCatalog"  objectQuotingStrategy="QUOTE_ALL_OBJECTS"  labels="createFunction,rollbackFunction, lbl-func"&gt;  
+    &lt;pro:createFunction  functionName="emailFunction"  path="sql/lbpro_master_func.sql"  schemaName="dbo"/&gt;
+    &lt;rollback&gt;
+        &lt;sqlFile  endDelimiter="GO"  path="sql/lbpro_master_func_rollback.sql"  splitStatements="true"  stripComments="true"/&gt;
+    &lt;/rollback&gt;
+&lt;/changeSet&gt;</code></pre>
+                                        </div>
+                                    </div>
+                                    <!-- UserSnap Scripts -->
+                                    <!-- Feedback Button -->
+                                    <script>/* <![CDATA[ */ <!--type="text/javascript"-->
+				window.onUsersnapCXLoad = function(api) {
+				api.init();
+				}
+				var script = document.createElement('script');
+				script.defer = 1;
+				script.src = 'https://widget.usersnap.com/global/load/632b7a0e-ba7b-4613-ab8a-a34d8edf1097?onload=onUsersnapCXLoad';
+				document.getElementsByTagName('head')[0].appendChild(script);
+		/* ]]> */</script>
+                                    <!-- End Feedback Button -->
+                                    <!-- Ratings -->
+                                    <div id="widgetContainer" style="align: center;text-align: center;">
+                                    </div>
+                                    <script>/* <![CDATA[ */
+			window.onUsersnapCXLoad = function(api) {
+			// mountNode is an element in which the widget should be rendered
+			api.init({ mountNode: document.getElementById('widgetContainer') });
+			}
+			var script = document.createElement('script');
+			script.defer = 1;
+			script.src = 'https://widget.usersnap.com/embed/load/7df92c7d-5c25-4d1e-827a-75f186914119?onload=onUsersnapCXLoad';
+			document.getElementsByTagName('head')[0].appendChild(script);
+		/* ]]> */</script>
+                                    <!-- End Ratins -->
+                                    <!-- End UserSnap Scripts -->
+                                    <!-- Start Glide Footer -->
+                                    <footer class="glide">
+                                        <div class="footer-container">
+                                            <div class="footer-wrapper">
+                                                <div class="footer-left-widget">
+                                                    <div class="footer-form-widget">
+                                                        <div class="widget-inner">
+                                                            <div class="footer-logo"><a href="https://www.liquibase.com"><img src="../../z_resources/images/glide/logo-white.svg" alt="" /></a>
+                                                            </div>
+                                                            <div class="footer-socials"><a href="https://twitter.com/liquibase" class="f-twitter" target="_blank"></a><a href="https://github.com/liquibase/liquibase" class="f-github" target="_blank"></a><a href="https://www.reddit.com/r/liquibase/" class="f-reddit" target="_blank"></a><a href="https://www.linkedin.com/company/liquibase" class="f-linkedin" target="_blank"></a><a href="https://www.youtube.com/channel/UC5qMsRjObu685rTBq0PJX8w" class="f-youtube" target="_blank"></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="footer-widgets">
+                                                    <div class="footer-widget">
+                                                        <h4>Products</h4>
+                                                        <div class="menu-column-two-menu-container">
+                                                            <ul id="menu-column-two-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-15659"><a href="https://www.liquibase.com/pricing">Pricing</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-906"><a href="https://www.liquibase.com/pricing/pro">Liquibase Pro</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15600"><a target="_blank" rel="noopener" href="https://www.liquibase.org/download">Liquibase Open Source</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Solutions</h4>
+                                                        <div class="menu-column-three-menu-container">
+                                                            <ul id="menu-column-three-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-908"><a href="https://www.liquibase.com/ci-cd">CI/CD</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/compliance">Compliance</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/devsecops">DevSecOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/financial-services">Financial Services</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/gitops-database">GitOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/public-sector">Public Sector</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-907"><a href="https://www.liquibase.com/version-control">Version Control</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Resources</h4>
+                                                        <div class="menu-column-four-menu-container">
+                                                            <ul id="menu-column-four-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-916"><a href="https://www.liquibase.com/blog">Blog</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15471"><a href="https://www.liquibase.com/resources">Resource Library</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-resource_category menu-item-914"><a href="https://www.liquibase.com/resources/guides">Guides</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14975"><a href="../../index.html">Documentation</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-917"><a href="https://www.liquibase.com/support">Support</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom last-menu-item menu-item-15215"><a target="_blank" rel="noopener noreferrer" href="https://learn.liquibase.com/index">Training</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Company</h4>
+                                                        <div class="menu-column-five-menu-container">
+                                                            <ul id="menu-column-five-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-1176"><a href="https://www.liquibase.com/company">Company</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1177"><a href="https://www.liquibase.com/company/leadership">Leadership</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1070"><a href="https://www.liquibase.com/company/careers">Careers</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1071"><a href="https://www.liquibase.com/partners">Partners</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15024"><a href="https://www.liquibase.com/category/press-releases">News</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-1178"><a href="https://www.liquibase.com/contact">Contact</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                    <div class="footer-bottom">
+                                                        <div class="copyright">
+                                                            <p><span class="mc-variable General.copyright variable">© 2023 Liquibase Inc.  All Rights Reserved. 
+Liquibase is a registered trademark of Liquibase Inc.</span>
+                                                                <br /><span class="mc-variable General.PhoneNumber variable">(737) 402-7187</span>
+                                                            </p>
+                                                        </div>
+                                                        <div class="footer-menu">
+                                                            <div class="menu-footer-menu-container">
+                                                                <ul id="menu-footer-menu">
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-privacy-policy first-menu-item menu-item-902"><a href="https://www.liquibase.com/privacy-policy">Privacy Policy</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-901"><a href="https://www.liquibase.com/terms-of-use">Terms of Use</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-14933"><a href="https://www.liquibase.com/eula">EULA</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                </div>
+                                                <div class="clear">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </footer>
+                                    <!-- This script is necessary to relocate the footer so that it maintains 100% width -->
+                                    <!--       <script type="text/javascript">/*<![CDATA[*/$(document).ready(function(){ $("footer").appendTo("div.off-canvas-content.inner-wrap"); });/*]]>*/</script> -->
+                                    <!-- End Glide Footer -->
+                                </div>
+                            </div>
+                        </div>
+                    </div><a data-close="true"></a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

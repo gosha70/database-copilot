@@ -1,0 +1,43 @@
+Liquibase Documentation
+Skip To Main Content
+Account
+Settings
+Logout
+placeholder
+Account
+Settings
+Logout
+Liquibase Documentation
+Get Started
+Liquibase Pro Implementation Guide
+Intro to Liquibase
+Install Liquibase Open Source
+Connect to your database and try out Liquibase
+Liquibase Concepts
+Native SQL or Modeled Changesets (XML, YAML, JSON)
+Changelogs, Changesets, and Change TypesPreconditionsProperty substitutionLabels and Contexts
+Key Commandsupdate, rollback, status, snapshot, diff, and generate changelog commandsCommand ParametersUsing the liquibase.properties file
+Liquibase Pro Features
+Native Executors
+Database Policy Checks
+Observability Operation ReportsStructured Logging
+Flow Files
+Secrets Management
+Targeted Rollbacks
+Remote Resources
+Stored Logic
+Get Help
+Resources
+"Ask the Liquibase Community" ChatGPT Support Agent
+Liquibase University
+Liquibase YouTube Channel
+Get help from a person
+Ask the CommunityLiquibase ForumDiscordStackOverflow
+Ask LiquibaseContact the Support Team (Available for Liquibase Pro Customers)Contact Us to request a demo, ask about partnerships, and more
+What's New?
+Liquibase 4.31.1 Release Notes
+Patch release for Snowflake driver and logicalFilePath issues are resolved.
+Liquibase 4.31.0
+In-the-box support for Policy Checks, usability improvements to the policy checks and Liquibase Pro Custom Policy Checks creation flow, enhancements for Operation Reports, new parameters for the history command, and more.
+Liquibase 4.30.0
+Enhancements to Liquibase Flow Files, improvements to validation and error messages, Anonymous Analytics, and the deprecation of the macOS .dmg installer in favor of installation via Homebrew.

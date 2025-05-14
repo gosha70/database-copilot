@@ -1,0 +1,1243 @@
+JavaScript is disabled on your browser.
+Skip navigation links
+Overview
+Package
+Class
+Use
+Tree
+Deprecated
+Index
+Help
+All Classes
+SEARCH:
+JavaScript is disabled on your browser.
+Hibernate Javadoc (6.2.36.Final)
+Hibernate ORM Javadocs
+Hibernate is a library for object/relation mapping (ORM). It provides:
+a
+native API
+centered around
+SessionFactory
+and
+Session
+,
+an implementation of the
+Java (or Jakarta) Persistence API
+(JPA),
+        where the equivalent central interfaces are
+EntityManagerFactory
+and
+EntityManager
+,
+a set of
+mapping annotations
+which augment the O/R mapping annotations defined
+        by JPA, and which may be used with either API, and
+compile-time tooling
+for writing more type-safe code.
+Native API
+Along with
+SessionFactory
+and
+Session
+, applications
+    using the native API will often make use of the following interfaces:
+Configuration
+to configure and bootstrap Hibernate,
+StatelessSession
+for processes involving many entity instances,
+Cache
+to manage the second-level cache,
+Transaction
+to control local transactions,
+Query
+to execute HQL queries,
+NativeQuery
+to execute native SQL queries,
+Filter
+to manage filters,
+HibernateCriteriaBuilder
+to construct criteria queries,
+        and
+SchemaManager
+to execute DDL in tests.
+JPA
+The JPA interfaces are defined by the JPA specification. For details see the latest
+specification
+along with the
+API documentation
+for the package
+jakarta.persistence
+.
+Note that since Hibernate 5.2, the native API extends the JPA API rather than wrapping it.
+    For example,
+SessionFactory
+extends
+EntityManagerFactory
+, and
+Session
+extends
+EntityManager
+.
+It's always possible to fall back from JPA interfaces to native APIs, by calling
+entityManager.unwrap(Session.class)
+,
+entityManagerFactory.unwrap(SessionFactory.class)
+,
+    or
+query.unwrap(Query.class)
+. In certain cases
+    it's also possible to access native functionality by passing a
+JPA-defined
+or
+Hibernate-defined
+hint, at the cost of a
+    loss of type-safety.
+These packages define additional extensions to the JPA APIs:
+org.hibernate.query.criteria
+packages extensions to
+jakarta.persistence.criteria
+, and
+org.hibernate.metamodel.model.domain
+packages extensions to
+jakarta.persistence.metamodel
+.
+Mapping annotations
+The mapping annotations defined by the JPA specification provide a foundation for expressing
+    object/relational mappings in Hibernate and other JPA implementations.
+The annotations in the package
+org.hibernate.annotations
+extend this foundation and
+    accommodate more specialized requirements. These annotation are not tied to the native API,
+    and may be used in conjunction with the JPA API.
+The full power of Hibernate can only be unlocked via judicious use of these extra annotations.
+XML-based mappings
+Annotation-based mappings are the best choice for most users, but Hibernate offers XML-based
+mappings as an alternative.
+The JPA-standard XML schema is
+orm_3_0.xsd
+.
+Hibernate extends this schema with some additional mapping elements. The extended schema is
+mapping-3.1.0.xsd
+.
+Prior to the existence of JPA, Hibernate had its own format for XML-based mappings,
+        which still works, though it has not been improved in a long time. The DTD is
+hibernate-mapping-3.0.dtd
+Bootstrapping Hibernate
+There are four basic ways to obtain an instance of Hibernate:
+as a JPA
+persistence provider
+, by using
+Persistence.createEntityManagerFactory(java.lang.String)
+,
+by using the "simplified"
+Configuration
+API,
+for those who enjoy dirty hands, by using the APIs in
+org.hibernate.boot
+, or
+in a
+container environment
+like
+WildFly
+or
+Quarkus
+,
+        by letting the container take care of the bootstrap process and of injecting the
+EntityManagerFactory
+or
+SessionFactory
+.
+All major Java application servers and microservice frameworks come with built-in support for
+    Hibernate. Such container environments also typically feature facilities to automatically
+    manage the lifecycle of a
+EntityManager
+or
+Session
+and its association with
+    container-managed transactions.
+Example configuration files for JPA and native usage may be found
+here
+. A comprehensive list of configuration properties understood by Hibernate may be found in
+    the class
+AvailableSettings
+. Most sensible programs will only ever need
+    to use a tiny handful of them.
+Popular extension points
+Hibernate offers an enormous wealth of extension points for customizing almost any aspect of
+    its implementation. Most of these extension points are far too technical to be of interest to
+    the typical application developer.
+However, the following extension points are of quite general interest:
+org.hibernate.boot.model.naming
+allows the quantity of repetitive O/R mapping
+        metadata to be minimized via the use of naming strategies,
+org.hibernate.type.descriptor.jdbc
+and
+org.hibernate.type.descriptor.java
+contain the built-in
+JdbcType
+s and
+JavaType
+s for "compositional" basic
+        attribute type mappings,
+org.hibernate.usertype
+defines support for user-defined custom attribute types,
+org.hibernate.generator
+defines support for generated attribute values,
+org.hibernate.context.spi
+defines support for context-bound "current" sessions
+        and contextual multi-tenancy, and
+org.hibernate.binder
+allows for user-defined mapping annotations.
+More advanced extension points include:
+org.hibernate.dialect
+provides a framework for modelling dialects of SQL,
+org.hibernate.cache.spi
+defines an SPI for integrating with second-level cache
+        providers,
+org.hibernate.engine.jdbc.connections.spi
+defines an SPI for integrating with
+        JDBC connection pools.
+Finally, Hibernate ORM Core is itself a framework for advanced extensions like Hibernate Search,
+    Hibernate Reactive, and Envers, which do much more than just implementing a single well-defined
+    extension point. The starting points for such extensions are found in the packages
+org.hibernate.integrator.spi
+and
+org.hibernate.event.spi
+.
+Package categories
+The organization of code into packages is based on the following classification:
+API packages
+include classes and interfaces which are used directly by
+        a typical application. These packages never have
+spi
+nor
+internal
+in their name, and are not under the namespace
+org.hibernate.testing
+.
+SPI packages
+include classes and interfaces which are used by integrators,
+        library developers, and framework developers to develop extensions to Hibernate, or to alter
+        its behavior in some way. These packages usually have
+spi
+in their name.
+Some classes and interfaces are considered part of the internal implementation of Hibernate.
+        This category includes packages with
+internal
+in their name, along with any class
+        or interface annotated
+@Internal
+. Clients should avoid depending
+        directly on these types.
+The
+hibernate-testing
+module, and the namespace
+org.hibernate.testing
+contain
+testing support
+used in the Hibernate test suite.
+More information
+Complete documentation may be found online at
+http://hibernate.org/orm/documentation/
+.
+Packages
+Package
+Description
+org.hibernate
+This package defines the central Hibernate APIs, beginning with
+SessionFactory
+, which represents an instance of
+ Hibernate at runtime and is the source of new instances of
+Session
+and
+StatelessSession
+,
+ the most important APIs exposing persistence-related operations for
+ entities.
+org.hibernate.action.internal
+The various concrete action implementations.
+org.hibernate.action.spi
+This SPI package defines an abstraction over the notion of an "action"
+ which is scheduled for asynchronous execution by the event listeners.
+org.hibernate.agroal.internal
+Implementation of ConnectionProvider using Agroal.
+org.hibernate.annotations
+A set of mapping annotations which extend the O/R mapping annotations defined by JPA.
+org.hibernate.binder
+This package defines an easy way to extend Hibernate with user-defined
+        annotations that define customized O/R mappings of annotated entities
+        and annotated entity attributes.
+org.hibernate.binder.internal
+Built-in implementations of
+AttributeBinder
+and
+TypeBinder
+.
+org.hibernate.boot
+This package contains the interfaces that make up the bootstrap API
+ for Hibernate.
+org.hibernate.boot.archive.internal
+The internals of archive scanning support.
+org.hibernate.boot.archive.scan.internal
+org.hibernate.boot.archive.scan.spi
+SPI for scanning
+archives
+to discover managed classes and named resources.
+org.hibernate.boot.archive.spi
+Defines an SPI for scanning
+ of
+archives
+for discovery of managed resources.
+org.hibernate.boot.beanvalidation
+Support for integrating Jakarta Bean Validation.
+org.hibernate.boot.cfgxml.internal
+Implementation of the service for processing and handling
+cfg.xml
+files.
+org.hibernate.boot.cfgxml.spi
+An SPI service for processing and handling
+cfg.xml
+files.
+org.hibernate.boot.internal
+org.hibernate.boot.jaxb
+JAXB support for
+orm.xml
+and
+hbm.xml
+mapping files
+org.hibernate.boot.jaxb.cfg.spi
+org.hibernate.boot.jaxb.hbm.internal
+JAXB details.
+org.hibernate.boot.jaxb.hbm.spi
+org.hibernate.boot.jaxb.hbm.transform
+org.hibernate.boot.jaxb.internal
+org.hibernate.boot.jaxb.internal.stax
+Contains basic support for Java XML Processing (JAXP) via Streaming API for XML (StAX)
+org.hibernate.boot.jaxb.mapping
+org.hibernate.boot.jaxb.mapping.marshall
+org.hibernate.boot.jaxb.spi
+org.hibernate.boot.model
+This package defines the boot-time metamodel, which is an interpretation
+ of the domain model (entity classes, embeddable classes, and attributes)
+ and the mapping of these "domain model parts" to the database.
+org.hibernate.boot.model.convert.internal
+org.hibernate.boot.model.convert.spi
+Defines the SPI of a
+registry
+of JPA
+AttributeConverter
+s.
+org.hibernate.boot.model.internal
+org.hibernate.boot.model.naming
+This API allows intervention by generic code in the process of determining the names of
+ database objects (tables, columns, and constraints).
+org.hibernate.boot.model.process.internal
+org.hibernate.boot.model.process.spi
+Defines an SPI used during the process of transforming
+mapping sources
+into
+ the
+Metadata
+reference.
+org.hibernate.boot.model.relational
+Some SPIs related to DDL generation and schema management.
+org.hibernate.boot.model.relational.internal
+org.hibernate.boot.model.source.internal
+org.hibernate.boot.model.source.internal.annotations
+org.hibernate.boot.model.source.internal.hbm
+org.hibernate.boot.model.source.spi
+org.hibernate.boot.query
+Support for handling named queries during the bootstrap process.
+org.hibernate.boot.registry
+Defines
+service registry
+contracts a program may use for
+ configuring Hibernate.
+org.hibernate.boot.registry.classloading.internal
+The class loading service internals.
+org.hibernate.boot.registry.classloading.spi
+The class loading service SPI.
+org.hibernate.boot.registry.internal
+The internals for building service registries.
+org.hibernate.boot.registry.selector
+Defines a feature set around named registration of implementations of various contracts
+ and the ability to select those implementations.
+org.hibernate.boot.registry.selector.internal
+Internals for building StrategySelector
+org.hibernate.boot.registry.selector.spi
+Defines actual contract used for
+strategy selection
+.
+org.hibernate.boot.spi
+A range of SPIs allowing integration with—and customization of—the process of building metadata.
+org.hibernate.boot.xsd
+Support for XSD handling.
+org.hibernate.bytecode
+This package defines an SPI for integrating bytecode libraries with Hibernate.
+org.hibernate.bytecode.enhance.internal.bytebuddy
+package containing bytecode enhancement code (internals)
+org.hibernate.bytecode.enhance.internal.tracker
+specialized classes to keep track of changes
+org.hibernate.bytecode.enhance.spi
+Package defining bytecode code enhancement (instrumentation) support.
+org.hibernate.bytecode.enhance.spi.interceptor
+Support for bytecode interceptor implementations.
+org.hibernate.bytecode.internal
+org.hibernate.bytecode.internal.bytebuddy
+Byte Buddy support internals
+org.hibernate.bytecode.internal.none
+org.hibernate.bytecode.spi
+Package defining bytecode code enhancement (instrumentation) support.
+org.hibernate.c3p0.internal
+Implementation of ConnectionProvider using the c3p0 Connection pool.
+org.hibernate.cache
+This package defines the API of the second-level cache service.
+org.hibernate.cache.cfg.internal
+Implementation of the second-level cache configuration SPI.
+org.hibernate.cache.cfg.spi
+An SPI modelling various aspects of the second-level cache configuration.
+org.hibernate.cache.internal
+Internal implementations and support for second-level caching.
+org.hibernate.cache.jcache
+Hibernate caching provider for JSR-107 compliant caches.
+org.hibernate.cache.jcache.internal
+org.hibernate.cache.spi
+Defines the integration aspect of Hibernate's second-level caching, allowing
+ a "caching backend" to be plugged in as a cache provider.
+org.hibernate.cache.spi.access
+Defines contracts for transactional and concurrent access to cached
+entity
+and
+collection
+data.
+org.hibernate.cache.spi.entry
+This package defines formats for disassembled state kept in the second level cache.
+org.hibernate.cache.spi.support
+This package provides a framework intended to reduce the work needed to implement
+ a caching provider.
+org.hibernate.cfg
+This package defines APIs for configuring Hibernate.
+org.hibernate.classic
+This package historically provided backward-compatibility
+ with Hibernate 2.1 APIs which were deprecated in Hibernate 3.
+org.hibernate.collection.internal
+Internal implementations and support for persistent collections.
+org.hibernate.collection.spi
+This package defines the SPI of a framework for lazy-initializing
+ and state-tracking collection wrappers.
+org.hibernate.context
+Contains SPIs which define:
+ 
+ the
+notion
+of a context-bound or "current" session, and
+ the
+notion
+of a "current" tenant id.
+org.hibernate.context.internal
+Internal implementations and support around "current session" handling.
+org.hibernate.context.spi
+SPI-level contracts around "current session" and "current tenant" support.
+org.hibernate.dialect
+This package abstracts over the multifarious dialects of SQL
+ understood by the databases supported by Hibernate.
+org.hibernate.dialect.aggregate
+Support for
+Dialect
+-specific aggregate column types,
+ including user-defined composite types, and JSON or XML types.
+org.hibernate.dialect.function
+Contains implementations of
+SqmFunctionDescriptor
+describing a range of relatively-sophisticated SQL functions available in various dialects.
+org.hibernate.dialect.hint
+Support for query hints using
+Dialect
+-specific syntax.
+org.hibernate.dialect.identity
+Support for
+Dialect
+-specific identity column handling.
+org.hibernate.dialect.lock
+Support for
+Dialect
+-specific locking strategies.
+org.hibernate.dialect.pagination
+Support for
+Dialect
+-specific pagination strategies.
+org.hibernate.dialect.sequence
+Support for
+Dialect
+-specific sequence handling.
+org.hibernate.dialect.temptable
+Support for temporary tables.
+org.hibernate.dialect.unique
+Support for
+Dialect
+-specific unique constraint definition.
+org.hibernate.engine
+This package contains classes which are "shared" by other subsystems,
+ and implementations of some key algorithms.
+org.hibernate.engine.config.internal
+The built-in implementation of the configuration service.
+org.hibernate.engine.config.spi
+Defines the SPI of the configuration service.
+org.hibernate.engine.internal
+Support for many of the internal workings of Hibernate.
+org.hibernate.engine.jdbc
+Support for various aspects of JDBC interaction.
+org.hibernate.engine.jdbc.batch
+Support for JDBC statement batching.
+org.hibernate.engine.jdbc.batch.internal
+Internals for JDBC batching support.
+org.hibernate.engine.jdbc.batch.spi
+Defines contracts for JDBC batching support.
+org.hibernate.engine.jdbc.connections.internal
+Various implementations of the SPI contracts for obtaining JDBC
+Connection
+s.
+org.hibernate.engine.jdbc.connections.spi
+Defines SPI contracts for obtaining JDBC
+Connection
+s from a
+ provider implemented as a
+service
+.
+org.hibernate.engine.jdbc.cursor.internal
+Internals for JDBC REF_CURSOR support.
+org.hibernate.engine.jdbc.cursor.spi
+Defines contracts for JDBC REF_CURSOR support.
+org.hibernate.engine.jdbc.dialect.internal
+Internal support for Dialect resolution (from JDBC metadata) and Dialect building.
+org.hibernate.engine.jdbc.dialect.spi
+Contracts supporting Dialect resolution (from JDBC metadata) and Dialect building.
+org.hibernate.engine.jdbc.env.internal
+org.hibernate.engine.jdbc.env.spi
+org.hibernate.engine.jdbc.internal
+Internals for supporting various aspects of JDBC interaction
+org.hibernate.engine.jdbc.mutation
+Package defining support for executing mutation SQL statements produced
+ by the persister for an entity or
+ collection.
+org.hibernate.engine.jdbc.mutation.group
+org.hibernate.engine.jdbc.mutation.internal
+org.hibernate.engine.jdbc.mutation.spi
+org.hibernate.engine.jdbc.spi
+SPI contracts supporting various aspects of JDBC interaction.
+org.hibernate.engine.jndi
+Support for JNDI within Hibernate
+org.hibernate.engine.jndi.internal
+Internal contracts defining the JNDI support within Hibernate
+org.hibernate.engine.jndi.spi
+The SPI contracts for integration with JNDI.
+org.hibernate.engine.profile
+Models the fetch profiles defined by the application.
+org.hibernate.engine.profile.internal
+org.hibernate.engine.query
+Support for dealing with parameters of native queries.
+org.hibernate.engine.query.internal
+org.hibernate.engine.query.spi
+An SPI for dealing with parameters of native queries.
+org.hibernate.engine.spi
+This package defines some central internal SPI abstractions
+ used throughout the implementation of Hibernate.
+org.hibernate.engine.transaction.internal
+org.hibernate.engine.transaction.internal.jta
+org.hibernate.engine.transaction.jta.platform.internal
+A range of container-specific implementations of
+JtaPlatform
+.
+org.hibernate.engine.transaction.jta.platform.spi
+An SPI for integrating with container-provided implementations of JTA.
+org.hibernate.engine.transaction.spi
+An SPI abstracting the object which implements
+Transaction
+.
+org.hibernate.envers
+org.hibernate.envers.boot
+org.hibernate.envers.boot.internal
+org.hibernate.envers.boot.model
+org.hibernate.envers.boot.registry.classloading
+org.hibernate.envers.boot.spi
+org.hibernate.envers.configuration
+org.hibernate.envers.configuration.internal
+org.hibernate.envers.configuration.internal.metadata
+org.hibernate.envers.configuration.internal.metadata.reader
+org.hibernate.envers.enhanced
+org.hibernate.envers.event.spi
+org.hibernate.envers.exception
+org.hibernate.envers.function
+org.hibernate.envers.internal
+org.hibernate.envers.internal.entities
+org.hibernate.envers.internal.entities.mapper
+org.hibernate.envers.internal.entities.mapper.id
+org.hibernate.envers.internal.entities.mapper.relation
+org.hibernate.envers.internal.entities.mapper.relation.component
+org.hibernate.envers.internal.entities.mapper.relation.lazy
+org.hibernate.envers.internal.entities.mapper.relation.lazy.initializor
+org.hibernate.envers.internal.entities.mapper.relation.lazy.proxy
+org.hibernate.envers.internal.entities.mapper.relation.query
+org.hibernate.envers.internal.reader
+org.hibernate.envers.internal.revisioninfo
+org.hibernate.envers.internal.synchronization
+org.hibernate.envers.internal.synchronization.work
+org.hibernate.envers.internal.tools
+org.hibernate.envers.internal.tools.graph
+org.hibernate.envers.internal.tools.query
+org.hibernate.envers.query
+org.hibernate.envers.query.criteria
+org.hibernate.envers.query.criteria.internal
+org.hibernate.envers.query.internal.impl
+org.hibernate.envers.query.internal.property
+org.hibernate.envers.query.order
+org.hibernate.envers.query.order.internal
+org.hibernate.envers.query.projection
+org.hibernate.envers.query.projection.internal
+org.hibernate.envers.strategy
+org.hibernate.envers.strategy.internal
+org.hibernate.envers.strategy.spi
+org.hibernate.envers.tools
+org.hibernate.event.internal
+This package defines a default set of event listeners that implement
+ the default behaviors of Hibernate session operations.
+org.hibernate.event.service.internal
+Implementation of the event listener registration service.
+org.hibernate.event.service.spi
+An SPI for the event listener registration service.
+org.hibernate.event.spi
+Defines the event types and event listener interfaces for
+ events produced by the stateful
+Session
+.
+org.hibernate.exception
+Defines certain very important flavors of
+JDBCException
+,
+ along with an SPI for interpreting product-specific
+SQLException
+s
+ arising from a JDBC driver into something more uniform and meaningful.
+org.hibernate.exception.internal
+org.hibernate.exception.spi
+An SPI for
+Dialect
+-specific exception
+ interpretation and conversion.
+org.hibernate.generator
+This package defines an abstraction over all kinds of automatic
+ value generation, including id generation and version number
+ generation.
+org.hibernate.generator.internal
+org.hibernate.grammars.graph
+org.hibernate.grammars.hql
+org.hibernate.grammars.importsql
+org.hibernate.grammars.ordering
+org.hibernate.graph
+Implements and extends the JPA-defined
+entity graph
+API.
+org.hibernate.graph.internal
+org.hibernate.graph.internal.parse
+org.hibernate.graph.spi
+org.hibernate.hikaricp.internal
+Implementation of ConnectionProvider using HikariCP.
+org.hibernate.id
+This package and its subpackages, especially
+org.hibernate.id.enhanced
+,
+ contain the built-in id generators, all of which implement either
+IdentifierGenerator
+or
+PostInsertIdentifierGenerator
+.
+org.hibernate.id.enhanced
+Enhanced/improved versions of table and sequence based identifier generators
+ targeting portability and unified configuration.
+org.hibernate.id.factory
+Defines a
+service
+for creating
+ id generators.
+org.hibernate.id.factory.internal
+Implementation of the SPI for id generator factories.
+org.hibernate.id.factory.spi
+Contains an SPI for id generator factories.
+org.hibernate.id.insert
+Contains a framework of strategies for retrieving database-generated ids.
+org.hibernate.id.uuid
+Contains the
+UuidGenerator
+.
+org.hibernate.integrator.internal
+Implementation of the SPI for extensions which integrate with Hibernate via the
+Service
+mechanism.
+org.hibernate.integrator.spi
+An SPI for extensions which integrate with Hibernate via the Java
+ServiceLoader
+facility.
+org.hibernate.internal
+An internal package containing implementations of central Hibernate APIs,
+ mostly defined in
+org.hibernate
+.
+org.hibernate.internal.build
+org.hibernate.internal.log
+org.hibernate.internal.util
+Internal utility classes
+org.hibernate.internal.util.beans
+org.hibernate.internal.util.collections
+org.hibernate.internal.util.compare
+org.hibernate.internal.util.config
+org.hibernate.internal.util.io
+org.hibernate.internal.util.securitymanager
+org.hibernate.internal.util.type
+org.hibernate.internal.util.xml
+org.hibernate.jdbc
+Defines the notion of a unit of JDBC work that may be executed by the session
+ at the request of the client.
+org.hibernate.jpa
+The packages in this namespace are responsible for implementing certain
+ requirements of the JPA specification, especially things which are only
+ needed when Hibernate is acting as a JPA
+persistence provider
+.
+org.hibernate.jpa.boot.internal
+org.hibernate.jpa.boot.spi
+An SPI used to
+initiate
+and
+control
+the JPA bootstrap process, along with SPI interfaces allowing certain sorts of
+ extensions to be contributed during the bootstrap process.
+org.hibernate.jpa.event.internal
+Internal details of implementing support for JPA callbacks
+org.hibernate.jpa.event.spi
+The SPI contracts for supporting JPA lifecycle callbacks.
+org.hibernate.jpa.internal
+Defines Hibernate implementation of Java Persistence specification.
+org.hibernate.jpa.internal.enhance
+org.hibernate.jpa.internal.util
+org.hibernate.jpa.spi
+An SPI for managing cases where, by default, Hibernate intentionally violates
+ the letter of the JPA specification.
+org.hibernate.jpamodelgen
+The main package of this annotation processor.
+org.hibernate.jpamodelgen.annotation
+Implementation of the model classes backed by annotations.
+org.hibernate.jpamodelgen.model
+org.hibernate.jpamodelgen.util
+Helper classes for string and type processing as well as access type detection.
+org.hibernate.jpamodelgen.util.xml
+XML helper classes.
+org.hibernate.jpamodelgen.xml
+Implementation of the model classes backed by annotations.
+org.hibernate.jpamodelgen.xml.jaxb
+org.hibernate.loader
+This package defines functionality for processing JDBC result sets
+ and returning complex graphs of persistent objects.
+org.hibernate.loader.ast.internal
+org.hibernate.loader.ast.spi
+org.hibernate.loader.internal
+org.hibernate.mapping
+This package defines the Hibernate configuration-time mapping model.
+org.hibernate.metadata
+This package defines an API for accessing details about model mapping.
+org.hibernate.metamodel
+This package defines an API for accessing the runtime metamodel describing persistent
+ entities in Java and their mappings to the relational database schema.
+org.hibernate.metamodel.internal
+org.hibernate.metamodel.mapping
+Defines the runtime mapping metamodel, which describes the mapping
+ of the application's domain model parts (entities, attributes) to
+ relational database objects (tables, columns).
+org.hibernate.metamodel.mapping.internal
+org.hibernate.metamodel.mapping.ordering
+Support for set and map ordering
+org.hibernate.metamodel.mapping.ordering.ast
+org.hibernate.metamodel.model.domain
+Defines the runtime domain metamodel, which describes the Java aspect of
+ the application's domain model parts (entities, attributes).
+org.hibernate.metamodel.model.domain.internal
+Implementation of the SPI for the runtime domain metamodel.
+org.hibernate.metamodel.model.domain.spi
+An SPI for the runtime domain metamodel.
+org.hibernate.metamodel.spi
+An SPI supporting custom instantiation of
+entity instances
+and
+embeddable objects
+.
+org.hibernate.persister.collection
+This package abstracts persistence mechanisms for collections.
+org.hibernate.persister.collection.mutation
+Defines support for performing mutation operations against collections.
+org.hibernate.persister.entity
+This package abstracts persistence mechanisms for entities.
+org.hibernate.persister.entity.mutation
+Defines support for performing mutation operations originating
+ from persistence-context events.
+org.hibernate.persister.internal
+Built-in implementation of the SPI for integrating entity and collection persisters.
+org.hibernate.persister.spi
+An SPI for integrating custom entity and collection persisters.
+org.hibernate.persister.walking.spi
+Package for "walking" associations through metadata definition.
+org.hibernate.pretty
+Contains some functions for pretty-printing things for exception and log messages.
+org.hibernate.procedure
+Defines support for executing database stored procedures and functions and accessing their outputs.
+org.hibernate.procedure.internal
+Defines the internal implementation of the stored procedure SPI.
+org.hibernate.procedure.spi
+Defines an SPI for calling stored procedures and functions.
+org.hibernate.property.access.internal
+Contains various implementations of
+PropertyAccessStrategy
+.
+org.hibernate.property.access.spi
+An SPI abstracting how persistent attributes of an entity or embeddable type
+ are accessed by Hibernate.
+org.hibernate.proxool.internal
+Implementation of ConnectionProvider using the proxool Connection pool.
+org.hibernate.proxy
+This package defines a framework for lazy-initializing entity proxies.
+org.hibernate.proxy.map
+Proxies for entity objects represented as Java
+maps
+.
+org.hibernate.proxy.pojo
+Proxies for plain Java objects.
+org.hibernate.proxy.pojo.bytebuddy
+org.hibernate.query
+Everything related to HQL/JPQL, native SQL, and criteria queries.
+org.hibernate.query.criteria
+Support for JPA criteria queries.
+org.hibernate.query.criteria.internal
+org.hibernate.query.criteria.spi
+SPI for extending
+HibernateCriteriaBuilder
+with additional functionality by registering a
+Service
+.
+org.hibernate.query.derived
+org.hibernate.query.hql
+Package defining support for HQL, including JPQL as a subset of HQL.
+org.hibernate.query.hql.internal
+Implementation of the SPIs for HQL support.
+org.hibernate.query.hql.spi
+SPIs for HQL support.
+org.hibernate.query.internal
+org.hibernate.query.named
+Support for named queries
+org.hibernate.query.procedure
+Support SQL functions in the SQM model.
+org.hibernate.query.results
+Support for defining result set mappings used in
+NativeQuery
+,
+ProcedureCall
+, and
+StoredProcedureQuery
+.
+org.hibernate.query.results.complete
+Support for immutable result/fetch builder graph nodes built from static sources
+ such as
+SqlResultSetMapping
+or the
+hbm.xml
+mapping element
+<resultset/>
+.
+org.hibernate.query.results.dynamic
+Support for mutable result/fetch builder graphs nodes built dynamically via
+ Hibernate's
+NativeQuery
+APIs
+org.hibernate.query.results.implicit
+Defines support for implicit ResultSet mappings.
+org.hibernate.query.spi
+Contains a range of internal abstractions for dealing with query execution,
+ query plans, query options, and query parameters.
+org.hibernate.query.sql
+Package defining support for native SQL queries.
+org.hibernate.query.sql.internal
+Implementation of the SPIs for native SQL query support.
+org.hibernate.query.sql.spi
+SPIs for native SQL query support.
+org.hibernate.query.sqm
+This package defines a semantic model of HQL queries.
+org.hibernate.query.sqm.function
+Package defining support for HQL, including JPQL as a subset of HQL.
+org.hibernate.query.sqm.internal
+Package for the SQM-backed Query implementation details
+org.hibernate.query.sqm.mutation.internal
+org.hibernate.query.sqm.mutation.internal.cte
+org.hibernate.query.sqm.mutation.internal.inline
+org.hibernate.query.sqm.mutation.internal.temptable
+Support for multi-table SQM mutation (insert, update, delete) operations using
+ a table to temporarily hold the matching ids.
+org.hibernate.query.sqm.mutation.spi
+SPI for handling SQM UPDATE and DELETE queries
+org.hibernate.query.sqm.produce.function
+Package defining support for
+SqmFunctionDescriptor
+handling.
+org.hibernate.query.sqm.produce.function.internal
+org.hibernate.query.sqm.spi
+SPI-level SQM contracts
+org.hibernate.query.sqm.sql
+Package for the translation of SQM into SQL AST
+org.hibernate.query.sqm.sql.internal
+org.hibernate.query.sqm.tree
+This package contains the classes that make up the SQM tree nodes.
+org.hibernate.query.sqm.tree.cte
+Nodes representing common table expressions (CTE) in the SQM tree.
+org.hibernate.query.sqm.tree.delete
+Nodes representing
+delete
+statements in the SQM tree.
+org.hibernate.query.sqm.tree.domain
+Nodes representing path expressions in the SQM tree.
+org.hibernate.query.sqm.tree.expression
+Nodes representing expressions in the SQM tree.
+org.hibernate.query.sqm.tree.from
+Nodes representing root entities and joins in the SQM tree.
+org.hibernate.query.sqm.tree.insert
+Nodes representing
+insert
+statements in the SQM tree.
+org.hibernate.query.sqm.tree.jpa
+org.hibernate.query.sqm.tree.predicate
+Nodes representing logical predicates in the SQM tree.
+org.hibernate.query.sqm.tree.select
+Nodes representing
+select
+statements in the SQM tree.
+org.hibernate.query.sqm.tree.update
+Nodes representing
+update
+statements in the SQM tree.
+org.hibernate.relational
+Programmatic access to the schema management tool.
+org.hibernate.relational.internal
+org.hibernate.resource.beans.container.internal
+An implementation of the bean container SPI based on CDI.
+org.hibernate.resource.beans.container.spi
+An SPI abstracting over CDI-like bean containers.
+org.hibernate.resource.beans.internal
+org.hibernate.resource.beans.spi
+Defines an SPI for integration with CDI-like containers.
+org.hibernate.resource.jdbc
+A facility for managing logical JDBC connections and keeping track of other heavyweight resources.
+org.hibernate.resource.jdbc.internal
+Implementation of the SPI for managing JDBC connections and other heavyweight resources.
+org.hibernate.resource.jdbc.spi
+An SPI for managing JDBC connections and other heavyweight resources, based around the
+ idea of a
+"JDBC session"
+.
+org.hibernate.resource.transaction
+Defines the resource-level transaction capabilities of Hibernate, centered
+ around the
+TransactionCoordinator
+contract.
+org.hibernate.resource.transaction.backend.jdbc.internal
+An implementation of
+TransactionCoordinator
+based on
+JdbcResourceTransaction
+.
+org.hibernate.resource.transaction.backend.jdbc.spi
+An SPI which models the concept of a JDBC resource-level transaction.
+org.hibernate.resource.transaction.backend.jta.internal
+org.hibernate.resource.transaction.backend.jta.internal.synchronization
+Internal implementation details for reacting to JTA transaction completion via
+Synchronization
+callbacks
+org.hibernate.resource.transaction.internal
+Internal implementation details for the resource-level transaction capabilities of Hibernate.
+org.hibernate.resource.transaction.spi
+Extended SPI contracts for the resource-level transaction capabilities of Hibernate.
+org.hibernate.result
+Defines support for dealing with results returned from database via JDBC.
+org.hibernate.result.internal
+org.hibernate.result.spi
+org.hibernate.service
+Defines a framework for pluggable
+services
+,
+ allowing for customization of key components of Hibernate, and abstraction of these
+ components as SPI interfaces.
+org.hibernate.service.internal
+Implementation of the SPI for integrating pluggable services.
+org.hibernate.service.spi
+Defines an SPI for integrating pluggable
+services
+.
+org.hibernate.spatial
+org.hibernate.spatial.contributor
+org.hibernate.spatial.criteria
+org.hibernate.spatial.criteria.internal
+org.hibernate.spatial.dialect.cockroachdb
+SpatialDialect
+s for CockroachDB
+org.hibernate.spatial.dialect.db2
+org.hibernate.spatial.dialect.h2gis
+org.hibernate.spatial.dialect.hana
+org.hibernate.spatial.dialect.mariadb
+org.hibernate.spatial.dialect.mysql
+org.hibernate.spatial.dialect.oracle
+org.hibernate.spatial.dialect.postgis
+org.hibernate.spatial.dialect.sqlserver
+org.hibernate.spatial.integration
+org.hibernate.spatial.jts
+org.hibernate.spatial.predicate
+org.hibernate.spi
+A tiny SPI for dealing with compound names and navigable paths.
+org.hibernate.sql
+This package contains helper classes for rendering SQL fragments and SQL statements.
+org.hibernate.sql.ast
+Package defining a SQL AST for use in generation of SQL.
+org.hibernate.sql.ast.internal
+org.hibernate.sql.ast.spi
+Package defining support for creating and consuming a SQL AST.
+org.hibernate.sql.ast.tree
+Package defining the SQL AST.
+org.hibernate.sql.ast.tree.cte
+Support for common table expressions (CTE) in a SQL tree.
+org.hibernate.sql.ast.tree.delete
+AST nodes representing
+delete
+statements in a SQL tree.
+org.hibernate.sql.ast.tree.expression
+AST nodes representing expressions in a SQL tree.
+org.hibernate.sql.ast.tree.from
+AST nodes representing root tables and joins in a SQL tree.
+org.hibernate.sql.ast.tree.insert
+AST nodes representing
+insert
+statements in a SQL tree.
+org.hibernate.sql.ast.tree.predicate
+AST nodes representing logical predicates in a SQL tree.
+org.hibernate.sql.ast.tree.select
+AST nodes representing
+select
+statements in a SQL tree.
+org.hibernate.sql.ast.tree.update
+AST nodes representing
+update
+statements in a SQL tree.
+org.hibernate.sql.exec
+Support for execution of SQL statements via JDBC.
+org.hibernate.sql.exec.internal
+Implementation of the SPI for execution of SQL statements via JDBC.
+org.hibernate.sql.exec.spi
+SPI for execution of SQL statements via JDBC.
+org.hibernate.sql.model
+Package contains specialized SQL AST nodes and builders for table mutations
+ of
+model parts
+originating from normal persistence-context events.
+org.hibernate.sql.model.ast
+SQL AST extensions for model mutations.
+org.hibernate.sql.model.ast.builder
+Support for building
+TableMutation
+references for persisting entity mutation events
+org.hibernate.sql.model.internal
+Concrete implementations of
+MutationGroup
+,
+MutationOperation
+, and
+TableMutation
+.
+org.hibernate.sql.model.jdbc
+Extensions to
+JdbcOperation
+for model mutations.
+org.hibernate.sql.results
+Package for processing JDBC
+ResultSet
+s into hydrated domain model graphs
+ based on a "load plan" defined by a "domain result graph", that is, one or more
+DomainResult
+nodes with zero or more
+Fetch
+nodes.
+org.hibernate.sql.results.caching
+Support for caching of query results.
+org.hibernate.sql.results.caching.internal
+org.hibernate.sql.results.graph
+Defines domain result graphs.
+org.hibernate.sql.results.graph.basic
+org.hibernate.sql.results.graph.collection
+org.hibernate.sql.results.graph.collection.internal
+org.hibernate.sql.results.graph.embeddable
+org.hibernate.sql.results.graph.embeddable.internal
+org.hibernate.sql.results.graph.entity
+org.hibernate.sql.results.graph.entity.internal
+org.hibernate.sql.results.graph.instantiation
+org.hibernate.sql.results.graph.instantiation.internal
+org.hibernate.sql.results.graph.internal
+org.hibernate.sql.results.graph.tuple
+org.hibernate.sql.results.internal
+org.hibernate.sql.results.internal.domain
+org.hibernate.sql.results.jdbc.internal
+org.hibernate.sql.results.jdbc.spi
+org.hibernate.sql.results.spi
+org.hibernate.stat
+This package exposes
+statistics
+about a running instance of
+SessionFactory
+and its
+ interaction with the database and second-level cache.
+org.hibernate.stat.internal
+The built-in implementation of the statistics collection service.
+org.hibernate.stat.spi
+An SPI allowing customized statistics collection.
+org.hibernate.testing
+org.hibernate.testing.async
+org.hibernate.testing.boot
+org.hibernate.testing.bytecode.enhancement
+org.hibernate.testing.byteman
+org.hibernate.testing.cache
+org.hibernate.testing.cleaner
+org.hibernate.testing.common.connections
+org.hibernate.testing.env
+org.hibernate.testing.hamcrest
+org.hibernate.testing.jdbc
+org.hibernate.testing.jdbc.leak
+org.hibernate.testing.jta
+org.hibernate.testing.junit4
+org.hibernate.testing.logger
+org.hibernate.testing.orm
+org.hibernate.testing.orm.assertj
+org.hibernate.testing.orm.domain
+org.hibernate.testing.orm.domain.animal
+Standard model for Hibernate's legacy Animal model used in HQL testing
+org.hibernate.testing.orm.domain.contacts
+org.hibernate.testing.orm.domain.gambit
+org.hibernate.testing.orm.domain.helpdesk
+org.hibernate.testing.orm.domain.retail
+org.hibernate.testing.orm.domain.userguide
+org.hibernate.testing.orm.domain.userguide.tooling
+org.hibernate.testing.orm.jdbc
+org.hibernate.testing.orm.jpa
+org.hibernate.testing.orm.junit
+org.hibernate.testing.orm.logger
+org.hibernate.testing.orm.transaction
+org.hibernate.testing.schema
+org.hibernate.testing.transaction
+org.hibernate.testing.util
+org.hibernate.testing.util.jpa
+org.hibernate.testing.util.uuid
+org.hibernate.tool.schema
+Contains tooling related to DDL generation, export, migration, and validation.
+org.hibernate.tool.schema.extract.internal
+Implementation of the SPI for schema information extraction from the database via JDBC.
+org.hibernate.tool.schema.extract.spi
+Defines an SPI for schema information extraction from the database via JDBC.
+org.hibernate.tool.schema.internal
+An implementation of the SPI for the tooling related to DDL generation, export, migration, and validation.
+org.hibernate.tool.schema.internal.exec
+Support for exporting generated DDL to the database or to SQL scripts.
+org.hibernate.tool.schema.internal.script
+Support for reading SQL scripts supplied to the schema tooling.
+org.hibernate.tool.schema.spi
+An SPI for the tooling related to DDL generation, export, migration, and validation.
+org.hibernate.transform
+Defines strategies for post-processing criteria query
+ results into a form convenient to the application.
+org.hibernate.tuple
+Most contracts here have been replaced by the new runtime
+mapping model
+.
+org.hibernate.tuple.component
+org.hibernate.tuple.entity
+org.hibernate.type
+A Hibernate
+Type
+is a strategy for mapping a Java
+ property type to a JDBC type or types.
+org.hibernate.type.descriptor
+Contracts for reading and writing values to and from JDBC.
+org.hibernate.type.descriptor.converter.internal
+Implements the SPI for basic-typed value conversions.
+org.hibernate.type.descriptor.converter.spi
+An SPI for basic-typed value conversions, including support for handling
+ JPA
+AttributeConverter
+instances as part of
+ the Hibernate
+Type
+system.
+org.hibernate.type.descriptor.java
+Integrates a range of types defined by the JDK with the type system
+ of Hibernate.
+org.hibernate.type.descriptor.java.spi
+org.hibernate.type.descriptor.jdbc
+Defines handling of almost the full range of standard JDBC-defined
+SQL data types
+.
+org.hibernate.type.descriptor.jdbc.internal
+org.hibernate.type.descriptor.jdbc.spi
+org.hibernate.type.descriptor.sql
+An API for working with abstract families of DDL types
+ parameterized by varying length, precision, and scale.
+org.hibernate.type.descriptor.sql.internal
+Includes several general-purpose implementations of
+DdlType
+.
+org.hibernate.type.descriptor.sql.spi
+Defines a registry for
+DdlType
+s.
+org.hibernate.type.format
+Support for type mappings which format composite values to a structured
+ text format (JSON or XML) for storage in a database-specific column type
+ supporting that structured format.
+org.hibernate.type.format.jackson
+Implementations of
+FormatMapper
+using Jackson.
+org.hibernate.type.format.jakartajson
+An implementation of
+FormatMapper
+using Jakarta JSON.
+org.hibernate.type.format.jaxb
+An implementation of
+FormatMapper
+using JAXB.
+org.hibernate.type.internal
+org.hibernate.type.spi
+Defines a registry for Hibernate
+Type
+s.
+org.hibernate.usertype
+An API for user-defined custom types which extend the set of built-in
+types
+defined in
+org.hibernate.type
+.
+org.hibernate.usertype.internal
+org.hibernate.vibur.internal
+Implementation of ConnectionProvider using ViburDBCP.
+Skip navigation links
+Overview
+Package
+Class
+Use
+Tree
+Deprecated
+Index
+Help
+All Classes
+JavaScript is disabled on your browser.
+Copyright © 2001-2025
+Red Hat, Inc.
+All Rights Reserved.

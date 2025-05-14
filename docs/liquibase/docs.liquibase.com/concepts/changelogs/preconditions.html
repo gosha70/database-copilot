@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" class="_Skins_oss_pro" data-mc-search-type="Stem" data-mc-help-system-file-name="Default.xml" data-mc-path-to-help-system="../../" data-mc-has-content-body="True" data-mc-toc-path="[%=System.LinkedHeader%]|[%=System.LinkedHeader%]" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic;Default" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-searchable="False">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="msapplication-config" content="../../Skins/Favicons/browserconfig.xml" />
+        <meta name="description" content="Reference information for using Preconditions in Liquibase. Preconditions control the execution of an update based on the state of the database and can be attached to a changelog or changeset." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../Skins/Favicons/favicon-16x16.png" /><title>Preconditions</title>
+        <!-- Google GA4 tag (gtag.js) -->
+        <!-- End Google GA4 tag -->
+        <!-- Google Tag Manager -->
+        <!-- End Google Tag Manager -->
+        <!-- Prism Highlighting -->
+        <!-- End Prism Highlighting -->
+        <!-- Tabs for code examples -->
+        <!--End tabs for code examples -->
+        <link href="../../Skins/Default/Stylesheets/Slideshow.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="https://docs.liquibase.com/Skins/Fluid/Stylesheets/MadCapSearch.Google.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Default/Stylesheets/Components/Print.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/foundation.6.2.3.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../Skins/Fluid/stylesheets/print.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link rel="stylesheet" href="../../z_resources/stylesheets/glidestyles.css" type="text/css" media="all" />
+        <link href="../../z_resources/stylesheets/styles.css" rel="stylesheet" type="text/css" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../Skins/Favicons/favicon-16x16.png" />
+        <link rel="canonical" href="preconditions.html" />
+        <script src="../../resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../resources/Scripts/purify.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/require.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/require.config.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/foundation.6.2.3_custom.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/plugins.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../resources/Scripts/MadCapAll.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=G-GJFFQKWLLX">
+        </script>
+        <script>/* <![CDATA[ */
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());  gtag('config', 'G-GJFFQKWLLX');
+		/* ]]> */</script>
+        <script>/* <![CDATA[ */(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&amp;l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-NTCPFS9');/* ]]> */</script>
+        <script type="text/javascript" src="../../z_resources/scripts/prism.js"> </script>
+        <script type="application/javascript" src="../../z_resources/scripts/jquery-accessible-tabs-ktc.js"> </script>
+    </head>
+    <body>
+        <div class="foundation-wrap off-canvas-wrapper">
+            <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper="">
+                <aside class="off-canvas position-right" role="navigation" id="offCanvas" data-off-canvas="" data-position="right" data-mc-ignore="true">
+                    <ul class="off-canvas-accordion vertical menu off-canvas-list" data-accordion-menu="" data-mc-back-link="Back" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="True" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True">
+                    </ul>
+                </aside>
+                <div class="off-canvas-content inner-wrap" data-off-canvas-content="">
+                    <div data-sticky-container="" class="title-bar-container">
+                        <nav class="title-bar tab-bar sticky" role="banner" data-sticky="" data-options="marginTop:0" style="width:100%" data-sticky-on="only screen and (max-width: 1279px)" data-mc-ignore="true"><a class="skip-to-content fluid-skip showOnFocus" href="#">Skip To Main Content</a>
+                            <div class="middle title-bar-section outer-row clearfix">
+                                <div class="menu-icon-container relative clearfix">
+                                    <div class="central-account-wrapper">
+                                        <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                            <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                                <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="menu-icon" aria-label="Show Navigation Panel" data-toggle="offCanvas"><span></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="title-bar-layout outer-row">
+                                <div class="logo-wrapper"><a class="logo" href="../../home.html" alt="Logo"></a>
+                                </div>
+                                <div class="navigation-wrapper nocontent">
+                                    <ul class="navigation clearfix" role="navigation" data-mc-css-tree-node-has-children="has-children" data-mc-css-sub-menu="sub-menu" data-mc-expand-event="mouseenter" data-mc-top-nav-menu="True" data-mc-max-depth="5" data-mc-include-icon="False" data-mc-include-indicator="False" data-mc-include-children="True" data-mc-include-siblings="True" data-mc-include-parent="True" data-mc-toc="True">
+                                        <li class="placeholder" style="visibility:hidden"><a>placeholder</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="central-account-wrapper">
+                                    <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                        <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                            <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="nav-search-wrapper">
+                                    <div class="nav-search row">
+                                        <form>
+                                            <div id="EaZl7IMMdkOxEcTqrymc2g" class="search-bar search-bar-container needs-pie">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="main-section">
+                        <div class="row outer-row sidenav-layout">
+                            <nav class="sidenav-wrapper">
+                                <div class="sidenav-container">
+                                    <ul class="off-canvas-accordion vertical menu sidenav" data-accordion-menu="" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu accordion-menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="False" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True" data-mc-side-nav-menu="True">
+                                    </ul>
+                                </div>
+                            </nav>
+                            <div class="body-container">
+                                <div data-mc-content-body="True">
+                                    <!-- Google Tag Manager (noscript) -->
+                                    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTCPFS9" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+                                    </noscript>
+                                    <!-- End Google Tag Manager (noscript) -->
+                                    <div class="side-content">
+                                        <form>
+                                            <div id="aO9tRxMCEE6lSgD67Hr8xg" class="search-bar search-bar-container needs-pie _Skins_Topics_Searchbar mc-component">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="nocontent">
+                                        <div class="MCBreadcrumbsBox_0 breadcrumbs" role="navigation" aria-label="Breadcrumbs" data-mc-breadcrumbs-divider=" &gt; " data-mc-breadcrumbs-count="3" data-mc-toc="True"><span class="MCBreadcrumbsPrefix">You are here: </span>
+                                        </div>
+                                    </div>
+                                    <!--<div>  class="topic-layout"-->
+                                    <!--AV 2023-09-13: removing duplicate nav after switch to sidenav
+		<div style="float:left; margin-right: 20px; margin-left:20px; margin-bottom: 15px;"> <MadCap:menuProxy data-mc-skin="/Project/Skins/Topics-Menu.flskn" style="mc-context-sensitive: True;mc-include-parent: True;mc-include-siblings: True;mc-include-children: True;" mc-linked-toc="/Project/TOCs/TOC.fltoc" /></div>-->
+                                    <div class="liquibase-docs-body">
+                                        <div role="main" id="mc-main-content">
+                                            <h1 id="preconditions">Preconditions</h1>
+                                            <p>Preconditions are tags you add to your <span class="mc-variable General.changelog variable">changelog</span> or individual <span class="mc-variable General.changeset variable">changeset</span>s to control the execution of an update based on the state of the database. Preconditions let you specify security and standardization requirements for your <span class="mc-variable General.changeset variable">changeset</span>s. If a precondition on a <span class="mc-variable General.changeset variable">changeset</span> fails, <span class="mc-variable General.Liquibase variable">Liquibase</span> does not deploy that <span class="mc-variable General.changeset variable">changeset</span>.</p>
+                                            <h2>Uses</h2>
+                                            <p>You can use preconditions to:</p>
+                                            <ul>
+                                                <li>Document what assumptions the author of the <span class="mc-variable General.changelog variable">changelog</span> had when creating it.</li>
+                                                <li>Enforce that those assumptions are not violated by users running the <span class="mc-variable General.changelog variable">changelog</span>.</li>
+                                                <li>Perform data checks before performing an unrecoverable change such as <a href="../../change-types/drop-table.html" class="MCXref xref">dropTable</a>.</li>
+                                                <li>Control what <span class="mc-variable General.changeset variable">changeset</span>s are run and not run based on the state of the database.</li>
+                                            </ul>
+                                            <p>You can use all <span class="mc-variable General.Liquibase variable">Liquibase</span> preconditions in XML, YAML, and JSON&#160;<span class="mc-variable General.changelog variable">changelog</span>s. The only supported precondition for SQL&#160;<span class="mc-variable General.changelog variable">changelog</span>s is <code>sqlCheck</code>. For a list of preconditions, see <a href="#available-preconditions" class="MCXref xref">Available preconditions</a>.</p>
+                                            <h2>Syntax</h2>
+                                            <p>You can use one <b>local</b>&#160;<code>&lt;preConditions&gt;</code> tag per <span class="mc-variable General.changeset variable">changeset</span> and one <b>global</b>&#160;<code>&lt;preConditions&gt;</code> tag in the <span class="mc-variable General.changelog variable">changelog</span> (outside any <span class="mc-variable General.changeset variable">changeset</span>). In XML, YAML, and JSON <span class="mc-variable General.changelog variable">changelog</span>s, you can use conditional logic to add multiple preconditions within a single <code>&lt;preConditions&gt;</code> tag.</p>
+                                            <p>Preconditions at the <span class="mc-variable General.changelog variable">changelog</span> level are applied to all <span class="mc-variable General.changeset variable">changeset</span>s, not just those listed in the current <span class="mc-variable General.changelog variable">changelog</span> or its child <span class="mc-variable General.changelog variable">changelog</span>s.</p>
+                                            <p>The following example XML, YAML, and JSON <span class="mc-variable General.changelog variable">changelog</span>s will only be run if the database executed against is Oracle and the database user executing the script is <code>SYSTEM</code>. Also, they will run the <span class="mc-variable General.changeset variable">changeset</span> with the <code>sqlCheck</code> precondition and <a href="../../change-types/create-table.html" class="MCXref xref">createTable</a>. The example SQL <span class="mc-variable General.changelog variable">changelog</span> only runs the <code>sqlCheck</code> precondition and <code>createTable</code>.</p>
+                                            <p>If the preconditions check fails, you will receive a warning and it will continue executing the <span class="mc-variable General.changeset variable">changeset</span> as normal because of the <code>onFail="WARN"</code> precondition. To prevent the execution of the <span class="mc-variable General.changeset variable">changeset</span> when the precondition fails, you can set <code>HALT</code> or <code>CONTINUE</code> values. For more information, see <a href="#onFail/onError" class="MCXref xref">onFail/onError values</a>.</p>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 18pt;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />XML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-xml">&lt;?xml version="1.1" encoding="UTF-8" standalone="no"?&gt;
+<code>&lt;databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+        http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"&gt;</code>
+
+    &lt;preConditions&gt;
+        &lt;dbms  type="oracle"  /&gt;
+        &lt;runningAs  username="SYSTEM"  /&gt;
+    &lt;/preConditions&gt;
+
+    &lt;changeSet  id="1"  author="Liquibase User"&gt;
+        &lt;preConditions  onFail="WARN"&gt;
+            &lt;sqlCheck  expectedResult="0"&gt;SELECT COUNT(*) FROM example_table&lt;/sqlCheck&gt;
+        &lt;/preConditions&gt;
+        &lt;comment&gt;Comments should go after the precondition. Otherwise, Liquibase returns an error.&lt;/comment&gt;
+
+        &lt;createTable  tableName="example_table"&gt;
+            &lt;column name="id" type="int" autoIncrement="true"&gt;
+                &lt;constraints primaryKey="true" nullable="false"&gt;
+            &lt;/column&gt;
+            &lt;column name="firstname" type="varchar(50)"&gt;
+            &lt;column name="lastname" type="varchar(50)"&gt;
+                &lt;constraints nullable="false"&gt;
+            &lt;/column&gt;
+            &lt;column name="state" type="char(2)"&gt;
+        &lt;/createTable&gt;
+    &lt;/changeSet&gt;
+&lt;/databaseChangeLog&gt;</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 18pt;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />SQL example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-sql">-- liquibase formatted sql
+			
+-- changeset Liquibase User:1
+-- preconditions onFail:WARN 
+-- precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM example_table
+-- comment: /* Comments should go after the precondition. Otherwise, Liquibase returns an error. */
+create table example_table (  
+	id int primary key,
+	firstname varchar(50),
+	lastname varchar(50) not null,
+	state char(2)
+)</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 18pt;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />YAML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-yaml">databaseChangeLog:
+ - preConditions:
+     - dbms:
+        type: oracle
+     - runningAs:
+        username: SYSTEM
+ - changeSet:
+     id:  1
+     author: Liquibase User
+     preConditions:
+       - onFail: WARN
+       - sqlCheck:
+          expectedResult: 0
+          sql: SELECT COUNT(*) FROM example_table
+     comment: Comments should go after the precondition. Otherwise, Liquibase returns an error.
+     changes:
+     - createTable:
+         tableName: example_table
+         columns:
+          - column:
+             name: id
+             type: int
+             autoIncrement: true
+             constraints:
+              primaryKey: true
+              nullable: false
+          - column:
+             name:  firstname
+	         type:  varchar(50)
+          - column:
+             name:  lastname
+             type:  varchar(50)
+             constraints:
+              nullable:  false
+          - column:
+             name:  state
+             type:  char(2)</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 18pt;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />JSON example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre><code class="language-json">{
+  "databaseChangeLog": [
+    {
+      "preConditions": [
+        {
+          "dmbs": {
+            "type": "oracle"
+          }
+        },
+        {
+          "runningAs": {
+            "username": "SYSTEM"
+          }
+        }
+      ],
+      "changeSet": {
+        "id": "1",
+        "author": "Liquibase User",
+        "preConditions": [
+          {
+            "onFail": "WARN"
+          },
+          {
+            "sqlCheck": {
+              "expectedResult": 0,
+              "sql": "SELECT COUNT(*) FROM example_table"
+            }
+          }
+        ],
+        "comment": "Comments should go after the precondition. Otherwise, Liquibase returns an error.",
+        "changes": [
+          {
+            "createTable": {
+              "tableName": "example_table",
+              "columns": [
+                {
+                  "column": {
+                    "name": "id",
+                    "type": "int",
+                    "autoIncrement": true,
+                    "constraints": {
+                      "primaryKey": true,
+                      "nullable": false
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "firstname",
+                    "type": "varchar(50)"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "lastname",
+                    "type": "varchar(50)",
+                    "constraints": {
+                      "nullable": false
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "state",
+                    "type": "char(2)"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}</code></pre>
+                                                </div>
+                                            </div>
+                                            <h3>Multiple preconditions</h3>
+                                            <p> In XML, JSON, and YAML <span class="mc-variable General.changelog variable">changelog</span>s, you can set multiple preconditions in one <code>&lt;preConditions&gt;</code> tag by using nestable <code>AND</code>, <code>OR</code>, and <code>NOT</code> conditional logic tags. If no conditional tags are specified, the default value is <code>AND</code>.</p>
+                                            <p><span class="mc-variable General.Liquibase variable">Liquibase</span> uses lazy evaluation (call-by-need) when running preconditions. For example, if the first condition of an <code>AND</code> expression fails, <span class="mc-variable General.Liquibase variable">Liquibase</span> does not evaluate the second condition. If the first condition of an <code>OR</code> expression succeeds, <span class="mc-variable General.Liquibase variable">Liquibase</span> does not evaluate the second condition.</p>
+                                            <ul>
+                                                <li>
+                                                    <p>XML:</p><pre xml:space="preserve"><code class="language-xml">&lt;preConditions&gt;
+    &lt;or&gt;
+        &lt;CONDITION_1&gt;
+        &lt;CONDITION_2&gt;
+    &lt;/or&gt;
+&lt;/preConditions&gt;</code></pre>
+                                                </li>
+                                                <li>
+                                                    <p>YAML:</p><pre xml:space="preserve"><code class="language-yaml">- preConditions:
+    - or:
+        - CONDITION_1
+        - CONDITION_2</code></pre>
+                                                </li>
+                                                <li>
+                                                    <p>JSON:</p><pre xml:space="preserve"><code class="language-json">{
+  "preConditions": [
+    {
+      "or": [
+        {
+          {CONDITION_1}
+        },
+        {
+          {CONDITION_2}
+        }
+      ]
+    }
+  ]
+}</code></pre>
+                                                </li>
+                                            </ul>
+                                            <h3>Examples</h3>
+                                            <p>The following syntax example will check that the update is running on Oracle and with the <code>SYSTEM</code> user but will only generate a warning message if the precondition fails:</p><pre xml:space="preserve"><code class="language-xml">&lt;preConditions  onFail="WARN"&gt;
+    &lt;dbms  type="oracle"  /&gt;
+    &lt;runningAs  username="SYSTEM"  /&gt;
+&lt;/preConditions&gt;</code></pre>
+                                            <p>The following will require running the <span class="mc-variable General.changelog variable">changelog</span> on Oracle or MySQL:</p><pre xml:space="preserve"><code class="language-xml">&lt;preConditions&gt;
+   &lt;or&gt;
+      &lt;dbms  type="oracle"  /&gt;
+      &lt;dbms  type="mysql"  /&gt;
+   &lt;/or&gt;
+&lt;/preConditions&gt;</code></pre>
+                                            <p>You can also see the precondition running as <code>SYSTEM</code> if executing against an Oracle database or running as SA if executing against a MS SQL database.</p><pre xml:space="preserve"><code class="language-xml">&lt;preConditions&gt;
+    &lt;or&gt;
+       &lt;and&gt;
+          &lt;dbms  type="oracle"  /&gt;  
+          &lt;runningAs  username="SYSTEM"  /&gt;
+       &lt;/and&gt;
+       &lt;and&gt;
+          &lt;dbms  type="mssql"  /&gt;
+          &lt;runningAs  username="sa"  /&gt;
+       &lt;/and&gt;
+     &lt;/or&gt;
+&lt;/preConditions&gt;</code></pre>
+                                            <h2 id="handling-failures-and-errors">Handling failures and errors</h2>
+                                            <p><span class="mc-variable General.Liquibase variable">Liquibase</span> defines two types of preconditions:</p>
+                                            <ul>
+                                                <li>Precondition <b>failures</b> which represent that the check failed</li>
+                                                <li>Precondition <b>errors</b> that are the exceptions thrown in the execution of a check</li>
+                                            </ul>
+                                            <p>The process of both can be controlled through the <code>onFail</code> and <code>onError</code> <span class="mc-variable General.Param/Attribute variable">attribute</span>s on the <code>&lt;preConditions&gt;</code> tag.</p>
+                                            <h3 id="available-attributes">Available <span class="mc-variable General.Param/Attribute variable">attribute</span>s</h3>
+                                            <table style="margin-left: auto;margin-right: auto;width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>onError</code>
+                                                        </td>
+                                                        <td>Controls what happens if there is an error checking whether the precondition passed or not.</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>onErrorMessage</code>
+                                                        </td>
+                                                        <td>Provides a custom message to output when preconditions fail. <b>Since 2.0</b></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>onFail</code>
+                                                        </td>
+                                                        <td>Controls what happens if the preconditions check fails.</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>onFailMessage</code>
+                                                        </td>
+                                                        <td>Provides a custom message to output when preconditions fail. <b>Since 2.0</b></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>onSqlOutput</code>
+                                                        </td>
+                                                        <td>Controls how preconditions are evaluated in the <code>update-sql</code> mode for XML, YAML, and JSON <span class="mc-variable General.changelog variable">changelog</span>s. <b>Since 1.9.5</b></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>onUpdateSql</code>
+                                                        </td>
+                                                        <td>Controls how preconditions are evaluated in the <code>update-sql</code> mode for formatted SQL&#160;<span class="mc-variable General.changelog variable">changelog</span>s.</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h3><a name="onFail/onError"></a><code>onFail</code>/<code>onError</code> values</h3>
+                                            <table style="margin-left: auto;margin-right: auto;width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Value</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>CONTINUE</code>
+                                                        </td>
+                                                        <td>Skips over the <span class="mc-variable General.changeset variable">changeset</span>. Execution of the <span class="mc-variable General.changeset variable">changeset</span> will be attempted again on the next update. Continues with the <span class="mc-variable General.changelog variable">changelog</span>.</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>HALT</code>
+                                                        </td>
+                                                        <td>Halts the execution of the entire <span class="mc-variable General.changelog variable">changelog</span> (default). <code>HALT</code> can be put outside a <span class="mc-variable General.changeset variable">changeset</span> (e.g. at the beginning of the <span class="mc-variable General.changelog variable">changelog</span>).</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>MARK_RAN</code>
+                                                        </td>
+                                                        <td>Skips over the <span class="mc-variable General.changeset variable">changeset</span> but mark it as executed. Continues with the <span class="mc-variable General.changelog variable">changelog</span>.</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>WARN</code>
+                                                        </td>
+                                                        <td>Sends a warning and continues executing the <span class="mc-variable General.changeset variable">changeset</span> / <span class="mc-variable General.changelog variable">changelog</span> as normal. <code>WARN</code> can be put outside a <span class="mc-variable General.changeset variable">changeset</span> (e.g. at the beginning of the <span class="mc-variable General.changelog variable">changelog</span>).</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h3 id="possible-onsqloutput-values"><code>onSqlOutput</code>/<code>onUpdateSql</code> values</h3>
+                                            <table style="margin-left: auto;margin-right: auto;width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Value</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>FAIL</code>
+                                                        </td>
+                                                        <td>Fails the <code>preCondition</code> in the <code>update-sql</code> mode.</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>IGNORE</code>
+                                                        </td>
+                                                        <td>Ignores the <code>preCondition</code> in the <code>update-sql</code> mode (default).</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>TEST</code>
+                                                        </td>
+                                                        <td>Runs the <span class="mc-variable General.changeset variable">changeset</span> in the <code>update-sql</code> mode.</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <p>Failures and errors will cause <span class="mc-variable General.Liquibase variable">Liquibase</span> to return non-zero exit codes in command output. Warnings will cause <span class="mc-variable General.Liquibase variable">Liquibase</span> to return exit codes of zero.</p>
+                                            <h3>Example failures/errors</h3>
+                                            <p>The following is a sample failure on a <span class="mc-variable General.changelog variable">changelog</span>:</p><pre xml:space="preserve"><code class="language-text">Unexpected error running Liquibase: Validation Failed:
+1 preconditions failed
+myChangelog.xml : DBMS Precondition failed: expected oracle, got postgresql</code></pre>
+                                            <p>The following is a sample error on a <span class="mc-variable General.changelog variable">changelog</span>:</p><pre xml:space="preserve"><code class="language-text">Unexpected error running Liquibase: Validation Failed:
+1 preconditions generated an error
+myChangelog.xml : liquibase.precondition.core.SqlPrecondition@5745ca0e : ERROR: relation "public.table_does_not_exist" does not exist</code></pre>
+                                            <p>The following is a sample warning on a <span class="mc-variable General.changeset variable">changeset</span>:</p><pre xml:space="preserve"><code class="language-text">WARNING: Executing myChangelog.xml::01-new::wonder.woman despite precondition failure due to onFail='WARN':
+1 preconditions failed
+myChangelog.xml : Column public.customer.name_new does not exist</code></pre>
+                                            <h2 id="available-preconditions"><a name="available-preconditions"></a>Available preconditions</h2>
+                                            <p>The examples of preconditions shown in the table doesn't include the <code>schemaName</code> <span class="mc-variable General.Param/Attribute variable">attribute</span>. It is best practice not to keep the <code>schemaName</code> in the <span class="mc-variable General.changeset variable">changeset</span> and rely on the default schema except for times you don’t want to create something in the default schema.</p>
+                                            <p>Additionally, you can include the <code>onError</code> or <code>onFail</code> <span class="mc-variable General.Param/Attribute variable">attribute</span>s with the <code>WARN</code>, <code>HALT</code>, <code>CONTINUE</code>, or <code>MARK_RAN</code> value in the preconditions tag, however, the <code>CONTINUE</code> and <code>MARK_RAN</code> options can only be applied to preconditions inside a <span class="mc-variable General.changeset variable">changeset</span>.</p>
+                                            <h3><code>changeLogPropertyDefined</code>
+                                            </h3>
+                                            <p>Checks whether given <span class="mc-variable General.changelog variable">changelog</span><span class="mc-variable General.Param/Attribute variable">attribute</span> is present. It fails if the value is not the same as given.</p>
+                                            <table style="margin-left: auto;margin-right: auto;width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th>Description</th>
+                                                        <th>Requirement</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>property</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>The name of the property to check.</p>
+                                                        </td>
+                                                        <td><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>value</code>
+                                                        </td>
+                                                        <td>The required value for a given property.</td>
+                                                        <td>Optional</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />XML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-xml">&lt;preConditions onFail="WARN"&gt;
+    &lt;changeLogPropertyDefined property="myproperty"
+                              value="requiredvalue"/&gt;
+&lt;/preConditions&gt;</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />YAML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-yaml">- preConditions:
+    - onFail: WARN
+    - changeLogPropertyDefined:
+       property: myproperty
+       value: requiredvalue</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />JSON example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-json">{
+  "preConditions": [
+    {
+      "onFail": "WARN"
+    },
+    {
+      "changeLogPropertyDefined": {
+        "property": "myproperty",
+        "value": "requiredvalue"
+      }
+    }
+  ]
+}</code></pre>
+                                                </div>
+                                            </div>
+                                            <h3><code>changeSetExecuted</code>
+                                            </h3>
+                                            <p>Defines if the specified <span class="mc-variable General.changeset variable">changeset</span> has already been executed.</p>
+                                            <table style="margin-left: auto;margin-right: auto;width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th>Description</th>
+                                                        <th>Requirement</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>id</code>
+                                                        </td>
+                                                        <td>The <span class="mc-variable General.changeset variable">changeset</span> id.</td>
+                                                        <td><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>author</code>
+                                                        </td>
+                                                        <td>The <span class="mc-variable General.changeset variable">changeset</span> author.</td>
+                                                        <td><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>changeLogFile</code>
+                                                        </td>
+                                                        <td>The file name (including searchPath relative path) of the <span class="mc-variable General.changeset variable">changeset</span>.</td>
+                                                        <td><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />XML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-xml">&lt;preConditions onFail="HALT"&gt;
+    &lt;changeSetExecuted id="1"
+                       author="liquibase"
+                       changeLogFile="changelog.xml" /&gt;
+&lt;/preConditions&gt;</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />YAML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-yaml">- preConditions:
+    - onFail: HALT
+    - changeSetExecuted:
+       id: 1
+       author: liquibase
+       changeLogFile: changelog.xml</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />JSON example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-json">{
+  "preConditions": [
+    {
+      "onFail": "HALT"
+    },
+    {
+      "changeSetExecuted": {
+        "id": "1",
+        "author": "liquibase",
+        "changeLogFile": "changelog.xml"
+      }
+    }
+  ]
+}</code></pre>
+                                                </div>
+                                            </div>
+                                            <h3><code>columnExists</code>
+                                            </h3>
+                                            <p>Defines if the specified column exists in the database.</p>
+                                            <table style="margin-left: auto;margin-right: auto;width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th>Description</th>
+                                                        <th>Requirement</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>columnName</code>
+                                                        </td>
+                                                        <td> The name of the column.</td>
+                                                        <td><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>tableName</code>
+                                                        </td>
+                                                        <td>The name of the column's table.</td>
+                                                        <td><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>schemaName</code>
+                                                        </td>
+                                                        <td>The name of the table's schema.</td>
+                                                        <td>Optional</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />XML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-xml">&lt;preConditions onFail="WARN"&gt;
+    &lt;columnExists tableName="table1"
+                  columnName="column1" /&gt;
+&lt;/preConditions&gt;</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />YAML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-yaml">- preConditions:
+    - onFail: WARN
+    - columnExists:
+       tableName: table1
+       columnName: column1</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />JSON example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-json">{
+  "preConditions": [
+    {
+      "onFail": "WARN"
+    },
+    {
+      "columnExists": {
+        "tableName": "table1",
+        "columnName": "column1"
+      }
+    }
+  ]
+}</code></pre>
+                                                </div>
+                                            </div>
+                                            <h3><code>dbms</code>
+                                            </h3>
+                                            <p>Defines if the database executed against matches the type specified.</p>
+                                            <table style="margin-left: auto;margin-right: auto;width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th>Description</th>
+                                                        <th>Requirement</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>type</code>
+                                                        </td>
+                                                        <td>
+                                                            <p>The type of database expected. Multiple dbms values can be specified using comma-separated values.</p>
+                                                        </td>
+                                                        <td><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />XML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-xml">&lt;preConditions onFail="WARN"&gt;
+  &lt;or&gt;
+    &lt;dbms  type="oracle"  /&gt;
+    &lt;dbms  type="mysql"  /&gt;
+  &lt;/or&gt;
+&lt;/preConditions&gt;</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />YAML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre style="white-space:pre-wrap;"><code class="language-yaml">- preConditions:
+    - onFail: WARN
+    - or:
+       - dbms:
+          type: oracle
+       - dbms:
+          type: mysql</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />JSON example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-json">{
+  "preConditions": [
+    {
+      "onFail": "WARN"
+    },
+    {
+      "or": [
+        {
+          "dbms": {
+            "type": "oracle"
+          }
+        },
+        {
+          "dbms": {
+            "type": "mysql"
+          }
+        }
+      ]
+    }
+  ]
+}</code></pre>
+                                                </div>
+                                            </div>
+                                            <h3><code>foreignKeyConstraintExists</code>
+                                            </h3>
+                                            <p>Defines if the specified foreign key exists in a table in the database.</p>
+                                            <table style="margin-left: auto;margin-right: auto;width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th>Description</th>
+                                                        <th>Requirement</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>foreignKeyName</code>
+                                                        </td>
+                                                        <td>The name of the foreign key.</td>
+                                                        <td><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>foreignKeyTableName</code>
+                                                        </td>
+                                                        <td>The name of the table the foreign key is in.</td>
+                                                        <td><b>Required</b> in 4.7.0+</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>schemaName</code>
+                                                        </td>
+                                                        <td>The name of the foreign key's schema.</td>
+                                                        <td>Optional</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />XML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-xml">&lt;preConditions onFail="WARN"&gt;
+    &lt;foreignKeyConstraintExists foreignKeyName="PK_2354"
+                                foreignKeyTableName="myTable" /&gt;
+&lt;/preConditions&gt;</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />YAML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-yaml">- preConditions:
+    - onFail: WARN
+    - foreignKeyConstraintExists:
+       foreignKeyName: PK_2354
+       foreignKeyTableName: myTable</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />JSON example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-json">{
+  "preConditions": [
+    {
+      "onFail": "WARN"
+    },
+    {
+      "foreignKeyConstraintExists": {
+        "foreignKeyName": "PK_2354",
+        "foreignKeyTableName": "myTable"
+      }
+    }
+  ]
+}</code></pre>
+                                                </div>
+                                            </div>
+                                            <h3><code>indexExists</code>
+                                            </h3>
+                                            <p>Defines if the specified index exists in the database. You can either specify the <code>indexName</code>&#160;<span class="mc-variable General.Param/Attribute variable">attribute</span> or <code>tableName</code> and <code>columnNames</code>&#160;<span class="mc-variable General.Param/Attribute variable">attribute</span>s.</p>
+                                            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>There are a few databases where the <code>indexName</code> is not unique, which is why both <code>indexName</code> and <code>tableName</code> can be used.</p>
+                                            <table style="margin-left: auto;margin-right: auto;width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th>Description</th>
+                                                        <th>Requirement</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>indexName</code>
+                                                        </td>
+                                                        <td>The name of the index.</td>
+                                                        <td>Optional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>columnNames</code>
+                                                        </td>
+                                                        <td>The name of the column.</td>
+                                                        <td>Optional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>tableName</code>
+                                                        </td>
+                                                        <td> The name of the table.</td>
+                                                        <td>Optional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>schemaName</code>
+                                                        </td>
+                                                        <td>The name of the index's schema.</td>
+                                                        <td>Optional</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />XML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-xml">&lt;preConditions onFail="WARN"&gt;
+    &lt;indexExists indexName="originindex"/&gt;
+&lt;/preConditions&gt;</code></pre><pre xml:space="preserve"><code class="language-xml">&lt;preConditions onFail="WARN"&gt;
+    &lt;indexExists tableName="MY_NEW_TABLE"
+                 columnNames="ID"/&gt;
+&lt;/preConditions&gt;</code></pre><pre xml:space="preserve"><code class="language-xml">&lt;preConditions onFail="WARN"&gt;
+    &lt;indexExists indexName="originindex"
+                 tableName="MY_NEW_TABLE"/&gt;
+&lt;/preConditions&gt;</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />YAML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-yaml">- preConditions:
+    - onFail: WARN
+    - indexExists:
+       indexName: originindex</code></pre><pre xml:space="preserve"><code class="language-yaml">- preConditions:
+    - onFail: WARN
+    - indexExists:
+       tableName: MY_NEW_TABLE
+       columnNames: ID</code></pre><pre xml:space="preserve"><code class="language-yaml">- preConditions:
+    - onFail: WARN
+    - indexExists:
+       indexName: originindex
+       tableName: MY_NEW_TABLE</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />JSON example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-json">{
+  "preConditions": [
+    {
+      "onFail": "WARN"
+    },
+    {
+      "indexExists": {
+        "indexName": "originindex"
+      }
+    }
+  ]
+}</code></pre><pre xml:space="preserve"><code class="language-json">{
+  "preConditions": [
+    {
+      "onFail": "WARN"
+    },
+    {
+      "indexExists": {
+        "tableName": "MY_NEW_TABLE",
+        "columnNames": "ID"
+      }
+    }
+  ]
+}</code></pre><pre xml:space="preserve"><code class="language-json">{
+  "preConditions": [
+    {
+      "onFail": "WARN"
+    },
+    {
+      "indexExists": {
+        "indexName": "originindex",
+        "tableName": "MY_NEW_TABLE"
+      }
+    }
+  ]
+}</code></pre>
+                                                </div>
+                                            </div>
+                                            <h3><code>primaryKeyExists</code>
+                                            </h3>
+                                            <p>Defines if the specified primary key exists in the database.</p>
+                                            <table style="margin-left: auto;margin-right: auto;width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th>Description</th>
+                                                        <th>Requirement</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>primaryKeyName</code>
+                                                        </td>
+                                                        <td>The name of the primary key constraint.</td>
+                                                        <td><code>tableName</code> or <code>primaryKeyName</code> is <b>required</b></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>tableName</code>
+                                                        </td>
+                                                        <td>the name of the table containing primary key.</td>
+                                                        <td><code>tableName</code> or <code>primaryKeyName</code> is <b>required</b></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>schemaName</code>
+                                                        </td>
+                                                        <td>The name of the primary key's schema.</td>
+                                                        <td>Optional</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />XML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-xml">&lt;preConditions onFail="HALT"&gt;
+    &lt;primaryKeyExists primaryKeyName="ID_2354"
+                      tableName="table1" /&gt;
+&lt;/preConditions&gt;</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />YAML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-yaml">- preConditions:
+    - onFail: HALT
+    - primaryKeyExists:
+       primaryKeyName: ID_2354
+       tableName: table1</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />JSON example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-json">{
+  "preConditions": [
+    {
+      "onFail": "HALT"
+    },
+    {
+      "primaryKeyExists": {
+        "primaryKeyName": "ID_2354",
+        "tableName": "table1"
+      }
+    }
+  ]
+}</code></pre>
+                                                </div>
+                                            </div>
+                                            <h3><code>rowCount</code>
+                                            </h3>
+                                            <p>Checks that the number of rows in a table matches an expected value.</p>
+                                            <table style="margin-left: auto;margin-right: auto;width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th>Description</th>
+                                                        <th>Requirement</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>expectedRows</code>
+                                                        </td>
+                                                        <td>The number of rows the user expects in a table.</td>
+                                                        <td><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>tableName</code>
+                                                        </td>
+                                                        <td>The name of the column's table.</td>
+                                                        <td><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />XML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-xml">&lt;preConditions onFail="WARN"&gt;
+    &lt;rowCount expectedRows="5"
+              tableName="person"/&gt;
+&lt;/preConditions&gt;</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />YAML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-yaml">- preConditions:
+    - onFail: WARN
+    - rowCount:
+       expectedRows: 5
+       tableName: person</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />JSON example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-json">{
+  "preConditions": [
+    {
+      "onFail": "WARN"
+    },
+    {
+      "rowCount": {
+        "expectedRows": "5",
+        "tableName": "person"
+      }
+    }
+  ]
+}</code></pre>
+                                                </div>
+                                            </div>
+                                            <h3><code>runningAs</code>
+                                            </h3>
+                                            <p>Defines if the database user executed under matches the username specified.</p>
+                                            <table style="margin-left: auto;margin-right: auto;width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th>Description</th>
+                                                        <th>Requirement</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>username</code>
+                                                        </td>
+                                                        <td>The database user script which is expected to run as.</td>
+                                                        <td><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />XML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-xml">&lt;preConditions  onFail="WARN"&gt;
+    &lt;dbms  type="oracle"  /&gt;
+    &lt;runningAs  username="SYSTEM"  /&gt;
+&lt;/preConditions&gt;</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />YAML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-yaml">- preConditions:
+    - onFail: WARN
+    - dbms:
+       type: oracle
+    - runningAs:
+       username: SYSTEM</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />JSON example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-json">{
+  "preConditions": [
+    {
+      "onFail": "WARN"
+    },
+    {
+      "dbms": {
+        "type": "oracle"
+      }
+    },
+    {
+      "runningAs": {
+        "username": "SYSTEM"
+      }
+    }
+  ]
+}</code></pre>
+                                                </div>
+                                            </div>
+                                            <h3><code>sequenceExists</code>
+                                            </h3>
+                                            <p>Defines if the specified sequence exists in the database.</p>
+                                            <table style="margin-left: auto;margin-right: auto;width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th>Description</th>
+                                                        <th>Requirement</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>sequenceName</code>
+                                                        </td>
+                                                        <td> The name of the sequence.</td>
+                                                        <td><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>schemaName</code>
+                                                        </td>
+                                                        <td>The name of the sequence's schema. </td>
+                                                        <td>Optional</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />XML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-xml">&lt;preConditions onFail="WARN"&gt;
+    &lt;sequenceExists sequenceName="idnumber" /&gt;
+&lt;/preConditions&gt;</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />YAML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-yaml">- preConditions:
+    - onFail: WARN
+    - sequenceExists:
+       sequenceName: idnumber</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />JSON example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-json">{
+  "preConditions": [
+    {
+      "onFail": "WARN"
+    },
+    {
+      "sequenceExists": {
+        "sequenceName": "idnumber"
+      }
+    }
+  ]
+}</code></pre>
+                                                </div>
+                                            </div>
+                                            <h3><code>sqlCheck</code>
+                                            </h3>
+                                            <p>Executes an SQL string and checks the returned value. The SQL must return a single row with a single value.</p>
+                                            <ul>
+                                                <li>To check a number of rows, use the <code>count</code> SQL function.</li>
+                                                <li>To check for ranges of values, perform the check in the SQL and return a value that can be easily compared against.</li>
+                                            </ul>
+                                            <table style="margin-left: auto;margin-right: auto;width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th>Description</th>
+                                                        <th>Requirement</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>expectedResult</code>
+                                                        </td>
+                                                        <td>The value to compare the SQL result to.</td>
+                                                        <td><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>sql</code>
+                                                        </td>
+                                                        <td>In JSON and YAML <span class="mc-variable General.changelog variable">changelog</span>s, the SQL statement to run. In XML <span class="mc-variable General.changelog variable">changelog</span>s, insert the SQL statement directly within the <code>&lt;sqlCheck&gt;&lt;/sqlCheck&gt;</code>&#160;tags. IN SQL <span class="mc-variable General.changelog variable">changelog</span>s, insert the SQL statement directly in the precondition header.</td>
+                                                        <td><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />SQL example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-sql">-- changeset Liquibase User:1
+-- preconditions onFail:WARN
+-- precondition-sql-check expectedResult:1 SELECT COUNT(1) FROM pg_tables WHERE&#160;TABLENAME = 'myRequiredTable'
+create table example_table (
+	id int primary key,
+	firstname varchar(50),
+	lastname varchar(50) not null,
+	state char(2)
+)</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />XML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-xml">&lt;preConditions onFail="WARN"&gt;
+    &lt;sqlCheck expectedResult="1"&gt;
+        SELECT COUNT(1)
+        FROM pg_tables
+        WHERE TABLENAME = 'myRequiredTable'
+    &lt;/sqlCheck&gt;
+&lt;/preConditions&gt;</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />YAML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-yaml">- preConditions:
+    - onFail: WARN
+    - sqlCheck:
+       expectedResult: 1
+       sql: SELECT&#160;COUNT(1)&#160;FROM pg_tables WHERE&#160;TABLENAME = 'myRequiredTable'</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />JSON example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-json">{
+  "preConditions": [
+    {
+      "onFail": "WARN"
+    },
+    {
+      "sqlCheck": {
+        "expectedResult": "1",
+        "sql": "SELECT&#160;COUNT(1)&#160;FROM pg_tables WHERE&#160;TABLENAME = 'myRequiredTable'"
+      }
+    }
+  ]
+}</code></pre>
+                                                </div>
+                                            </div>
+                                            <h3><code>tableExists</code>
+                                            </h3>
+                                            <p>Defines if the specified table exists in the database.</p>
+                                            <table style="margin-left: auto;margin-right: auto;width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th>Description</th>
+                                                        <th>Requirement</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>tableName</code>
+                                                        </td>
+                                                        <td>  The name of the table.</td>
+                                                        <td><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>schemaName</code>
+                                                        </td>
+                                                        <td>The name of the table's schema. </td>
+                                                        <td>Optional</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />XML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-xml">&lt;changeSet author="author" id="1"&gt;
+   &lt;preConditions onFail="MARK_RAN"&gt;
+       &lt;not&gt;
+           &lt;tableExists tableName="MY_NEW_TABLE"/&gt;
+       &lt;/not&gt; 
+   &lt;/preConditions&gt;
+
+   &lt;createTable tableName="MY_NEW_TABLE"&gt;
+       &lt;column name="IDX"
+               type="${integer.type}"&gt;
+           &lt;constraints nullable="false"/&gt; 
+       &lt;/column&gt;
+       &lt;column name="INTVAL"
+               type="${integer.type}"/&gt;
+   &lt;/createTable&gt;
+&lt;/changeSet&gt;</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />YAML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-yaml">- changeSet:
+    preConditions:
+      - onFail: MARK_RAN
+      - not:
+          - tableExists:
+             tableName: MY_NEW_TABLE
+    changes:
+      - createTable:
+          tableName: MY_NEW_TABLE
+          columns:
+            - column:
+               name: INTVAL
+               type: ${integer.type}
+               constraints:
+                 nullable: false</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />JSON example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-json">{
+  "changeSet": {
+    "preConditions": [
+      {
+        "onFail": "MARK_RAN"
+      },
+      {
+        "not": [
+          {
+            "tableExists": {
+              "tableName": "MY_NEW_TABLE"
+            }
+          }
+        ]
+      }
+    ],
+    "changes": [
+      {
+        "createTable": {
+          "tableName": "MY_NEW_TABLE",
+          "columns": [
+            {
+              "column": {
+                "name": "INTVAL",
+                "type": "${integer.type}",
+                "constraints": {
+                  "nullable": "false"
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}</code></pre>
+                                                </div>
+                                            </div>
+                                            <h3><code>uniqueConstraintExists</code>
+                                            </h3>
+                                            <p>Checks for the existence of unique constraints before running the update. (since <span class="mc-variable General.Liquibase variable">Liquibase</span> 4.9.0)</p>
+                                            <table style="margin-left: auto;margin-right: auto;width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th>Description</th>
+                                                        <th>Requirement</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>tableName</code>
+                                                        </td>
+                                                        <td>The name of the column's table.</td>
+                                                        <td><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>columnNames</code>
+                                                        </td>
+                                                        <td>The name of the column.</td>
+                                                        <td>Optional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>constraintName</code>
+                                                        </td>
+                                                        <td>The name of the unique constraint.</td>
+                                                        <td>Optional</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />XML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-xml">&lt;preConditions onFail="WARN"&gt;
+    &lt;uniqueConstraintExists constraintName="uq_constraint_name"
+                            tableName="test_table"/&gt;
+&lt;/preConditions&gt;</code></pre><pre xml:space="preserve"><code class="language-xml">&lt;preConditions onFail="WARN"&gt;
+    &lt;uniqueConstraintExists tableName="test_table"
+                            columnNames="first_name, last_name"/&gt;
+&lt;/preConditions&gt;</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />YAML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-yaml">- preConditions:
+    - onFail: WARN
+    - uniqueConstraintExists:
+       constraintName: uq_constraint_name
+       tableName: test_table</code></pre><pre xml:space="preserve"><code class="language-yaml">- preConditions:
+    - onFail: WARN
+    - uniqueConstraintExists:
+       tableName: test_table
+       columnNames: first_name, last_name</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />JSON example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-json">{
+  "preConditions": [
+    {
+      "onFail": "WARN"
+    },
+    {
+      "uniqueConstraintExists": {
+        "constraintName": "uq_constraint_name",
+        "tableName": "test_table"
+      }
+    }
+  ]
+}</code></pre><pre xml:space="preserve"><code class="language-json">{
+  "preConditions": [
+    {
+      "onFail": "WARN"
+    },
+    {
+      "uniqueConstraintExists": {
+        "tableName": "test_table",
+        "columnNames": "first_name, last_name"
+      }
+    }
+  ]
+}</code></pre>
+                                                </div>
+                                            </div>
+                                            <h3><code>viewExists</code>
+                                            </h3>
+                                            <p>Defines if the specified view exists in the database.</p>
+                                            <table style="margin-left: auto;margin-right: auto;width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th>Description</th>
+                                                        <th>Requirement</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>viewName</code>
+                                                        </td>
+                                                        <td>The name of the view.</td>
+                                                        <td><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>schemaName</code>
+                                                        </td>
+                                                        <td>The name of the view's schema.</td>
+                                                        <td>Optional</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />XML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-xml">&lt;preConditions onFail="HALT"&gt;
+    &lt;viewExists viewName="liquibase" /&gt;
+&lt;/preConditions&gt;</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />YAML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-yaml">- preConditions:
+    - onFail: HALT
+    - viewExists:
+       viewName: liquibase</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />JSON example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-json">{
+  "preConditions": [
+    {
+      "onFail": "HALT"
+    },
+    {
+      "viewExists": {
+        "viewName": "liquibase"
+      }
+    }
+  ]
+}</code></pre>
+                                                </div>
+                                            </div>
+                                            <h3><code>customPrecondition</code>
+                                            </h3>
+                                            <p>Can be created by adding a class that implements the <code><a href="https://javadocs.liquibase.com/liquibase-core/liquibase/precondition/CustomPrecondition.html">liquibase.precondition.CustomPrecondition</a></code> interface. Parameters on custom classes are set through reflection based on the <code>&lt;param&gt;</code> sub-tags. Pass parameters as strings to the custom precondition.</p>
+                                            <table style="margin-left: auto;margin-right: auto;width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th>Description</th>
+                                                        <th>Requirement</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>className</code>
+                                                        </td>
+                                                        <td>The name of the custom precondition class.</td>
+                                                        <td><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <h4><code>&lt;param&gt;</code>&#160;sub-tag</h4>
+                                            <p>The parameter to pass to the custom precondition.</p>
+                                            <table style="margin-left: auto;margin-right: auto;width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th><span class="mc-variable General.Param/Attr/Uppercased variable">Attribute</span>
+                                                        </th>
+                                                        <th>Description</th>
+                                                        <th>Requirement</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>name</code>
+                                                        </td>
+                                                        <td>The name of the parameter to set.</td>
+                                                        <td><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><code>value</code>
+                                                        </td>
+                                                        <td>A string value to set parameter to.</td>
+                                                        <td><b>Required</b>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />XML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-xml">&lt;customPrecondition className="com.example.CustomTableCheck"&gt;
+     &lt;param name="tableName"
+            value="our_table"/&gt;
+     &lt;param name="count"
+            value="42"/&gt;
+&lt;/customPrecondition&gt;</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />YAML example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-yaml">- customPrecondition:
+    - className: com.example.CustomTableCheck
+    - param:
+       name: tableName
+       value: our_table
+    - param:
+       name: count
+       value: 42</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="MCDropDown MCDropDown_Closed dropDown"><span class="MCDropDownHead dropDownHead"><a style="font-size: 1.1em;" href="#" class="MCDropDownHotSpot dropDownHotspot MCDropDownHotSpot_ MCHotSpotImage" aria-expanded="false"><img class="MCDropDown_Image_Icon" src="../../Skins/Default/Stylesheets/Images/transparent.gif" height="16" width="18" alt="Closed" data-mc-alt2="Open" />JSON example</a></span>
+                                                <div class="MCDropDownBody dropDownBody"><pre xml:space="preserve"><code class="language-json">{
+  "customPrecondition": [
+    {
+      "className": "com.example.CustomTableCheck"
+    },
+    {
+      "param": {
+        "name": "tableName",
+        "value": "our_table"
+      }
+    },
+    {
+      "param": {
+        "name": "count",
+        "value": "42"
+      }
+    }
+  ]
+}</code></pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- UserSnap Scripts -->
+                                    <!-- Feedback Button -->
+                                    <script>/* <![CDATA[ */ <!--type="text/javascript"-->
+				window.onUsersnapCXLoad = function(api) {
+				api.init();
+				}
+				var script = document.createElement('script');
+				script.defer = 1;
+				script.src = 'https://widget.usersnap.com/global/load/632b7a0e-ba7b-4613-ab8a-a34d8edf1097?onload=onUsersnapCXLoad';
+				document.getElementsByTagName('head')[0].appendChild(script);
+		/* ]]> */</script>
+                                    <!-- End Feedback Button -->
+                                    <!-- Ratings -->
+                                    <div id="widgetContainer" style="align: center;text-align: center;">
+                                    </div>
+                                    <script>/* <![CDATA[ */
+			window.onUsersnapCXLoad = function(api) {
+			// mountNode is an element in which the widget should be rendered
+			api.init({ mountNode: document.getElementById('widgetContainer') });
+			}
+			var script = document.createElement('script');
+			script.defer = 1;
+			script.src = 'https://widget.usersnap.com/embed/load/7df92c7d-5c25-4d1e-827a-75f186914119?onload=onUsersnapCXLoad';
+			document.getElementsByTagName('head')[0].appendChild(script);
+		/* ]]> */</script>
+                                    <!-- End Ratins -->
+                                    <!-- End UserSnap Scripts -->
+                                    <!-- Start Glide Footer -->
+                                    <footer class="glide">
+                                        <div class="footer-container">
+                                            <div class="footer-wrapper">
+                                                <div class="footer-left-widget">
+                                                    <div class="footer-form-widget">
+                                                        <div class="widget-inner">
+                                                            <div class="footer-logo"><a href="https://www.liquibase.com"><img src="../../z_resources/images/glide/logo-white.svg" alt="" /></a>
+                                                            </div>
+                                                            <div class="footer-socials"><a href="https://twitter.com/liquibase" class="f-twitter" target="_blank"></a><a href="https://github.com/liquibase/liquibase" class="f-github" target="_blank"></a><a href="https://www.reddit.com/r/liquibase/" class="f-reddit" target="_blank"></a><a href="https://www.linkedin.com/company/liquibase" class="f-linkedin" target="_blank"></a><a href="https://www.youtube.com/channel/UC5qMsRjObu685rTBq0PJX8w" class="f-youtube" target="_blank"></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="footer-widgets">
+                                                    <div class="footer-widget">
+                                                        <h4>Products</h4>
+                                                        <div class="menu-column-two-menu-container">
+                                                            <ul id="menu-column-two-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-15659"><a href="https://www.liquibase.com/pricing">Pricing</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-906"><a href="https://www.liquibase.com/pricing/pro">Liquibase Pro</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15600"><a target="_blank" rel="noopener" href="https://www.liquibase.org/download">Liquibase Open Source</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Solutions</h4>
+                                                        <div class="menu-column-three-menu-container">
+                                                            <ul id="menu-column-three-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-908"><a href="https://www.liquibase.com/ci-cd">CI/CD</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/compliance">Compliance</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/devsecops">DevSecOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/financial-services">Financial Services</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/gitops-database">GitOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/public-sector">Public Sector</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-907"><a href="https://www.liquibase.com/version-control">Version Control</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Resources</h4>
+                                                        <div class="menu-column-four-menu-container">
+                                                            <ul id="menu-column-four-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-916"><a href="https://www.liquibase.com/blog">Blog</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15471"><a href="https://www.liquibase.com/resources">Resource Library</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-resource_category menu-item-914"><a href="https://www.liquibase.com/resources/guides">Guides</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14975"><a href="../../index.html">Documentation</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-917"><a href="https://www.liquibase.com/support">Support</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom last-menu-item menu-item-15215"><a target="_blank" rel="noopener noreferrer" href="https://learn.liquibase.com/index">Training</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Company</h4>
+                                                        <div class="menu-column-five-menu-container">
+                                                            <ul id="menu-column-five-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-1176"><a href="https://www.liquibase.com/company">Company</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1177"><a href="https://www.liquibase.com/company/leadership">Leadership</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1070"><a href="https://www.liquibase.com/company/careers">Careers</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1071"><a href="https://www.liquibase.com/partners">Partners</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15024"><a href="https://www.liquibase.com/category/press-releases">News</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-1178"><a href="https://www.liquibase.com/contact">Contact</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                    <div class="footer-bottom">
+                                                        <div class="copyright">
+                                                            <p><span class="mc-variable General.copyright variable">© 2023 Liquibase Inc.  All Rights Reserved. 
+Liquibase is a registered trademark of Liquibase Inc.</span>
+                                                                <br /><span class="mc-variable General.PhoneNumber variable">(737) 402-7187</span>
+                                                            </p>
+                                                        </div>
+                                                        <div class="footer-menu">
+                                                            <div class="menu-footer-menu-container">
+                                                                <ul id="menu-footer-menu">
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-privacy-policy first-menu-item menu-item-902"><a href="https://www.liquibase.com/privacy-policy">Privacy Policy</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-901"><a href="https://www.liquibase.com/terms-of-use">Terms of Use</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-14933"><a href="https://www.liquibase.com/eula">EULA</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                </div>
+                                                <div class="clear">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </footer>
+                                    <!-- This script is necessary to relocate the footer so that it maintains 100% width -->
+                                    <!--       <script type="text/javascript">/*<![CDATA[*/$(document).ready(function(){ $("footer").appendTo("div.off-canvas-content.inner-wrap"); });/*]]>*/</script> -->
+                                    <!-- End Glide Footer -->
+                                </div>
+                            </div>
+                        </div>
+                    </div><a data-close="true"></a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

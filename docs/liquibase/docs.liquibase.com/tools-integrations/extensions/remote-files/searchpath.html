@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" class="_Skins_oss_pro" data-mc-search-type="Stem" data-mc-help-system-file-name="Default.xml" data-mc-path-to-help-system="../../../" data-mc-has-content-body="True" data-mc-toc-path="[%=System.LinkedHeader%]|Remote Files" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic;Default" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-searchable="False">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="msapplication-config" content="../../../Skins/Favicons/browserconfig.xml" />
+        <meta name="description" content="Use searchpath S3 with Liquibase. Searchpath is combined with the relative path of the file's property to find files stored remotely on S3." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../../Skins/Favicons/favicon-16x16.png" /><title>Use search-path with S3</title>
+        <!-- Google GA4 tag (gtag.js) -->
+        <!-- End Google GA4 tag -->
+        <!-- Google Tag Manager -->
+        <!-- End Google Tag Manager -->
+        <!-- Prism Highlighting -->
+        <!-- End Prism Highlighting -->
+        <!-- Tabs for code examples -->
+        <!--End tabs for code examples -->
+        <link href="../../../Skins/Default/Stylesheets/Slideshow.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="https://docs.liquibase.com/Skins/Fluid/Stylesheets/MadCapSearch.Google.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Default/Stylesheets/Components/Styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Default/Stylesheets/Components/Tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Default/Stylesheets/Components/Mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Default/Stylesheets/Components/Print.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Fluid/stylesheets/foundation.6.2.3.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Fluid/stylesheets/styles.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Fluid/stylesheets/tablet.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Fluid/stylesheets/mobile.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link href="../../../Skins/Fluid/stylesheets/print.css" rel="stylesheet" type="text/css" data-mc-generated="True" />
+        <link rel="stylesheet" href="../../../z_resources/stylesheets/glidestyles.css" type="text/css" media="all" />
+        <link href="../../../z_resources/stylesheets/styles.css" rel="stylesheet" type="text/css" />
+        <link rel="apple-touch-icon" sizes="180x180" href="../../../Skins/Favicons/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="../../../Skins/Favicons/Liquibase-logo_400x400.jpg" />
+        <link rel="icon" sizes="96x96" href="../../../Skins/Favicons/favicon-96x96.png" />
+        <link rel="icon" sizes="32x32" href="../../../Skins/Favicons/favicon-32x32.png" />
+        <link rel="icon" sizes="16x16" href="../../../Skins/Favicons/favicon-16x16.png" />
+        <link rel="canonical" href="searchpath.html" />
+        <script src="../../../resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../resources/Scripts/purify.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../../resources/Scripts/require.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../../resources/Scripts/require.config.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../../resources/Scripts/foundation.6.2.3_custom.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../../resources/Scripts/plugins.min.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="../../../resources/Scripts/MadCapAll.js" type="text/javascript" defer="defer">
+        </script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=G-GJFFQKWLLX">
+        </script>
+        <script>/* <![CDATA[ */
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());  gtag('config', 'G-GJFFQKWLLX');
+		/* ]]> */</script>
+        <script>/* <![CDATA[ */(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&amp;l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-NTCPFS9');/* ]]> */</script>
+        <script type="text/javascript" src="../../../z_resources/scripts/prism.js"> </script>
+        <script type="application/javascript" src="../../../z_resources/scripts/jquery-accessible-tabs-ktc.js"> </script>
+    </head>
+    <body>
+        <div class="foundation-wrap off-canvas-wrapper">
+            <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper="">
+                <aside class="off-canvas position-right" role="navigation" id="offCanvas" data-off-canvas="" data-position="right" data-mc-ignore="true">
+                    <ul class="off-canvas-accordion vertical menu off-canvas-list" data-accordion-menu="" data-mc-back-link="Back" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="True" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True">
+                    </ul>
+                </aside>
+                <div class="off-canvas-content inner-wrap" data-off-canvas-content="">
+                    <div data-sticky-container="" class="title-bar-container">
+                        <nav class="title-bar tab-bar sticky" role="banner" data-sticky="" data-options="marginTop:0" style="width:100%" data-sticky-on="only screen and (max-width: 1279px)" data-mc-ignore="true"><a class="skip-to-content fluid-skip showOnFocus" href="#">Skip To Main Content</a>
+                            <div class="middle title-bar-section outer-row clearfix">
+                                <div class="menu-icon-container relative clearfix">
+                                    <div class="central-account-wrapper">
+                                        <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                            <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                                <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="menu-icon" aria-label="Show Navigation Panel" data-toggle="offCanvas"><span></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="title-bar-layout outer-row">
+                                <div class="logo-wrapper"><a class="logo" href="../../../home.html" alt="Logo"></a>
+                                </div>
+                                <div class="navigation-wrapper nocontent">
+                                    <ul class="navigation clearfix" role="navigation" data-mc-css-tree-node-has-children="has-children" data-mc-css-sub-menu="sub-menu" data-mc-expand-event="mouseenter" data-mc-top-nav-menu="True" data-mc-max-depth="5" data-mc-include-icon="False" data-mc-include-indicator="False" data-mc-include-children="True" data-mc-include-siblings="True" data-mc-include-parent="True" data-mc-toc="True">
+                                        <li class="placeholder" style="visibility:hidden"><a>placeholder</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="central-account-wrapper">
+                                    <div class="central-dropdown"><a class="central-account-drop"><span class="central-account-image"></span><span class="central-account-text">Account</span></a>
+                                        <div class="central-dropdown-content"><a class="MCCentralLink central-dropdown-content-settings">Settings</a>
+                                            <hr class="central-separator" /><a class="MCCentralLink central-dropdown-content-logout">Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="nav-search-wrapper">
+                                    <div class="nav-search row">
+                                        <form>
+                                            <div id="EaZl7IMMdkOxEcTqrymc2g" class="search-bar search-bar-container needs-pie">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="main-section">
+                        <div class="row outer-row sidenav-layout">
+                            <nav class="sidenav-wrapper">
+                                <div class="sidenav-container">
+                                    <ul class="off-canvas-accordion vertical menu sidenav" data-accordion-menu="" data-mc-css-tree-node-expanded="is-accordion-submenu-parent" data-mc-css-tree-node-collapsed="is-accordion-submenu-parent" data-mc-css-sub-menu="vertical menu accordion-menu is-accordion-submenu nested" data-mc-include-indicator="False" data-mc-include-icon="False" data-mc-include-parent-link="False" data-mc-include-back="False" data-mc-defer-expand-event="True" data-mc-expand-event="click.zf.accordionMenu" data-mc-toc="True" data-mc-side-nav-menu="True">
+                                    </ul>
+                                </div>
+                            </nav>
+                            <div class="body-container">
+                                <div data-mc-content-body="True">
+                                    <!-- Google Tag Manager (noscript) -->
+                                    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTCPFS9" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+                                    </noscript>
+                                    <!-- End Google Tag Manager (noscript) -->
+                                    <div class="side-content">
+                                        <form>
+                                            <div id="09zMZb4RNkmuAvtDF3kOwA" class="search-bar search-bar-container needs-pie _Skins_Topics_Searchbar mc-component">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="nocontent">
+                                        <div class="MCBreadcrumbsBox_0 breadcrumbs" role="navigation" aria-label="Breadcrumbs" data-mc-breadcrumbs-divider=" &gt; " data-mc-breadcrumbs-count="3" data-mc-toc="True"><span class="MCBreadcrumbsPrefix">You are here: </span>
+                                        </div>
+                                    </div>
+                                    <!--<div>  class="topic-layout"-->
+                                    <!--AV 2023-09-13: removing duplicate nav after switch to sidenav
+		<div style="float:left; margin-right: 20px; margin-left:20px; margin-bottom: 15px;"> <MadCap:menuProxy data-mc-skin="/Project/Skins/Topics-Menu.flskn" style="mc-context-sensitive: True;mc-include-parent: True;mc-include-siblings: True;mc-include-children: True;" mc-linked-toc="/Project/TOCs/TOC.fltoc" /></div>-->
+                                    <div class="liquibase-docs-body">
+                                        <div role="main" id="mc-main-content">
+                                            <h1>Use <code>search-path</code> with S3</h1><a href="https://www.liquibase.com/trial"><img src="../../../z_resources/images/logos/pro-button_32x18.jpg" class="ver_icon_size" title="This feature is part of Liquibase Pro and requires a Liquibase Pro license key" style="width: 32;height: 18;" /></a>
+                                            <p>The search path is used to store the base elements of the path to <span class="mc-variable General.Liquibase variable">Liquibase</span>&#160;<span class="mc-variable General.changelog variable">changelog</span> files or snapshot files. <span class="mc-variable General.changelog variable">changelog</span> files (and a few others) cannot be specified by an absolute path on the file property itself, so the search path is combined with the relative path of the file's property to <b>find</b> these files stored remotely on S3.</p>
+                                            <p>For more information, see <a href="../../../concepts/changelogs/how-liquibase-finds-files.html" class="MCXref xref">How Liquibase Finds Files: Liquibase Search Path</a>. You can set the <code><a href="../../../parameters/search-path.html" class="MCXref xref">search-path</a></code> property in the CLI, within the <a href="../../../concepts/connections/creating-config-properties.html"><code><span class="mc-variable General.liquiPropFile variable">liquibase.properties</span></code> file</a>, as an <a href="../../../concepts/connections/liquibase-environment-variables.html">environment variable</a>, or any other standard method for setting a property.</p>
+                                            <h2>Use <code>search-path</code> to locate <span class="mc-variable General.changelog variable">changelog</span>s on S3</h2>
+                                            <p>Both an S3 directory in the search path and a relative path are required to find <span class="mc-variable General.changelog variable">changelog</span> files or snapshot files. Follow the steps below to learn how to set both of these and configure them.</p>
+                                            <ol>
+                                                <li value="1">Determine the S3 paths necessary to locate the <span class="mc-variable General.changelog variable">changelog</span> to use. If <span class="mc-variable General.changelog variable">changelog</span> resources, such as additional included <span class="mc-variable General.changelog variable">changelog</span>s or SQL files are in a different S3 path, you will have multiple items in the searchpath.<br /><br />For example, if a <span class="mc-variable General.changelog variable">changelog</span> file is in S3 at <code>s3://myS3Bucket/demo</code> and the SQL files referenced by the <span class="mc-variable General.changelog variable">changelog</span> are in <code>s3://myS3Bucket/demo/sqlFiles</code>, your search path is <code>s3://myS3Bucket/demo,s3://myS3Bucket/demo/sqlFiles</code>.</li>
+                                                <li value="2">
+                                                    <p>To execute <span class="mc-variable General.Liquibase variable">Liquibase</span> commands that read <span class="mc-variable General.changelog variable">changelog</span>s located in S3, provide the searchpath and a filename or relative path to the file.</p>
+                                                    <p>Example 1: <code><a href="../../../commands/update/update-sql.html" class="MCXref xref">update-sql</a></code> command using a <span class="mc-variable General.changelog variable">changelog</span> file in S3:</p><pre xml:space="preserve"><code class="language-text">liquibase --search-path=s3://myS3Bucket/demo,s3://myS3Bucket/demo/sqlFiles update-sql --changelog-file=example-changelog.sql
+liquibase --search-path=s3://myS3bucket/demo update-sql --changelog-file=example-changelog.sql</code></pre>
+                                                    <p>Example 2: <code>update-sql</code> command using a relative path to the <span class="mc-variable General.changelog variable">changelog</span> file in S3:</p>
+                                                    <p>If the <span class="mc-variable General.changelog variable">changelog</span> is located in subdirectory like <code>s3://myS3Bucket/demo/changelogs</code>, when you use the searchpath defined in the previous example, then you must specify the relative path to the <span class="mc-variable General.changelog variable">changelog</span>:</p><pre xml:space="preserve"><code class="language-text">liquibase --search-path=s3://myS3Bucket/demo,s3://myS3Bucket/demo/sqlFiles update-sql --changelog-file=changelogs/example-changelog.sql</code></pre>
+                                                </li>
+                                                <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>Paths to <span class="mc-variable General.changelog variable">changelog</span>s must always be relative to preserve integrity of the <span class="mc-variable General.Liquibase variable">Liquibase</span> <span class="mc-variable General.databasechangelog variable">DATABASECHANGELOG</span> tracking table.</p>
+                                            </ol>
+                                            <h2>Rules</h2>
+                                            <p>Below are all of the rules that apply to <code>search-path</code>. Review the example use cases and instructions to ensure it is the right avenue for your project.</p>
+                                            <h3>Multiple searchpaths</h3>
+                                            <p>If <code>search-path</code> is set, it is used and <span class="mc-variable General.Liquibase variable">Liquibase</span> will not look in other locations for <span class="mc-variable General.changelog variable">changelog</span> or snapshot files. Therefore, if some necessary files are located on S3 and some are local, both locations are required in the search path.</p>
+                                            <ul>
+                                                <li>When not specifically configured, by default <code>search-path</code> looks for <span class="mc-variable General.changelog variable">changelog</span>s in the current working directory.</li>
+                                                <li>When <code>search-path</code> is configured, only the locations explicitly defined in <code>search-path</code> are used to locate <span class="mc-variable General.changelog variable">changelog</span>s.</li>
+                                                <li>Multiple <code>search-path</code> locations are comma-separated and processed in order. For example:<pre xml:space="preserve"><code class="language-text">--search-path=s3://myS3Bucket/demo,C:\Users\Me\demo</code></pre></li>
+                                                <li>
+                                                    <p>If multiple <code>search-path</code> locations are specified, <span class="mc-variable General.Liquibase variable">Liquibase</span> may find two or more <span class="mc-variable General.changelog variable">changelog</span> files with the same name. To determine how <span class="mc-variable General.Liquibase variable">Liquibase</span> behaves in this case, see the "Duplicate File Mode" section of this document.</p>
+                                                    <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>If the <span class="mc-variable General.changelog variable">changelog</span> references resource files in multiple directories, it may be easier to define the <code>search-path</code> as an environment variable. This prevents the <code>search-path</code> property from making the command line unreadable. The <code>search-path</code> environment variable is <code>LIQUIBASE_SEARCH_PATH</code>.</p>
+                                                </li>
+                                            </ul>
+                                            <p>Multiple <code>search-path</code> locations example:</p><pre><code class="language-text">--search-path=s3://mybucket/path,.localfiles</code></pre>
+                                            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span><code>s3://mybucket/path</code> is the first location and <code>.localfiles</code> is the second location that <code>search-path</code> will find the files.</p>
+                                            <h3>Duplicate File Mode</h3>
+                                            <p>The <code>duplicate-file-mode</code> property determines how <span class="mc-variable General.Liquibase variable">Liquibase</span> behaves when multiple <span class="mc-variable General.changelog variable">changelog</span>s are found in the multiple locations specified in the <code>search-path</code> property. By default, an <code>ERROR</code> will be thrown, but <code>duplicate-file-mode</code> can be set to <code>WARN</code> instead. In which case, the command will continue, using the first <span class="mc-variable General.changelog variable">changelog</span> file found in a sequential processing of <code>search-path</code> locations.</p>
+                                            <h4>Error Response</h4>
+                                            <p>The <code>ERROR</code> response states two files are found and <span class="mc-variable General.Liquibase variable">Liquibase</span> will not use either file. It will then suggest you rename the file or correct the value you specify for <code>search-path</code>, and then re-run the command.</p>
+                                            <p><b>Example: Default behavior of duplicate-file-mode when <code>changelog.xml</code> is located in two <code>search-path</code> directories.</b>
+                                            </p>
+                                            <p>In this example, a <span class="mc-variable General.changelog variable">changelog</span> named <code>changelog.xml</code> is located in both <code>s3://myS3bucket/demo</code> and in <code>s3://myS3Bucket/demo2</code>.</p><pre xml:space="preserve"><code class="language-text">liquibase --search-path=s3://myS3Bucket/demo,s3://myS3Bucket/demo2 update-sql --changelog-file=changelog.xml</code></pre>
+                                            <p><span class="mc-variable General.Liquibase variable">Liquibase</span> console output shows an error and does not execute the <code>update-sql</code> command.</p>
+                                            <div class="codeSnippet"><a class="codeSnippetCopyButton" role="button" href="javascript:void(0);">Copy</a>
+                                                <div style="mc-code-lang: JavaScript;" class="codeSnippetBody" data-mc-continue="False" data-mc-line-number-start="1" data-mc-use-line-numbers="False"><pre><code>Unexpected error running Liquibase: <span style="color: #0086b3; ">Error</span> changelog.xml<br />&#160;&#160;- Caused by: Found <span style="color: #008080; ">2</span> files <span style="color: #333333; font-weight: bold; ">with</span> the path <span style="color: #dd1144; ">'changelog.xml'</span>:<br />&#160;&#160;&#160;&#160;- s3:<span style="color: #999988; font-style: italic; ">//myS3Bucket/demo/changelog.xml</span><br />&#160;&#160;&#160;&#160;- s3:<span style="color: #999988; font-style: italic; ">//myS3Bucket/demo2/changelog.xml</span><br />&#160;&#160;Search Path:<br />&#160;&#160;&#160;&#160;- s3:<span style="color: #999988; font-style: italic; ">//myS3Bucket/demo/changelog.xml</span><br />&#160;&#160;&#160;&#160;- s3:<span style="color: #999988; font-style: italic; ">//myS3Bucket/demo2/changelog.xml</span><br />&#160;&#160;You can limit the search path to remove duplicates <span style="color: #333333; font-weight: bold; ">with</span> the liquibase.searchPath setting. Or, <span style="color: #333333; font-weight: bold; ">if</span> you KNOW these are the exact same file you can set liquibase.duplicateFileMode=WARN.</code></pre>
+                                                </div>
+                                            </div>
+                                            <p><code>liquibase --duplicate-file-mode=ERROR --search-path=s3://myS3Bucket/demo,s3://myS3Bucket/demo2 update-sql --changelog-file=changelog.xml</code> results in <code>update-sql</code> exiting with an <code>ERROR</code> that duplicate <code>changelog.xml</code> file was located.</p>
+                                            <p style="font-weight: bold;">Example:&#160;Behavior when duplicate-file-mode set to <code>ERROR</code> and <code>changelog.xml</code> is located in two <code>search-path</code> directories</p>
+                                            <p>Although the default for <code>duplicate-file-mode</code> is <code>ERROR</code>, you can explicitly configure the setting to throw an error. In this example, a <span class="mc-variable General.changelog variable">changelog</span> named <code>changelog.xml</code> is located in both <code>s3://myS3bucket/demo</code> and in <code>s3://myS3Bucket/demo2</code>.</p>
+                                            <p><code>liquibase --duplicate-file-mode=ERROR --search-path=s3://myS3Bucket/demo,s3://myS3Bucket/demo2 update-sql --changelog-file=changelog.xml</code>
+                                            </p>
+                                            <p><span class="mc-variable General.Liquibase variable">Liquibase</span> console output shows an error and does not execute the <code>update-sql</code> command.</p>
+                                            <div class="codeSnippet"><a class="codeSnippetCopyButton" role="button" href="javascript:void(0);">Copy</a>
+                                                <div style="mc-code-lang: JavaScript;" class="codeSnippetBody" data-mc-continue="False" data-mc-line-number-start="1" data-mc-use-line-numbers="False"><pre><code>Unexpected error running Liquibase: <span style="color: #0086b3; ">Error</span> changelog.xml<br />&#160;&#160;- Caused by: Found <span style="color: #008080; ">2</span> files <span style="color: #333333; font-weight: bold; ">with</span> the path <span style="color: #dd1144; ">'changelog.xml'</span>:<br />&#160;&#160;&#160;&#160;- s3:<span style="color: #999988; font-style: italic; ">//myS3Bucket/demo/changelog.xml</span><br />&#160;&#160;&#160;&#160;- s3:<span style="color: #999988; font-style: italic; ">//myS3Bucket/demo2/changelog.xml</span><br />&#160;&#160;Search Path:<br />&#160;&#160;&#160;&#160;- s3:<span style="color: #999988; font-style: italic; ">//myS3Bucket/demo/changelog.xml</span><br />&#160;&#160;&#160;&#160;- s3:<span style="color: #999988; font-style: italic; ">//myS3Bucket/demo2/changelog.xml</span><br />&#160;&#160;You can limit the search path to remove duplicates <span style="color: #333333; font-weight: bold; ">with</span> the liquibase.searchPath setting. Or, <span style="color: #333333; font-weight: bold; ">if</span> you KNOW these are the exact same file you can set liquibase.duplicateFileMode=WARN.</code></pre>
+                                                </div>
+                                            </div>
+                                            <h4>Warn response</h4>
+                                            <p>The <code>WARN</code> response states two files are found and it will automatically use the first file found.</p>
+                                            <p><b>Example: Behavior when duplicate-file-mode set to <code>WARN</code> and <code>changelog.xml</code> is located in two <code>search-path</code> directories.</b>
+                                            </p>
+                                            <p>To explicitly ignore duplicate <span class="mc-variable General.changelog variable">changelog</span>s in the searchpath, configure <code>duplicate-file-mode</code> to <code>WARN</code>. In this example, a <span class="mc-variable General.changelog variable">changelog</span> named <code>changelog.xml</code> is located in both <code>s3://myS3bucket/demo</code> and in <code>s3://myS3Bucket/demo2</code>.</p><pre xml:space="preserve"><code class="language-text">liquibase --duplicate-file-mode=WARN --search-path=s3://myS3Bucket/demo,s3://myS3Bucket/demo2 update-sql --changelog-file=changelog.xml</code></pre>
+                                            <p><span class="mc-variable General.Liquibase variable">Liquibase</span> console output shows a warning. The <code>update-sql</code> command is executed using the <span class="mc-variable General.changelog variable">changelog</span> in <code>s3://myS3Bucket/demo</code>.</p>
+                                            <div class="codeSnippet"><a class="codeSnippetCopyButton" role="button" href="javascript:void(0);">Copy</a>
+                                                <div style="mc-code-lang: JavaScript;" class="codeSnippetBody" data-mc-continue="False" data-mc-line-number-start="1" data-mc-use-line-numbers="False"><pre><code>Found <span style="color: #008080; ">2</span> files <span style="color: #333333; font-weight: bold; ">with</span> the path <span style="color: #dd1144; ">'changelog.xml'</span>:<br />- s3:<span style="color: #999988; font-style: italic; ">//myS3Bucket/demo/changelog.xml</span><br />- s3:<span style="color: #999988; font-style: italic; ">//myS3Bucket/demo2/changelog.xml</span><br />Search Path:<br />- s3:<span style="color: #999988; font-style: italic; ">//myS3Bucket/demo/changelog.xml</span><br />- s3:<span style="color: #999988; font-style: italic; ">//myS3Bucket/demo2/changelog.xml</span><br />You can limit the search path to remove duplicates <span style="color: #333333; font-weight: bold; ">with</span> the liquibase.searchPath setting.<br />To fail when duplicates are found, set liquibase.duplicateFileMode=ERROR<br />Choosing: s3:<span style="color: #999988; font-style: italic; ">//myS3Bucket/demo/changelog.xml</span></code></pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- UserSnap Scripts -->
+                                    <!-- Feedback Button -->
+                                    <script>/* <![CDATA[ */ <!--type="text/javascript"-->
+				window.onUsersnapCXLoad = function(api) {
+				api.init();
+				}
+				var script = document.createElement('script');
+				script.defer = 1;
+				script.src = 'https://widget.usersnap.com/global/load/632b7a0e-ba7b-4613-ab8a-a34d8edf1097?onload=onUsersnapCXLoad';
+				document.getElementsByTagName('head')[0].appendChild(script);
+		/* ]]> */</script>
+                                    <!-- End Feedback Button -->
+                                    <!-- Ratings -->
+                                    <div id="widgetContainer" style="align: center;text-align: center;">
+                                    </div>
+                                    <script>/* <![CDATA[ */
+			window.onUsersnapCXLoad = function(api) {
+			// mountNode is an element in which the widget should be rendered
+			api.init({ mountNode: document.getElementById('widgetContainer') });
+			}
+			var script = document.createElement('script');
+			script.defer = 1;
+			script.src = 'https://widget.usersnap.com/embed/load/7df92c7d-5c25-4d1e-827a-75f186914119?onload=onUsersnapCXLoad';
+			document.getElementsByTagName('head')[0].appendChild(script);
+		/* ]]> */</script>
+                                    <!-- End Ratins -->
+                                    <!-- End UserSnap Scripts -->
+                                    <!-- Start Glide Footer -->
+                                    <footer class="glide">
+                                        <div class="footer-container">
+                                            <div class="footer-wrapper">
+                                                <div class="footer-left-widget">
+                                                    <div class="footer-form-widget">
+                                                        <div class="widget-inner">
+                                                            <div class="footer-logo"><a href="https://www.liquibase.com"><img src="../../../z_resources/images/glide/logo-white.svg" alt="" /></a>
+                                                            </div>
+                                                            <div class="footer-socials"><a href="https://twitter.com/liquibase" class="f-twitter" target="_blank"></a><a href="https://github.com/liquibase/liquibase" class="f-github" target="_blank"></a><a href="https://www.reddit.com/r/liquibase/" class="f-reddit" target="_blank"></a><a href="https://www.linkedin.com/company/liquibase" class="f-linkedin" target="_blank"></a><a href="https://www.youtube.com/channel/UC5qMsRjObu685rTBq0PJX8w" class="f-youtube" target="_blank"></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="footer-widgets">
+                                                    <div class="footer-widget">
+                                                        <h4>Products</h4>
+                                                        <div class="menu-column-two-menu-container">
+                                                            <ul id="menu-column-two-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-15659"><a href="https://www.liquibase.com/pricing">Pricing</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-906"><a href="https://www.liquibase.com/pricing/pro">Liquibase Pro</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15600"><a target="_blank" rel="noopener" href="https://www.liquibase.org/download">Liquibase Open Source</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Solutions</h4>
+                                                        <div class="menu-column-three-menu-container">
+                                                            <ul id="menu-column-three-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-908"><a href="https://www.liquibase.com/ci-cd">CI/CD</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/compliance">Compliance</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/devsecops">DevSecOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/financial-services">Financial Services</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/gitops-database">GitOps</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-909"><a href="https://www.liquibase.com/public-sector">Public Sector</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-907"><a href="https://www.liquibase.com/version-control">Version Control</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Resources</h4>
+                                                        <div class="menu-column-four-menu-container">
+                                                            <ul id="menu-column-four-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-916"><a href="https://www.liquibase.com/blog">Blog</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15471"><a href="https://www.liquibase.com/resources">Resource Library</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-resource_category menu-item-914"><a href="https://www.liquibase.com/resources/guides">Guides</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14975"><a href="../../../index.html">Documentation</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-917"><a href="https://www.liquibase.com/support">Support</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom last-menu-item menu-item-15215"><a target="_blank" rel="noopener noreferrer" href="https://learn.liquibase.com/index">Training</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-widget">
+                                                        <h4>Company</h4>
+                                                        <div class="menu-column-five-menu-container">
+                                                            <ul id="menu-column-five-menu">
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page first-menu-item menu-item-1176"><a href="https://www.liquibase.com/company">Company</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1177"><a href="https://www.liquibase.com/company/leadership">Leadership</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1070"><a href="https://www.liquibase.com/company/careers">Careers</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1071"><a href="https://www.liquibase.com/partners">Partners</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15024"><a href="https://www.liquibase.com/category/press-releases">News</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-1178"><a href="https://www.liquibase.com/contact">Contact</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                    <div class="footer-bottom">
+                                                        <div class="copyright">
+                                                            <p><span class="mc-variable General.copyright variable">© 2023 Liquibase Inc.  All Rights Reserved. 
+Liquibase is a registered trademark of Liquibase Inc.</span>
+                                                                <br /><span class="mc-variable General.PhoneNumber variable">(737) 402-7187</span>
+                                                            </p>
+                                                        </div>
+                                                        <div class="footer-menu">
+                                                            <div class="menu-footer-menu-container">
+                                                                <ul id="menu-footer-menu">
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-privacy-policy first-menu-item menu-item-902"><a href="https://www.liquibase.com/privacy-policy">Privacy Policy</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-901"><a href="https://www.liquibase.com/terms-of-use">Terms of Use</a>
+                                                                    </li>
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page last-menu-item menu-item-14933"><a href="https://www.liquibase.com/eula">EULA</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear">
+                                                    </div>
+                                                </div>
+                                                <div class="clear">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </footer>
+                                    <!-- This script is necessary to relocate the footer so that it maintains 100% width -->
+                                    <!--       <script type="text/javascript">/*<![CDATA[*/$(document).ready(function(){ $("footer").appendTo("div.off-canvas-content.inner-wrap"); });/*]]>*/</script> -->
+                                    <!-- End Glide Footer -->
+                                </div>
+                            </div>
+                        </div>
+                    </div><a data-close="true"></a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

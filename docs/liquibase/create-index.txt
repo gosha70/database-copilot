@@ -1,0 +1,302 @@
+createIndex
+Skip To Main Content
+Account
+Settings
+Logout
+placeholder
+Account
+Settings
+Logout
+You are here:
+createIndex
+The createIndex Change Type creates an index on an existing column or a set of columns.
+Uses
+You can typically use the createIndex Change Type when you want to add an index on one of the columns or a set of columns to increase the searchability of the records in your database.
+If you set the clustered attribute to true, Liquibase will create a clustered index, which defines the order in which records are stored in a table. If you set the clustered attribute to false, Liquibase will create a non-clustered index, where the order of the rows will not match the order of the actual records.
+When creating indexes, Liquibase uses the order of columns that you list in the createIndex Change Type. For example:<changeSet author="bob" id="1_createTable_department">
+<createTable tableName="department">
+<column name="col_1" type="integer"/>
+<column name="col_2" type="integer"/>
+<column name="col_3" type="integer"/>
+</createTable>
+</changeSet>
+<changeSet author="bob" id="1_createIndex_index_one">
+<createIndex indexName="index_one" tableName="department">
+<column name="col_1"/>
+<column name="col_2"/>
+<column name="col_3"/>
+</createIndex>
+</changeSet>
+<changeSet author="bob" id="2_createIndex_index_two">
+<createIndex indexName="index_two" tableName="department">
+<column name="col_3"/>
+<column name="col_2"/>
+<column name="col_1"/>
+</createIndex>
+</changeSet>
+<changeSet author="bob" id="3_createIndex_index_three">
+<createIndex indexName="index_three" tableName="department">
+<column name="col_2"/>
+<column name="col_3"/>
+<column name="col_1"/>
+</createIndex>
+</changeSet>
+These changesets will produce the following (the update-sql command example):CREATE TABLE public.department (col_1 INT, col_2 INT, col_3 INT);
+CREATE INDEX index_one ON public.department(col_1, col_2, col_3);
+CREATE INDEX index_two ON public.department(col_3, col_2, col_1);
+CREATE INDEX index_three ON public.department(col_2, col_3, col_1);
+Running the createIndex Change Type
+To run this Change Type, follow these steps:
+Add the Change Type to your changeset, as shown in the examples on this page.
+Specify any required attributes. Use the table on this page to see which ones your database requires.
+Deploy your changeset by running the update command:liquibase update
+Available attributes
+Name
+Description
+Required for
+Supports
+associatedWith
+Specifies which columns to filter in the index you're creating. Some databases, like Oracle, automatically create indexes for primary key constraints and unique constraints, but not foreign key constraints. Use this attribute to specify what your index associations are. Valid values: primaryKey, foreignKey, uniqueConstraint, none.
+catalogName
+Name of the catalog
+all
+clustered
+Boolean. Whether to create a clustered index
+all
+indexName
+Name of the index
+firebird, hsqldb
+all
+schemaName
+Name of the schema
+all
+tableName
+Name of the table for which to add the index.
+all
+all
+tablespace
+Name of the tablespace to use for the index
+all
+unique
+Defines whether a unique clause should be applied
+all
+Nested tags
+Name
+Description
+Required for
+Supports
+Multiple allowed
+column
+The column(s) to add to the index.
+Note: YAML and JSON changelogs using the column tag must nest it within a columns tag.
+all
+all
+yes
+Nested property attributes
+Name
+Description
+Required for
+Supports
+name
+Name of the column. It can contain the direction by appending ASC or DESC to the name.
+all
+all
+computed
+Set to true if the value in name isn't actually a column name but a function. Boolean.
+Since 3.3.0.
+descending
+Specifies that a column should be used in a descending order in the index. (i.e. ascending order)
+--
+Since 3.4.
+Examples
+SQL example
+YAML example
+JSON example
+XML example
+--liquibase formatted sql
+--changeset liquibase-docs:createIndex-example
+CREATE
+UNIQUE
+INDEX
+idx_address
+ON
+department.person(address
+DESC);
+databaseChangeLog:
+-
+changeSet:
+id:
+createIndex-example
+author:
+liquibase-docs
+changes:
+- createIndex:
+clustered:
+true
+columns:
+- column:
+descending:
+true
+name:
+address
+indexName:
+idx_address
+schemaName:
+public
+tableName:
+person
+tablespace:
+A String
+unique:
+true
+{
+"databaseChangeLog": [
+{
+"changeSet": {
+"id": "createIndex-example",
+"author": "liquibase-docs",
+"changes": [
+{
+"createIndex": {
+"clustered": true,
+"columns": [
+{
+"column": {
+"descending": true,
+"name": "address"
+}
+}
+],
+"indexName": "idx_address",
+"schemaName": "public",
+"tableName": "person",
+"tablespace": "A String",
+"unique": true
+}
+}
+]
+}
+}
+]
+}
+<databaseChangeLog
+xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+http://www.liquibase.org/xml/ns/dbchangelog-ext
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+http://www.liquibase.org/xml/ns/pro
+http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+<changeSet author="liquibase-docs" id="createIndex-example">
+<createIndex clustered= "true"
+indexName="idx_address"
+schemaName="public"
+tableName="person"
+tablespace="A String"
+unique="true">
+<column descending="true" name="address"/>
+</createIndex>
+</changeSet>
+</databaseChangeLog>
+Database support
+Database
+Notes
+Auto Rollback
+DB2/LUW
+Supported
+Yes
+DB2/z
+Supported
+Yes
+Derby
+Supported
+Yes
+Firebird
+Supported
+Yes
+Google BigQuery
+Supported
+Yes
+H2
+Supported
+Yes
+HyperSQL
+Supported
+Yes
+INGRES
+Supported
+Yes
+Informix
+Supported
+Yes
+MariaDB
+Supported
+Yes
+MySQL
+Supported
+Yes
+Oracle
+Supported
+Yes
+PostgreSQL
+Supported
+Yes
+Snowflake
+Not Supported
+No
+SQL Server
+Supported
+Yes
+SQLite
+Supported
+Yes
+Sybase
+Supported
+Yes
+Sybase Anywhere
+Supported
+Yes
+Editions & Features
+Editions & Features
+Liquibase Open Source
+Liquibase Pro
+Solutions
+CI/CD
+Compliance
+DevSecOps
+GitOps
+Version Control
+Financial Services
+Resources
+Blog
+Best Practice Guides
+Resource Library
+Documentation
+University
+Community
+Meetup/Events
+Support
+Community
+Contributors
+Contribute Code
+Share Expertise
+Advocate
+Support
+Liquibase Legends
+Liquibase Badges
+Contact
+Company
+Company
+Careers
+Leadership
+Contact
+Â© 2025 Liquibase Inc.
+All Rights Reserved.
+Liquibase is a registered trademark of Liquibase Inc.
+(737) 402-7187
+Privacy Policy
+Terms of Use
+EULA
