@@ -45,6 +45,11 @@ Database Copilot is an AI-powered tool designed to assist developers with databa
    python build_vector_store.py
    ```
 
+6. Download the model ([background info](https://huggingface.co/docs/transformers/en/gguf)).
+   ```bash
+   python download_test_model.py --model TheBloke/Mistral-7B-Instruct-v0.2-GGUF --model-file mistral-7b-instruct-v0.2.Q4_K_M.gguf
+   ```
+
 ## Usage
 
 ### Running the Application
