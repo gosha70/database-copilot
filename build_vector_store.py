@@ -100,7 +100,7 @@ def main():
             )
         
         logger.info("Vector store built successfully")
-        logger.info("You can now run the application with: python run_app.py")
+        logger.info("You can now run the application with: python run_app.py (this launches the optimized app)")
     except Exception as e:
         logger.error(f"Failed to build vector store: {e}")
         sys.exit(1)

@@ -124,14 +124,81 @@ class LiquibaseReviewer:
                     logger.info(f"Doc {i+1} (length: {len(doc)} chars): {doc[:200]}...")
                 logger.info("=== END DEBUG: RETRIEVED CONTEXT ===")
             
-            # Create the review chain
-            review_chain = self._create_review_chain()
-            
+            # Create the prompt template and review chain
+            prompt = ChatPromptTemplate.from_template("""
+You are an expert Liquibase and JPA reviewer. 
+Carefully analyze the provided Liquibase migration and generate a detailed code review following the strict format below.
+---
+
+
+# Migration to Review
+```{format_type}
+{migration_content}
+```
+
+# Parsed Migration Structure
+```
+{parsed_migration}
+```
+
+Provide a review with these sections:
+
+## Summary 📄
+Brief description of what the migration does
+
+# Liquibase / RDBMS Code Review Checklist ✅❌
+Use ✅ for "Yes" and ❌ for "No" in each item.
+
+- [✅/❌] Migration id consistent across all affected versions
+- [✅/❌] All identifier names <=30 characters
+- [✅/❌] All identifier names are lowercase_underscore_form
+- [✅/❌] Abbreviations are standard and/or sensible
+- [✅/❌] Table names are singular, Join Tables are plural
+- [✅/❌] Table names not repeated in column names
+- [✅/❌] Column type is not repeated in column name
+- [✅/❌] id is simply id, uuid is uuid
+- [✅/❌] Constraints on columns ideally in form `<table-name>_<column-name>_<suffix>`
+- [✅/❌] Foreign key suffix is _fk, Unique constraint is _uc, Index is _idx
+- [✅/❌] All FKs also have an index added if no unique constraint present
+- [✅/❌] All constraints named
+- [✅/❌] Every auto-increment id column has a sequence `<table-name>_sq` for Oracle
+- [✅/❌] No preconditions avoiding index creation
+- [✅/❌] Unit tests present if non-trivial logic
+- [✅/❌] Cascading behavior specified in Liquibase and JPA
+- [✅/❌] JPA `@Column` `nullable` configuration matches Liquibase
+- [✅/❌] All JPA string `@Column`s set `length`
+- [✅/❌] JPA names use camelCase
+- [✅/❌] If `FetchType.LAZY` is used for lists, there was an effort to avoid LazyInitializationException
+- [✅/❌] Implement `toString` on Entities, excluding lazily-loaded data
+
+## Issues 🐞
+List specific issues with exact names, IDs, and line numbers
+
+## Recommendations 💡
+Provide specific code snippets showing how to fix each issue
+
+## Best Practices 🌟
+Highlight best practices that are followed or should be followed
+
+IMPORTANT: Be specific and reference actual code from the migration.
+""")
+            # Log prompt length and content for debugging
+            prompt_content = prompt.format(
+                migration_content=migration_content,
+                format_type=format_type,
+                parsed_migration=str(parsed_migration),
+                context=context
+            )
+            logger.info(f"LLM prompt length: {len(prompt_content)} characters")
+            logger.debug(f"LLM prompt content:\n{prompt_content}")
+
+            review_chain = prompt | self.llm | StrOutputParser()
+
             # Generate the review
             try:
                 # Set up a synchronous environment for the LLM call
                 import asyncio
-                
+
                 # Check if we're in an event loop
                 try:
                     loop = asyncio.get_event_loop()
@@ -148,7 +215,7 @@ class LiquibaseReviewer:
                     logger.info("No event loop found, creating new one")
                     loop = asyncio.new_event_loop()
                     asyncio.set_event_loop(loop)
-                
+
                 # Run the LLM call
                 review = review_chain.invoke({
                     "migration_content": migration_content,
@@ -156,14 +223,17 @@ class LiquibaseReviewer:
                     "parsed_migration": str(parsed_migration),
                     "context": context
                 })
+
+                logger.info(f"Raw LLM review output: {repr(review)}")
                 
                 # Check if the review contains error messages
-                if review.startswith("ERROR:") or "This is a placeholder response from a fallback system" in review:
+                if review and (review.startswith("ERROR:") or "This is a placeholder response from a fallback system" in review):
                     logger.error(f"LLM returned an error: {review}")
                     return f"Error: The LLM returned an error response. Please check the logs for details."
                 
                 # Post-process the review to remove any template placeholders
                 review = self._post_process_review(review)
+                logger.info(f"Post-processed review output: {repr(review)}")
                 
                 return review
                 
@@ -507,7 +577,7 @@ The LLM failed to generate a proper review. Please try one of the following solu
         if example_migrations:
             context_parts.append("## Example Migrations\n\n" + "\n\n".join(example_migrations))
         
-        print(f"=== DEBUG: Combined Context ===\n\n{context_parts}")
+        #print(f"=== DEBUG: Combined Context ===\n\n{context_parts}")
         return "\n\n".join(context_parts)
     
     def _create_review_chain(self):
@@ -519,42 +589,63 @@ The LLM failed to generate a proper review. Please try one of the following solu
         """
         # Create the prompt template with detailed requirements
         prompt = ChatPromptTemplate.from_template("""
-        Review this Liquibase migration for best practices and issues:
+You are an expert Liquibase and JPA reviewer. 
+Carefully analyze the provided Liquibase migration and generate a detailed code review following the strict format below.
+---
 
-        # Migration to Review
-        ```{format_type}
-        {migration_content}
-        ```
-        
-        # Parsed Migration Structure
-        ```
-        {parsed_migration}
-        ```
-        
-        Provide a review with these sections:
-        
-        ## Summary
-        Brief description of what the migration does
-        
-        ## Compliance
-        - One change type per changeset: [Compliant/Non-compliant]
-        - Proper author and ID attributes: [Compliant/Non-compliant]
-        - Rollback sections for each changeset: [Compliant/Non-compliant]
-        - Proper naming conventions: [Compliant/Non-compliant]
-        - Appropriate data types and lengths: [Compliant/Non-compliant]
-        - Required constraints: [Compliant/Non-compliant]
-        
-        ## Issues
-        List specific issues with exact names, IDs, and line numbers
-        
-        ## Recommendations
-        Provide specific code snippets showing how to fix each issue
-        
-        ## Best Practices
-        Highlight best practices that are followed or should be followed
-        
-        IMPORTANT: Be specific and reference actual code from the migration.
-        """)
+
+# Migration to Review
+```{format_type}
+{migration_content}
+```
+
+# Parsed Migration Structure
+```
+{parsed_migration}
+```
+
+Provide a review with these sections:
+
+## Summary 📄
+Brief description of what the migration does
+
+# Liquibase / RDBMS Code Review Checklist ✅❌
+Use ✅ for "Yes" and ❌ for "No" in each item.
+
+- [✅/❌] Migration id consistent across all affected versions
+- [✅/❌] All identifier names <=30 characters
+- [✅/❌] All identifier names are lowercase_underscore_form
+- [✅/❌] Abbreviations are standard and/or sensible
+- [✅/❌] Table names are singular, Join Tables are plural
+- [✅/❌] Table names not repeated in column names
+- [✅/❌] Column type is not repeated in column name
+- [✅/❌] id is simply id, uuid is uuid
+- [✅/❌] Constraints on columns ideally in form `<table-name>_<column-name>_<suffix>`
+- [✅/❌] Foreign key suffix is _fk, Unique constraint is _uc, Index is _idx
+- [✅/❌] All FKs also have an index added if no unique constraint present
+- [✅/❌] All constraints named
+- [✅/❌] Every auto-increment id column has a sequence `<table-name>_sq` for Oracle
+- [✅/❌] No preconditions avoiding index creation
+- [✅/❌] Unit tests present if non-trivial logic
+- [✅/❌] Cascading behavior specified in Liquibase and JPA
+- [✅/❌] JPA `@Column` `nullable` configuration matches Liquibase
+- [✅/❌] All JPA string `@Column`s set `length`
+- [✅/❌] JPA names use camelCase
+- [✅/❌] If `FetchType.LAZY` is used for lists, there was an effort to avoid LazyInitializationException
+- [✅/❌] Implement `toString` on Entities, excluding lazily-loaded data
+
+## Issues 🐞
+List specific issues with exact names, IDs, and line numbers
+
+## Recommendations 💡
+Provide specific code snippets showing how to fix each issue
+
+## Best Practices 🌟
+Highlight best practices that are followed or should be followed
+
+IMPORTANT: Be specific and reference actual code from the migration.
+""")
+
         
         # Create the chain
         chain = prompt | self.llm | StrOutputParser()

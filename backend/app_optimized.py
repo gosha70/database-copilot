@@ -279,6 +279,9 @@ def main():
     with st.sidebar:
         st.markdown("## Appearance Settings")
         
+        # Add debug mode toggle
+        debug_mode = st.checkbox("Enable Debug Mode", value=False, key="debug_mode")
+        
         # Add dark mode toggle
         st.markdown("### Theme")
         theme_mode = st.selectbox(
@@ -292,7 +295,8 @@ def main():
         primary_color = st.color_picker("Primary Color", "#295ED2")
         secondary_color = st.color_picker("Secondary Color", "#2196F3")
         text_color = st.color_picker("Text Color", "#77E5FF")
-        
+
+
         # Apply theme based on selection
         if theme_mode == "Dark":
             st.markdown("""
@@ -449,7 +453,7 @@ def main():
                 /* Root variables */
                 :root {
                     --background-color: #FFFFFF;
-                    --text-color: #7878AA;
+                    --text-color: #24cbd1;
                     --secondary-background-color: #F0F2F6;
                     --border-color: #CCCCCC;
                     --widget-background: #072B7D;

@@ -22,18 +22,31 @@ DOCS_DIR = os.path.join(ROOT_DIR, "docs")
 
 # Model settings
 MODELS_DIR = os.path.join(DATA_DIR, "hf_models")
-DEFAULT_LLM_MODEL = "mistral-7b-instruct-v0.2.Q4_K_M.gguf"  # This should be the file name in MODELS_DIR
+DEFAULT_LLM_MODEL = "/Users/george.ivan/repo/database-copilot/data/hf_models/mistral-7b-instruct-v0.2.Q4_K_M.gguf"  # This should be the file name in MODELS_DIR
 DEFAULT_EMBEDDING_MODEL = "sentence-transformers/all-mpnet-base-v2"
 DEFAULT_LLAMA_CPP_EMBEDDING_MODEL = "nomic-embed-text-v1.5.Q4_K_M.gguf"
 
 # Embedding type (sentence_transformers, llama_cpp, tensorflow, tfidf)
 # First check streamlit secrets, then environment variables
+import sys
+import platform
+
 try:
     if hasattr(st, 'secrets') and 'EMBEDDING_TYPE' in st.secrets:
         EMBEDDING_TYPE = st.secrets['EMBEDDING_TYPE']
     else:
         EMBEDDING_TYPE = os.environ.get("EMBEDDING_TYPE", "sentence_transformers")
-    
+
+    # On Apple Silicon (M1/M2), default to llama_cpp unless explicitly set
+    if (
+        EMBEDDING_TYPE == "sentence_transformers"
+        and sys.platform == "darwin"
+        and platform.machine() == "arm64"
+        and "EMBEDDING_TYPE" not in os.environ
+        and not (hasattr(st, 'secrets') and 'EMBEDDING_TYPE' in st.secrets)
+    ):
+        EMBEDDING_TYPE = "llama_cpp"
+
     # Check if we're running in torch-free mode
     if os.environ.get("LAZY_LOAD_MODELS") == "1":
         # Force llama_cpp embeddings in torch-free mode
@@ -56,7 +69,7 @@ try:
     if hasattr(st, 'secrets') and 'LLM_TYPE' in st.secrets:
         LLM_TYPE = st.secrets['LLM_TYPE']
     else:
-        LLM_TYPE = os.environ.get("LLM_TYPE", "local")
+        LLM_TYPE = os.environ.get("LLM_TYPE", "llama_cpp")
 except Exception:
     # Default to local if there's an error with secrets
     LLM_TYPE = "local"

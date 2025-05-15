@@ -52,7 +52,7 @@ def main():
     
     # Run the Streamlit app
     logger.info("Starting Database Copilot application")
-    os.system(f"{sys.executable} -m streamlit run backend/app.py")
+    os.system(f"{sys.executable} -m streamlit run backend/app_optimized.py")
 
 if __name__ == "__main__":
     main()

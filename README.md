@@ -69,10 +69,16 @@ After setup completes, follow the instructions displayed to activate the environ
 
 ### Running the Application
 
-Start the Streamlit web application:
+Start the Streamlit web application (now launches the optimized app for all users):
 
 ```bash
 python run_app.py
+```
+
+For advanced options (CPU/memory limits, lazy loading, etc.), use:
+
+```bash
+python run_app_optimized.py [--cpu-limit N] [--memory-limit MB] [--use-external-llm] [--disable-vector-store] [--lazy-load]
 ```
 
 For Mac M1/M2 users with the PyTorch-free setup:

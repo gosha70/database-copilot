@@ -433,9 +433,6 @@ For other users:
 2. Try reinstalling PyTorch with the appropriate command for your system
    - For CUDA support: pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
    - For CPU only: pip install torch torchvision torchaudio
-2. Try reinstalling PyTorch with the appropriate command for your system
-   - For CUDA support: pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-   - For CPU only: pip install torch torchvision torchaudio
 """
             logger.error(error_message)
             
@@ -494,13 +491,13 @@ For other users:
             # This is a Python path/environment issue
             import sys
             import site
-            
+
             # Log detailed environment information for debugging
             logger.error(f"Python executable: {sys.executable}")
             logger.error(f"Python version: {sys.version}")
             logger.error(f"Python path: {sys.path}")
             logger.error(f"Site packages: {site.getsitepackages()}")
-            
+
             # Create a more specific error message for sentence_transformers import issues
             error_message = f"""
 ERROR: Failed to import sentence_transformers package.
@@ -517,7 +514,7 @@ For Apple M1/M2 Mac users:
 
 3. If using a virtual environment, activate it before running the app:
    source /path/to/your/venv/bin/activate  # Replace with your actual path
-   
+
 4. If using Conda, make sure you've activated the correct environment:
    conda activate your_environment_name
 
@@ -525,61 +522,7 @@ For Apple M1/M2 Mac users:
    {sys.executable} -m pip show sentence-transformers
 """
             logger.error(error_message)
-            
-            # Raise an exception with the specific guidance
-            raise ImportError(f"Failed to import sentence_transformers. This is a Python environment issue, not an installation issue. Run the app with the same Python environment where you installed the package. See logs for detailed debugging information.")
-        else:
-            # Generic error message for other types of errors
-            error_message = f"""
-ERROR: Failed to load embedding model.
-Error details: {error_str}
 
-For Apple M1/M2 Mac users:
-1. Install PyTorch with MPS support: pip install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1
-2. Make sure you're using Python 3.9+ for best compatibility
-3. If using Conda: conda install pytorch torchvision torchaudio -c pytorch
-
-For other users:
-        error_str = str(e)
-        logger.error(f"Error loading embedding model: {error_str}")
-        
-        # Check for specific error types and provide targeted solutions
-        if "Could not import sentence_transformers" in error_str:
-            # This is a Python path/environment issue
-            import sys
-            import site
-            
-            # Log detailed environment information for debugging
-            logger.error(f"Python executable: {sys.executable}")
-            logger.error(f"Python version: {sys.version}")
-            logger.error(f"Python path: {sys.path}")
-            logger.error(f"Site packages: {site.getsitepackages()}")
-            
-            # Create a more specific error message for sentence_transformers import issues
-            error_message = f"""
-ERROR: Failed to import sentence_transformers package.
-This is likely a Python environment issue, not an installation issue.
-
-Debugging information:
-- Python executable: {sys.executable}
-- Python version: {sys.version.split()[0]}
-
-For Apple M1/M2 Mac users:
-1. Make sure you're running the app with the SAME Python environment where you installed sentence-transformers
-2. Try installing directly in your current environment:
-   {sys.executable} -m pip install --force-reinstall sentence-transformers
-
-3. If using a virtual environment, activate it before running the app:
-   source /path/to/your/venv/bin/activate  # Replace with your actual path
-   
-4. If using Conda, make sure you've activated the correct environment:
-   conda activate your_environment_name
-
-5. Check if the package is installed but in a different location:
-   {sys.executable} -m pip show sentence-transformers
-"""
-            logger.error(error_message)
-            
             # Raise an exception with the specific guidance
             raise ImportError(f"Failed to import sentence_transformers. This is a Python environment issue, not an installation issue. Run the app with the same Python environment where you installed the package. See logs for detailed debugging information.")
         else:
@@ -600,10 +543,6 @@ For other users:
 4. Check the logs for more detailed error information
 """
             logger.error(error_message)
-            
-            # Raise an exception to stop the application
-            raise ImportError(f"Failed to load embedding model: {error_str}. See logs for installation instructions.")
-            logger.error(error_message)
-            
+
             # Raise an exception to stop the application
             raise ImportError(f"Failed to load embedding model: {error_str}. See logs for installation instructions.")

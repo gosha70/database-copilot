@@ -91,7 +91,7 @@ python docs/benchmark_example.py --migration examples/20250505-create-custom-tab
 
 ## 6. Running the Application
 
-To run the main application:
+To run the main application (now launches the optimized app):
 
 ```bash
 # Activate the conda environment
@@ -102,6 +102,12 @@ export PYTHONPATH=$PYTHONPATH:/path/to/database-copilot
 
 # Run the application
 python run_app.py
+```
+
+For advanced options (CPU/memory limits, lazy loading, etc.), use:
+
+```bash
+python run_app_optimized.py [--cpu-limit N] [--memory-limit MB] [--use-external-llm] [--disable-vector-store] [--lazy-load]
 ```
 
 ## Troubleshooting
@@ -145,7 +151,7 @@ If you encounter issues with Streamlit and PyTorch:
 
 2. Try running Streamlit with the `--browser.serverAddress=localhost` flag:
    ```bash
-   streamlit run app.py --browser.serverAddress=localhost
+   streamlit run backend/app_optimized.py --browser.serverAddress=localhost
    ```
 
 ### CUDA Issues
