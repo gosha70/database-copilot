@@ -19,7 +19,11 @@ Database Copilot is an AI-powered tool designed to assist developers with databa
 - Python 3.9 or higher
 - pip (Python package installer)
 
-### Setup
+### Setup Options
+
+There are two ways to set up Database Copilot:
+
+#### Option 1: Standard Setup (Recommended for most users)
 
 1. Clone the repository:
    ```bash
@@ -45,31 +49,53 @@ Database Copilot is an AI-powered tool designed to assist developers with databa
    python build_vector_store.py
    ```
 
-### Mac M1/M2 Users
+#### Option 2: PyTorch-Free Setup (Recommended for Mac M1/M2 users or if you encounter PyTorch issues)
 
-If you encounter "cannot import name 'Tensor' from 'torch'" errors on Mac M1/M2, use our PyTorch-free setup:
+This setup uses llama.cpp for both embeddings and LLM inference, avoiding PyTorch dependencies:
 
-```bash
-# Make the script executable (if needed)
-chmod +x run_torch_free.sh
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/database-copilot.git
+   cd database-copilot
+   ```
 
-# Run the setup script
-./run_torch_free.sh setup
-```
+2. Make the script executable (if needed):
+   ```bash
+   chmod +x run_torch_free.sh
+   ```
 
-This script will:
+3. Run the PyTorch-free setup script:
+   ```bash
+   ./run_torch_free.sh setup
+   ```
+
+4. After setup completes, activate the environment as instructed:
+   ```bash
+   # If using conda:
+   conda activate database_copilot_cpp
+   
+   # If using venv:
+   source database_copilot_cpp_env/bin/activate
+   ```
+
+5. Build the vector store:
+   ```bash
+   ./run_torch_free.sh rebuild
+   ```
+
+The PyTorch-free setup script will:
 1. Create a new conda environment (or virtual environment if conda is not available)
 2. Install the necessary dependencies in the clean environment
 3. Download the embedding model
-4. Build the vector store without PyTorch dependencies
-
-After setup completes, follow the instructions displayed to activate the environment and run the application.
+4. Provide instructions for building the vector store and running the application
 
 ## Usage
 
 ### Running the Application
 
-Start the Streamlit web application (now launches the optimized app for all users):
+#### Standard Setup
+
+Start the Streamlit web application:
 
 ```bash
 python run_app.py
@@ -81,17 +107,25 @@ For advanced options (CPU/memory limits, lazy loading, etc.), use:
 python run_app_optimized.py [--cpu-limit N] [--memory-limit MB] [--use-external-llm] [--disable-vector-store] [--lazy-load]
 ```
 
-For Mac M1/M2 users with the PyTorch-free setup:
+#### PyTorch-Free Setup
+
+Make sure you've activated the environment first:
 
 ```bash
-# First, activate the environment as instructed by the setup script
-conda activate database_copilot_cpp  # or source database_copilot_cpp_env/bin/activate
+# If using conda:
+conda activate database_copilot_cpp
 
-# Then run the application
+# If using venv:
+source database_copilot_cpp_env/bin/activate
+```
+
+Then run the application:
+
+```bash
 ./run_torch_free.sh run
 ```
 
-The application will be available at http://localhost:8501
+The application will be available at http://localhost:8503
 
 ### Running the API
 
@@ -149,7 +183,54 @@ You can add your own documents to the `docs/` directory to customize the knowled
 
 ### External LLM Configuration
 
-Database Copilot supports various external LLM providers. To configure an external LLM, edit the `.streamlit/secrets.toml` file.
+Database Copilot supports various external LLM providers that can provide better quality reviews and recommendations. The following providers are supported:
+
+- OpenAI (GPT-4, GPT-3.5)
+- Anthropic Claude
+- Google Gemini
+- Mistral AI
+- DeepSeek
+
+To configure an external LLM:
+
+1. Edit the `.streamlit/secrets.toml` file in the project root directory
+2. Uncomment and set the appropriate values for your chosen LLM provider
+3. Save the file and restart the application
+
+Example for OpenAI:
+
+```toml
+# External LLM Configuration
+LLM_TYPE = "openai"
+OPENAI_API_KEY = "your-openai-api-key"
+OPENAI_MODEL = "gpt-4o"  # Optional, defaults to gpt-4o
+```
+
+All required packages for external LLMs are included in the project's requirements files and should be automatically installed when you run the setup script. If you encounter issues with missing packages, you can manually install them:
+
+```bash
+pip install openai anthropic google-generativeai mistralai
+```
+
+For more detailed information, refer to [external_llm_instructions.md](external_llm_instructions.md).
+
+#### Troubleshooting External LLM Issues
+
+If you encounter errors like "Error initializing OpenAI client" or missing package errors:
+
+1. Make sure you've run the setup script to install all dependencies:
+   ```bash
+   python setup.py
+   ```
+
+2. If you're still experiencing issues, manually install the required packages:
+   ```bash
+   pip install openai anthropic google-generativeai mistralai
+   ```
+
+3. Verify your API key is correct in the `.streamlit/secrets.toml` file
+
+4. Check the application logs for detailed error messages
 
 ## Advanced Configuration
 

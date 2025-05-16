@@ -233,19 +233,23 @@ def get_safe_llm(model_name: Optional[str] = None, quantization_level: str = "4b
         TOP_P,
         TOP_K,
         REPETITION_PENALTY,
-        LLM_TYPE
+        get_current_llm_type
     )
     
+    # Get the current LLM type
+    current_llm_type = get_current_llm_type()
+    
     # Check if we should use an external LLM
-    if use_external and LLM_TYPE != "local":
+    if use_external and current_llm_type != "local":
         try:
             from backend.models.external_llm.factory import create_external_llm
-            external_llm = create_external_llm(LLM_TYPE)
+            logger.info(f"Creating external LLM of type: {current_llm_type}")
+            external_llm = create_external_llm(current_llm_type)
             if external_llm:
                 return external_llm
             else:
-                logger.error(f"Failed to create external LLM of type {LLM_TYPE}")
-                raise ValueError(f"Failed to create external LLM of type {LLM_TYPE}. Check your API key and configuration.")
+                logger.error(f"Failed to create external LLM of type {current_llm_type}")
+                raise ValueError(f"Failed to create external LLM of type {current_llm_type}. Check your API key and configuration.")
         except Exception as e:
             logger.error(f"Error initializing external LLM: {e}")
             raise ValueError(f"Error initializing external LLM: {e}. Check your API key and configuration.")

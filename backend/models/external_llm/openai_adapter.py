@@ -8,33 +8,25 @@ import os
 import logging
 from typing import Any, Dict, List, Optional, Union
 
-from langchain_core.messages import BaseMessage
-from langchain_core.outputs import ChatResult
-from pydantic import Field, PrivateAttr
-
-from backend.models.external_llm.base import BaseExternalLLM
+from langchain_core.language_models.chat_models import BaseChatModel
+from langchain_core.messages import BaseMessage, AIMessage, SystemMessage, HumanMessage
+from langchain_core.outputs import ChatResult, ChatGeneration
 
 logger = logging.getLogger(__name__)
 
-class OpenAIAdapter(BaseExternalLLM):
+class OpenAIAdapter(BaseChatModel):
     """
     Adapter for OpenAI's API.
     """
     
     provider_name: str = "openai"
-    """The name of the LLM provider."""
-    
-    api_key: str = Field(None, description="OpenAI API key")
-    temperature: float = Field(0.2, description="Temperature for generation")
-    max_tokens: int = Field(2048, description="Maximum tokens to generate")
-    
-    # Private attributes that won't be part of the model schema
-    _client = PrivateAttr()
+    is_external_llm: bool = True
+    model_name: str
     
     def __init__(
         self,
-        model_name: Optional[str] = None,
         api_key: Optional[str] = None,
+        model_name: str = "gpt-4o",
         temperature: float = 0.2,
         max_tokens: int = 2048,
         **kwargs
@@ -43,44 +35,58 @@ class OpenAIAdapter(BaseExternalLLM):
         Initialize the OpenAI adapter.
         
         Args:
-            model_name: The name of the model to use. Defaults to "gpt-4o".
             api_key: The API key to use. Defaults to the OPENAI_API_KEY environment variable.
+            model_name: The name of the model to use. Defaults to "gpt-4o".
             temperature: The temperature to use for generation. Defaults to 0.2.
             max_tokens: The maximum number of tokens to generate. Defaults to 2048.
             **kwargs: Additional keyword arguments to pass to the parent class.
         """
         # Get API key from environment variable if not provided
         api_key = api_key or os.environ.get("OPENAI_API_KEY")
+        logger.info(f"API key from environment: {'*****' if api_key else 'None'}")
+        
+        # Check if streamlit is available and try to get the API key from secrets
+        try:
+            import streamlit as st
+            if hasattr(st, 'secrets') and 'OPENAI_API_KEY' in st.secrets:
+                logger.info("Found OPENAI_API_KEY in streamlit secrets")
+                api_key = api_key or st.secrets['OPENAI_API_KEY']
+        except ImportError:
+            logger.info("Streamlit not available, skipping secrets check")
+        
         if not api_key:
             raise ValueError(
                 "OpenAI API key is required. "
-                "Please set the OPENAI_API_KEY environment variable or pass it as an argument."
+                "Please set the OPENAI_API_KEY environment variable or in .streamlit/secrets.toml"
             )
         
-        # Get model name from environment variable if not provided
-        model_name = model_name or os.environ.get("OPENAI_MODEL", "gpt-4o")
+        # Store attributes
+        self.model_name = model_name
+        self.api_key = api_key
+        self.temperature = temperature
+        self.max_tokens = max_tokens
         
-        # Initialize parent class with all parameters
-        super().__init__(
-            model_name=model_name,
-            api_key=api_key,
-            temperature=temperature,
-            max_tokens=max_tokens,
-            **kwargs
-        )
-        
-        # Import OpenAI library
+        # Initialize the OpenAI client
         try:
             import openai
-            self._client = openai.OpenAI(api_key=self.api_key)
-            logger.info(f"Successfully initialized OpenAI client with model {self.model_name}")
-        except Exception as e:
-            logger.error(f"Failed to import OpenAI library: {e}")
+            self.client = openai.OpenAI(api_key=self.api_key)
+            logger.info(f"Successfully initialized OpenAI client with model {model_name}")
+        except ImportError:
+            logger.error("Failed to import OpenAI library")
             raise ImportError(
-                f"Error initializing OpenAI client: {e}. "
                 "The openai package is required to use the OpenAI adapter. "
                 "Please install it with `pip install openai`."
             )
+        except Exception as e:
+            logger.error(f"Error initializing OpenAI client: {e}")
+            raise ValueError(
+                f"Error initializing OpenAI client: {e}. "
+                "Please check your API key and configuration."
+            )
+        
+        # Initialize parent class
+        super().__init__(**kwargs)
+        logger.info(f"USING EXTERNAL LLM: {self.provider_name} with model {self.model_name}")
     
     def _generate(
         self, messages: List[BaseMessage], stop: Optional[List[str]] = None, **kwargs
@@ -96,26 +102,21 @@ class OpenAIAdapter(BaseExternalLLM):
         Returns:
             A ChatResult containing the generated response.
         """
-        # Extract system message and chat history
-        system_message = self._extract_system_message(messages)
-        chat_history = self._extract_chat_history(messages)
-        
-        # Prepare messages for OpenAI API
+        # Convert LangChain messages to OpenAI format
         openai_messages = []
+        for message in messages:
+            if isinstance(message, SystemMessage):
+                openai_messages.append({"role": "system", "content": message.content})
+            elif isinstance(message, HumanMessage):
+                openai_messages.append({"role": "user", "content": message.content})
+            elif isinstance(message, AIMessage):
+                openai_messages.append({"role": "assistant", "content": message.content})
+            elif hasattr(message, "role"):
+                openai_messages.append({"role": message.role, "content": message.content})
         
-        # Add system message if present
-        if system_message:
-            openai_messages.append({
-                "role": "system",
-                "content": system_message
-            })
-        
-        # Add chat history
-        openai_messages.extend(chat_history)
-        
-        # Generate response
         try:
-            response = self._client.chat.completions.create(
+            # Call the OpenAI API directly
+            response = self.client.chat.completions.create(
                 model=self.model_name,
                 messages=openai_messages,
                 temperature=self.temperature,
@@ -128,8 +129,19 @@ class OpenAIAdapter(BaseExternalLLM):
             response_text = response.choices[0].message.content
             
             # Create and return ChatResult
-            return self._create_chat_result(response_text)
-        
+            message = AIMessage(content=response_text)
+            generation = ChatGeneration(message=message)
+            return ChatResult(generations=[generation])
         except Exception as e:
             logger.error(f"Error generating response from OpenAI: {e}")
             raise
+    
+    @property
+    def _llm_type(self) -> str:
+        """
+        Return the type of LLM.
+        
+        Returns:
+            The type of LLM.
+        """
+        return f"external_{self.provider_name}"

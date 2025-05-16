@@ -38,12 +38,30 @@ def create_external_llm(llm_type: str) -> Optional[BaseChatModel]:
             from backend.models.external_llm.openai_adapter import OpenAIAdapter
             # Log the API key (masked) for debugging
             api_key = os.environ.get("OPENAI_API_KEY")
+            model_name = os.environ.get("OPENAI_MODEL", "gpt-4o")
+            
             if api_key:
                 logger.info(f"Found OPENAI_API_KEY in environment: {'*' * min(10, len(api_key))}")
             else:
-                logger.error("OPENAI_API_KEY not found in environment")
+                # Try to get API key from streamlit secrets
+                try:
+                    import streamlit as st
+                    if hasattr(st, 'secrets') and 'OPENAI_API_KEY' in st.secrets:
+                        api_key = st.secrets['OPENAI_API_KEY']
+                        logger.info("Found OPENAI_API_KEY in streamlit secrets")
+                        
+                        # Also check for model name in secrets
+                        if 'OPENAI_MODEL' in st.secrets:
+                            model_name = st.secrets['OPENAI_MODEL']
+                            logger.info(f"Using model from streamlit secrets: {model_name}")
+                except ImportError:
+                    logger.info("Streamlit not available, skipping secrets check")
+                
+                if not api_key:
+                    logger.error("OPENAI_API_KEY not found in environment or streamlit secrets")
             
-            return OpenAIAdapter()
+            # Explicitly pass the API key and model name to the adapter
+            return OpenAIAdapter(api_key=api_key, model_name=model_name)
         except (ImportError, ValueError) as e:
             logger.error(f"Failed to create OpenAI LLM: {e}")
             raise ValueError(f"Failed to create OpenAI LLM: {e}")

@@ -148,7 +148,7 @@ def main():
             )
         
         logger.info("Vector store rebuilt successfully with llama.cpp embeddings")
-        logger.info("You can now run the application with: python run_torch_free.sh")
+        logger.info("You can now run the application with: ./run_torch_free.sh run")
     except Exception as e:
         logger.error(f"Failed to rebuild vector store: {e}")
         return 1

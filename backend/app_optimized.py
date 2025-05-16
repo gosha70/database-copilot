@@ -69,14 +69,34 @@ def get_component(component_name: str, debug_mode: bool = False) -> Any:
     Returns:
         The loaded component.
     """
-    # Create a unique key for the component with debug mode
-    component_key = f"{component_name}_{debug_mode}"
+    # Create a unique key for the component with debug mode and LLM type
+    llm_type = os.environ.get("LLM_TYPE", "local")
+    component_key = f"{component_name}_{debug_mode}_{llm_type}"
+    
+    # Check if we need to reload the component due to settings changes
+    if "previous_settings" not in st.session_state:
+        st.session_state.previous_settings = {
+            "debug_mode": debug_mode,
+            "llm_type": llm_type
+        }
+    
+    # If settings have changed, clear the cached component
+    if (st.session_state.previous_settings["debug_mode"] != debug_mode or 
+        st.session_state.previous_settings["llm_type"] != llm_type):
+        if component_key in _COMPONENTS:
+            logger.info(f"Settings changed, reloading component: {component_name}")
+            del _COMPONENTS[component_key]
+        # Update previous settings
+        st.session_state.previous_settings = {
+            "debug_mode": debug_mode,
+            "llm_type": llm_type
+        }
     
     if component_key in _COMPONENTS:
         return _COMPONENTS[component_key]
     
     start_time = time.time()
-    logger.info(f"Loading component: {component_name} (debug_mode={debug_mode})")
+    logger.info(f"Loading component: {component_name} (debug_mode={debug_mode}, llm_type={llm_type})")
     
     if component_name == "parser":
         from backend.models.liquibase_parser import LiquibaseParser
@@ -281,6 +301,11 @@ def main():
         
         # Add debug mode toggle
         debug_mode = st.checkbox("Enable Debug Mode", value=False, key="debug_mode")
+        if debug_mode:
+            st.info("Debug mode enabled. Check the terminal for detailed logs.")
+            logging.getLogger().setLevel(logging.DEBUG)
+        else:
+            logging.getLogger().setLevel(logging.INFO)
         
         # Add dark mode toggle
         st.markdown("### Theme")
@@ -872,8 +897,20 @@ def main():
                 index=0
             )
             os.environ["LLM_TYPE"] = llm_provider
+            st.success(f"Using external LLM: {llm_provider}. All components will use this LLM.")
+            
+            # Check if API key is set
+            api_key_env_var = f"{llm_provider.upper()}_API_KEY"
+            if llm_provider == "claude":
+                api_key_env_var = "ANTHROPIC_API_KEY"
+            elif llm_provider == "gemini":
+                api_key_env_var = "GOOGLE_API_KEY"
+                
+            if not os.environ.get(api_key_env_var):
+                st.warning(f"No API key found for {llm_provider}. Please set {api_key_env_var} in .streamlit/secrets.toml")
         else:
             os.environ["LLM_TYPE"] = "local"
+            st.info("Using local LLM. All components will use the local model.")
     
     # Create tabs for different functionalities
     tab1, tab2, tab3, tab4, tab5 = st.tabs([

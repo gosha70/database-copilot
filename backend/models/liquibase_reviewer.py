@@ -31,12 +31,13 @@ class LiquibaseReviewer:
         
         # Import at the module level to avoid circular imports
         from backend.models.streamlit_compatibility import get_safe_llm
-        from backend.config import LLM_TYPE
+        from backend.config import get_current_llm_type
         
         # Use get_safe_llm instead of get_llm to avoid dependency issues
         try:
             # Try to use an external LLM if configured
-            if LLM_TYPE != "local":
+            current_llm_type = get_current_llm_type()
+            if current_llm_type != "local":
                 self.llm = get_safe_llm(use_external=True)
             else:
                 self.llm = get_safe_llm()
@@ -124,12 +125,17 @@ class LiquibaseReviewer:
                     logger.info(f"Doc {i+1} (length: {len(doc)} chars): {doc[:200]}...")
                 logger.info("=== END DEBUG: RETRIEVED CONTEXT ===")
             
-            # Create the prompt template and review chain
+            # Generate a basic review template
+            review_template = self._generate_review_template(parsed_migration, format_type)
+            logger.info(f"Generated review template: {review_template[:200]}...")
+            
+            # Create the prompt template with the review template
             prompt = ChatPromptTemplate.from_template("""
 You are an expert Liquibase and JPA reviewer. 
-Carefully analyze the provided Liquibase migration and generate a detailed code review following the strict format below.
----
+Your task is to enhance the provided review template with detailed analysis.
 
+# Review Template (BASE YOUR RESPONSE ON THIS)
+{review_template}
 
 # Migration to Review
 ```{format_type}
@@ -141,53 +147,23 @@ Carefully analyze the provided Liquibase migration and generate a detailed code 
 {parsed_migration}
 ```
 
-Provide a review with these sections:
+IMPORTANT INSTRUCTIONS:
+1. Start with the review template above and enhance it. DO NOT create a completely different review.
+2. Keep the same structure and sections from the template.
+3. Fill in the checklist with ✅ or ❌ for each item based on your analysis.
+4. Add specific issues, recommendations, and best practices based on the migration.
+5. Be specific and reference actual code from the migration.
+6. If you can't determine if a checklist item applies, use ✅ but note the uncertainty.
 
-## Summary 📄
-Brief description of what the migration does
-
-# Liquibase / RDBMS Code Review Checklist ✅❌
-Use ✅ for "Yes" and ❌ for "No" in each item.
-
-- [✅/❌] Migration id consistent across all affected versions
-- [✅/❌] All identifier names <=30 characters
-- [✅/❌] All identifier names are lowercase_underscore_form
-- [✅/❌] Abbreviations are standard and/or sensible
-- [✅/❌] Table names are singular, Join Tables are plural
-- [✅/❌] Table names not repeated in column names
-- [✅/❌] Column type is not repeated in column name
-- [✅/❌] id is simply id, uuid is uuid
-- [✅/❌] Constraints on columns ideally in form `<table-name>_<column-name>_<suffix>`
-- [✅/❌] Foreign key suffix is _fk, Unique constraint is _uc, Index is _idx
-- [✅/❌] All FKs also have an index added if no unique constraint present
-- [✅/❌] All constraints named
-- [✅/❌] Every auto-increment id column has a sequence `<table-name>_sq` for Oracle
-- [✅/❌] No preconditions avoiding index creation
-- [✅/❌] Unit tests present if non-trivial logic
-- [✅/❌] Cascading behavior specified in Liquibase and JPA
-- [✅/❌] JPA `@Column` `nullable` configuration matches Liquibase
-- [✅/❌] All JPA string `@Column`s set `length`
-- [✅/❌] JPA names use camelCase
-- [✅/❌] If `FetchType.LAZY` is used for lists, there was an effort to avoid LazyInitializationException
-- [✅/❌] Implement `toString` on Entities, excluding lazily-loaded data
-
-## Issues 🐞
-List specific issues with exact names, IDs, and line numbers
-
-## Recommendations 💡
-Provide specific code snippets showing how to fix each issue
-
-## Best Practices 🌟
-Highlight best practices that are followed or should be followed
-
-IMPORTANT: Be specific and reference actual code from the migration.
+Return the complete review with all sections filled in.
 """)
+            
             # Log prompt length and content for debugging
             prompt_content = prompt.format(
+                review_template=review_template,
                 migration_content=migration_content,
                 format_type=format_type,
-                parsed_migration=str(parsed_migration),
-                context=context
+                parsed_migration=str(parsed_migration)
             )
             logger.info(f"LLM prompt length: {len(prompt_content)} characters")
             logger.debug(f"LLM prompt content:\n{prompt_content}")
@@ -218,10 +194,10 @@ IMPORTANT: Be specific and reference actual code from the migration.
 
                 # Run the LLM call
                 review = review_chain.invoke({
+                    "review_template": review_template,
                     "migration_content": migration_content,
                     "format_type": format_type,
-                    "parsed_migration": str(parsed_migration),
-                    "context": context
+                    "parsed_migration": str(parsed_migration)
                 })
 
                 logger.info(f"Raw LLM review output: {repr(review)}")
@@ -235,15 +211,98 @@ IMPORTANT: Be specific and reference actual code from the migration.
                 review = self._post_process_review(review)
                 logger.info(f"Post-processed review output: {repr(review)}")
                 
+                # If the review is empty or too short after post-processing, fall back to the template
+                if not review or len(review) < 100:
+                    logger.warning("Review is too short after post-processing, falling back to template")
+                    return review_template
+                
                 return review
                 
             except Exception as e:
                 logger.error(f"Error generating review: {e}")
-                return f"Error: Failed to generate review. {str(e)}"
+                # Fall back to the template if there's an error
+                logger.info("Falling back to review template due to error")
+                return review_template
             
         except Exception as e:
             logger.error(f"Error in review_migration: {e}")
             return f"Error: An unexpected error occurred during the review process. {str(e)}"
+    
+    def _generate_review_template(self, parsed_migration: Dict[str, Any], format_type: str) -> str:
+        """
+        Generate a basic review template from the parsed migration.
+        
+        Args:
+            parsed_migration: The parsed migration.
+            format_type: The format of the migration file (xml or yaml).
+            
+        Returns:
+            A basic review template.
+        """
+        # Extract information from the parsed migration
+        table_names = self._extract_table_names(parsed_migration)
+        change_types = self._extract_change_types(parsed_migration)
+        
+        # Create a summary based on the change types and table names
+        summary = f"This migration performs {', '.join(change_types)} operations on {', '.join(table_names)} table(s)."
+        
+        # Create the template
+        template_lines = []
+        
+        # Add LLM info
+        if hasattr(self.llm, 'is_external_llm') and self.llm.is_external_llm:
+            llm_info = f"🤖 Using external LLM: {self.llm.provider_name} with model {self.llm.model_name}"
+        else:
+            llm_info = f"🤖 Using local LLM: {getattr(self.llm, '_llm_type', 'unknown')}"
+        template_lines.append(llm_info)
+        template_lines.append("")
+        
+        # Add summary
+        template_lines.append("## Summary 📄")
+        template_lines.append(summary)
+        template_lines.append("")
+        
+        # Add checklist
+        template_lines.append("# Liquibase / RDBMS Code Review Checklist ✅❌")
+        template_lines.append("")
+        template_lines.append("- [ ] Migration id consistent across all affected versions")
+        template_lines.append("- [ ] All identifier names <=30 characters")
+        template_lines.append("- [ ] All identifier names are lowercase_underscore_form")
+        template_lines.append("- [ ] Abbreviations are standard and/or sensible")
+        template_lines.append("- [ ] Table names are singular, Join Tables are plural")
+        template_lines.append("- [ ] Table names not repeated in column names")
+        template_lines.append("- [ ] Column type is not repeated in column name")
+        template_lines.append("- [ ] id is simply id, uuid is uuid")
+        template_lines.append("- [ ] Constraints on columns ideally in form `<table-name>_<column-name>_<suffix>`")
+        template_lines.append("- [ ] Foreign key suffix is _fk, Unique constraint is _uc, Index is _idx")
+        template_lines.append("- [ ] All FKs also have an index added if no unique constraint present")
+        template_lines.append("- [ ] All constraints named")
+        template_lines.append("- [ ] Every auto-increment id column has a sequence `<table-name>_sq` for Oracle")
+        template_lines.append("- [ ] No preconditions avoiding index creation")
+        template_lines.append("- [ ] Unit tests present if non-trivial logic")
+        template_lines.append("- [ ] Cascading behavior specified in Liquibase and JPA")
+        template_lines.append("- [ ] JPA `@Column` `nullable` configuration matches Liquibase")
+        template_lines.append("- [ ] All JPA string `@Column`s set `length`")
+        template_lines.append("- [ ] JPA names use camelCase")
+        template_lines.append("- [ ] If `FetchType.LAZY` is used for lists, there was an effort to avoid LazyInitializationException")
+        template_lines.append("- [ ] Implement `toString` on Entities, excluding lazily-loaded data")
+        template_lines.append("")
+        
+        # Add issues section
+        template_lines.append("## Issues 🐞")
+        template_lines.append("No issues identified yet.")
+        template_lines.append("")
+        
+        # Add recommendations section
+        template_lines.append("## Recommendations 💡")
+        template_lines.append("No recommendations yet.")
+        template_lines.append("")
+        
+        # Add best practices section
+        template_lines.append("## Best Practices 🌟")
+        template_lines.append("The migration follows standard Liquibase practices.")
+        
+        return "\n".join(template_lines)
     
     def _post_process_review(self, review: str) -> str:
         """
@@ -543,6 +602,8 @@ The LLM failed to generate a proper review. Please try one of the following solu
                             table_names.add(change_data['tableName'])
                         elif change_type in ['addPrimaryKey', 'addUniqueConstraint', 'createIndex'] and 'tableName' in change_data:
                             table_names.add(change_data['tableName'])
+                        elif change_type == 'update' and 'tableName' in change_data:
+                            table_names.add(change_data['tableName'])
         
         return list(table_names) if table_names else ["unknown"]
     
@@ -590,9 +651,10 @@ The LLM failed to generate a proper review. Please try one of the following solu
         # Create the prompt template with detailed requirements
         prompt = ChatPromptTemplate.from_template("""
 You are an expert Liquibase and JPA reviewer. 
-Carefully analyze the provided Liquibase migration and generate a detailed code review following the strict format below.
----
+Your task is to enhance the provided review template with detailed analysis.
 
+# Review Template (BASE YOUR RESPONSE ON THIS)
+{review_template}
 
 # Migration to Review
 ```{format_type}
@@ -604,46 +666,15 @@ Carefully analyze the provided Liquibase migration and generate a detailed code 
 {parsed_migration}
 ```
 
-Provide a review with these sections:
+IMPORTANT INSTRUCTIONS:
+1. Start with the review template above and enhance it. DO NOT create a completely different review.
+2. Keep the same structure and sections from the template.
+3. Fill in the checklist with ✅ or ❌ for each item based on your analysis.
+4. Add specific issues, recommendations, and best practices based on the migration.
+5. Be specific and reference actual code from the migration.
+6. If you can't determine if a checklist item applies, use ✅ but note the uncertainty.
 
-## Summary 📄
-Brief description of what the migration does
-
-# Liquibase / RDBMS Code Review Checklist ✅❌
-Use ✅ for "Yes" and ❌ for "No" in each item.
-
-- [✅/❌] Migration id consistent across all affected versions
-- [✅/❌] All identifier names <=30 characters
-- [✅/❌] All identifier names are lowercase_underscore_form
-- [✅/❌] Abbreviations are standard and/or sensible
-- [✅/❌] Table names are singular, Join Tables are plural
-- [✅/❌] Table names not repeated in column names
-- [✅/❌] Column type is not repeated in column name
-- [✅/❌] id is simply id, uuid is uuid
-- [✅/❌] Constraints on columns ideally in form `<table-name>_<column-name>_<suffix>`
-- [✅/❌] Foreign key suffix is _fk, Unique constraint is _uc, Index is _idx
-- [✅/❌] All FKs also have an index added if no unique constraint present
-- [✅/❌] All constraints named
-- [✅/❌] Every auto-increment id column has a sequence `<table-name>_sq` for Oracle
-- [✅/❌] No preconditions avoiding index creation
-- [✅/❌] Unit tests present if non-trivial logic
-- [✅/❌] Cascading behavior specified in Liquibase and JPA
-- [✅/❌] JPA `@Column` `nullable` configuration matches Liquibase
-- [✅/❌] All JPA string `@Column`s set `length`
-- [✅/❌] JPA names use camelCase
-- [✅/❌] If `FetchType.LAZY` is used for lists, there was an effort to avoid LazyInitializationException
-- [✅/❌] Implement `toString` on Entities, excluding lazily-loaded data
-
-## Issues 🐞
-List specific issues with exact names, IDs, and line numbers
-
-## Recommendations 💡
-Provide specific code snippets showing how to fix each issue
-
-## Best Practices 🌟
-Highlight best practices that are followed or should be followed
-
-IMPORTANT: Be specific and reference actual code from the migration.
+Return the complete review with all sections filled in.
 """)
 
         

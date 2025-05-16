@@ -33,12 +33,13 @@ class EnhancedLiquibaseReviewer:
         
         # Import at the module level to avoid circular imports
         from backend.models.streamlit_compatibility import get_safe_llm
-        from backend.config import LLM_TYPE
+        from backend.config import get_current_llm_type
         
         # Use get_safe_llm with external LLM if configured
         try:
             # Try to use an external LLM if configured
-            if LLM_TYPE != "local":
+            current_llm_type = get_current_llm_type()
+            if current_llm_type != "local":
                 self.llm = get_safe_llm(use_external=True)
             else:
                 self.llm = get_safe_llm()

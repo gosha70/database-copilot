@@ -91,8 +91,15 @@ def install_dependencies() -> bool:
     Returns:
         True if dependencies were installed successfully, False otherwise.
     """
-    logger.info("Installing Python dependencies")
-    return run_command(f"{sys.executable} -m pip install -r requirements.txt")
+    logger.info("Installing main Python dependencies")
+    if not run_command(f"{sys.executable} -m pip install -r requirements.txt"):
+        return False
+    
+    logger.info("Installing backend Python dependencies")
+    if not run_command(f"{sys.executable} -m pip install -r backend/requirements.txt"):
+        return False
+    
+    return True
 
 def download_liquibase_docs() -> bool:
     """
@@ -189,6 +196,10 @@ def setup(skip_download: bool = False) -> bool:
     logger.info("Setup completed successfully")
     logger.info("To build the vector store, add any custom documents to the docs/ directories")
     logger.info("Then run: python build_vector_store.py")
+    logger.info("")
+    logger.info("Note: If you're using a Mac M1/M2 or encounter PyTorch-related issues,")
+    logger.info("you may want to use our PyTorch-free setup instead:")
+    logger.info("  ./run_torch_free.sh setup")
     return True
 
 def main():
@@ -208,7 +219,10 @@ def main():
         logger.info("Setup completed successfully")
         logger.info("To build the vector store, add any custom documents to the docs/ directories")
         logger.info("Then run: python build_vector_store.py")
-        logger.info("To run the application, use: python -m backend.app")
+        logger.info("To run the application, use: python run_app.py")
+        logger.info("")
+        logger.info("Alternative setup for Mac M1/M2 or if you encounter PyTorch issues:")
+        logger.info("  ./run_torch_free.sh setup")
     else:
         logger.error("Setup failed")
         sys.exit(1)

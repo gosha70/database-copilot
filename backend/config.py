@@ -64,15 +64,44 @@ except ImportError:
     print("sentence_transformers not available, using llama_cpp embeddings instead")
 
 # LLM type (local, openai, claude, gemini, mistral, deepseek)
-# First check streamlit secrets, then environment variables
-try:
-    if hasattr(st, 'secrets') and 'LLM_TYPE' in st.secrets:
-        LLM_TYPE = st.secrets['LLM_TYPE']
-    else:
-        LLM_TYPE = os.environ.get("LLM_TYPE", "llama_cpp")
-except Exception:
-    # Default to local if there's an error with secrets
-    LLM_TYPE = "local"
+# Define as a function to always get the current value
+def get_llm_type():
+    """
+    Get the current LLM type from environment variables or streamlit secrets.
+    This function is called every time LLM_TYPE is accessed, ensuring we always
+    get the most up-to-date value.
+    
+    Returns:
+        The current LLM type (local, openai, claude, gemini, mistral, deepseek)
+    """
+    try:
+        if hasattr(st, 'secrets') and 'LLM_TYPE' in st.secrets:
+            return st.secrets['LLM_TYPE']
+        else:
+            return os.environ.get("LLM_TYPE", "llama_cpp")
+    except Exception:
+        # Default to local if there's an error with secrets
+        return "local"
+
+# Instead of using a descriptor, let's use a function to get the current LLM type
+def get_current_llm_type():
+    """
+    Get the current LLM type from environment variables or streamlit secrets.
+    
+    Returns:
+        The current LLM type (local, openai, claude, gemini, mistral, deepseek)
+    """
+    try:
+        if hasattr(st, 'secrets') and 'LLM_TYPE' in st.secrets:
+            return st.secrets['LLM_TYPE']
+        else:
+            return os.environ.get("LLM_TYPE", "local")
+    except Exception:
+        # Default to local if there's an error with secrets
+        return "local"
+
+# Set LLM_TYPE as a string for initial import compatibility
+LLM_TYPE = get_current_llm_type()
 
 # API keys for external LLMs
 # First check streamlit secrets, then environment variables

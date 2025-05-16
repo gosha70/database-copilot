@@ -87,4 +87,12 @@ Each external LLM provider requires specific Python packages:
 pip install openai anthropic google-generativeai mistralai
 ```
 
+These packages are included in the project's requirements files and should be automatically installed when you run the setup script:
+
+```bash
+python setup.py
+```
+
+If you're experiencing issues with missing packages, you can manually install them using the command above.
+
 For more detailed information, refer to the full documentation in `docs/external_llm_setup.md`.
