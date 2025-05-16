@@ -15,7 +15,8 @@ from pathlib import Path
 from functools import lru_cache
 
 # Use the file watcher type from environment variable or default to "poll"
-os.environ["STREAMLIT_SERVER_FILE_WATCHER_TYPE"] = os.environ.get("STREAMLIT_SERVER_FILE_WATCHER_TYPE", "poll")
+#os.environ["STREAMLIT_SERVER_FILE_WATCHER_TYPE"] = os.environ.get("STREAMLIT_SERVER_FILE_WATCHER_TYPE", "poll")
+os.environ["STREAMLIT_SERVER_FILE_WATCHER_TYPE"] = "none" 
 
 # Add the parent directory to the Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))

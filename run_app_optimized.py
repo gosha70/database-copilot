@@ -100,7 +100,8 @@ def main():
         logger.info("Enabled lazy loading of models")
     
     # Set Streamlit to use polling file watcher which is less resource-intensive
-    os.environ["STREAMLIT_SERVER_FILE_WATCHER_TYPE"] = "poll"
+    #os.environ["STREAMLIT_SERVER_FILE_WATCHER_TYPE"] = "poll"
+    os.environ["STREAMLIT_SERVER_FILE_WATCHER_TYPE"] = "none"
     
     # Run the Streamlit app with the optimized version
     logger.info("Starting Database Copilot application with optimizations")

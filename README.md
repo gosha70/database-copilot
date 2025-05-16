@@ -19,6 +19,23 @@ Database Copilot is an AI-powered tool designed to assist developers with databa
 - Python 3.9 or higher
 - pip (Python package installer)
 
+### Dependency Compatibility
+
+**Important:** Due to recent changes in the Python ML ecosystem, you must use the following package versions for vector store creation and OpenAI integration to work reliably:
+
+- `sentence-transformers==2.2.2`
+- `transformers==4.30.2`
+- `huggingface_hub==0.15.1`
+- `accelerate==0.20.3`
+
+If you upgrade any of these packages, you may encounter ImportErrors or runtime failures. If you see errors about missing functions like `cached_download` or `split_torch_state_dict_into_shards`, or other incompatibility messages, downgrade to the versions above:
+
+```bash
+pip install sentence-transformers==2.2.2 transformers==4.30.2 huggingface_hub==0.15.1 accelerate==0.20.3
+```
+
+You can also use the provided `requirements.txt` or `backend/requirements.txt` to install compatible versions.
+
 ### Setup Options
 
 There are two ways to set up Database Copilot:
@@ -48,6 +65,8 @@ There are two ways to set up Database Copilot:
    ```bash
    python build_vector_store.py
    ```
+
+   If you encounter errors related to `sentence-transformers`, `transformers`, or `huggingface_hub`, see the "Dependency Compatibility" section above and ensure you have the correct versions installed.
 
 #### Option 2: PyTorch-Free Setup (Recommended for Mac M1/M2 users or if you encounter PyTorch issues)
 
@@ -152,6 +171,23 @@ python build_vector_store.py --category jpa  # Build only the JPA category
 python build_vector_store.py --recreate      # Rebuild all categories
 python build_vector_store.py --verbose       # Enable verbose output
 ```
+
+#### Troubleshooting Vector Store Build Errors
+
+If you see errors like:
+
+- `Could not import sentence_transformers python package.`
+- `ImportError: cannot import name 'cached_download' from 'huggingface_hub'`
+- `ImportError: cannot import name 'OfflineModeIsEnabled' from 'huggingface_hub.utils'`
+- `ImportError: cannot import name 'split_torch_state_dict_into_shards' from 'huggingface_hub'`
+
+You have incompatible package versions. Run:
+
+```bash
+pip install sentence-transformers==2.2.2 transformers==4.30.2 huggingface_hub==0.15.1 accelerate==0.20.3
+```
+
+Then retry building the vector store.
 
 ## Features
 

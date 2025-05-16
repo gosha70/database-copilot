@@ -3,12 +3,12 @@ databaseChangeLog:
 
   - changeSet:
       id: 002-create-order
-      author: goga
+      author: george.ivan
       labels: ddl,initial
       runInTransaction: true
       preConditions:
         onFail: HALT
-        - not:
+        not:
             tableExists:
               tableName: "order"         # quoted because ORDER is a keyword in some DBs
       changes:

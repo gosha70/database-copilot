@@ -6,7 +6,7 @@ databaseChangeLog:
   #######################################################################
   - changeSet:
       id: 001-create-customer
-      author: goga
+      author: george.ivan
       labels: ddl,initial
       runInTransaction: true
       preConditions:
@@ -52,7 +52,7 @@ databaseChangeLog:
   #######################################################################
   - changeSet:
       id: 002-create-order
-      author: goga
+      author: george.ivan
       labels: ddl,initial
       runInTransaction: true
       preConditions:
@@ -107,7 +107,7 @@ databaseChangeLog:
   #######################################################################
   - changeSet:
       id: 003-add-phone-to-customer
-      author: goga
+      author: george.ivan
       labels: ddl,patch
       runInTransaction: true
       preConditions:

@@ -399,7 +399,7 @@ def main():
                 /* Root variables */
                 :root {
                     --background-color: #FFFFFF;
-                    --text-color: #7878AA;
+                    --text-color: #24cbd1;
                     --secondary-background-color: #F0F2F6;
                     --border-color: #CCCCCC;
                     --widget-background: #072B7D;

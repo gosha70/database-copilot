@@ -147,7 +147,7 @@ os.environ["PYTORCH_CUDA_ALLOC_CONF"] = f"max_split_size_mb:{memory_limit}"
 Streamlit's file watcher is configured to use polling mode:
 
 ```python
-os.environ["STREAMLIT_SERVER_FILE_WATCHER_TYPE"] = "poll"
+os.environ["STREAMLIT_SERVER_FILE_WATCHER_TYPE"] = "none"
 ```
 
 This reduces CPU usage by avoiding constant filesystem monitoring.

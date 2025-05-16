@@ -3,12 +3,12 @@ databaseChangeLog:
 
   - changeSet:
       id: 001-create-customer
-      author: goga
+      author: george.ivan
       labels: ddl,initial
       runInTransaction: true      # keep creation atomic
       preConditions:
         onFail: HALT
-        - not:
+        not:
             tableExists:
               tableName: customer
       changes:

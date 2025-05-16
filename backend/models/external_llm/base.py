@@ -23,6 +23,9 @@ class BaseExternalLLM(BaseChatModel):
     """
     Base class for external LLM adapters.
     """
+    # Class variables
+    is_external_llm: bool = True
+    """Flag to indicate this is an external LLM."""
     
     model_name: str
     """The name of the model to use."""
@@ -30,13 +33,10 @@ class BaseExternalLLM(BaseChatModel):
     provider_name: str
     """The name of the LLM provider."""
     
-    is_external_llm: bool = True
-    """Flag to indicate this is an external LLM."""
-    
     def __init__(self, **kwargs):
         """
         Initialize the external LLM adapter.
-        
+
         Args:
             **kwargs: Additional keyword arguments to pass to the parent class.
         """

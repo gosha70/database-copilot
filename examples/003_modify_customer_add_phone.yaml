@@ -3,15 +3,15 @@ databaseChangeLog:
 
   - changeSet:
       id: 003-add-phone-to-customer
-      author: goga
+      author: george.ivan
       labels: ddl,patch
       runInTransaction: true
       preConditions:
         onFail: MARK_RAN          # allow re-runs on already-patched DBs
-        - not:
-            columnExists:
-              tableName: customer
-              columnName: phone_number
+        not:
+          columnExists:
+            tableName: customer
+            columnName: phone_number
       changes:
         - addColumn:
             tableName: customer
