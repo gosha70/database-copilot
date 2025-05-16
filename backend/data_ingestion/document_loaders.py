@@ -123,9 +123,11 @@ def load_markdown_documents(file_path: str) -> List[Document]:
         logger.warning(f"Invalid Markdown file path: {file_path}")
         return []
 
+import xml.etree.ElementTree as ET
+
 def load_xml_documents(file_path: str) -> List[Document]:
     """
-    Load XML documents from a file or directory.
+    Load XML documents from a file or directory, chunking Liquibase changelogs by changeSet.
     
     Args:
         file_path: Path to an XML file or directory containing XML files.
@@ -133,25 +135,58 @@ def load_xml_documents(file_path: str) -> List[Document]:
     Returns:
         A list of Document objects.
     """
+    def _load_xml_file(xml_file_path: str) -> List[Document]:
+        """
+        Load a single XML file and convert it to Document objects, chunking by changeSet if present.
+        """
+        try:
+            with open(xml_file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+            docs = []
+            try:
+                tree = ET.parse(xml_file_path)
+                root = tree.getroot()
+                # Check for Liquibase changelog
+                if root.tag.endswith("databaseChangeLog"):
+                    for changeset in root.findall(".//{*}changeSet"):
+                        cs_str = ET.tostring(changeset, encoding="unicode")
+                        cs_id = changeset.attrib.get("id", "unknown")
+                        cs_author = changeset.attrib.get("author", "unknown")
+                        metadata = {
+                            "source": xml_file_path,
+                            "changeSet_id": cs_id,
+                            "changeSet_author": cs_author
+                        }
+                        docs.append(Document(page_content=cs_str, metadata=metadata))
+                    if docs:
+                        return docs
+            except Exception as e:
+                logger.warning(f"Error parsing XML for chunking: {xml_file_path}: {e}")
+            # Fallback: treat the whole file as one document
+            metadata = {"source": xml_file_path}
+            docs.append(Document(page_content=content, metadata=metadata))
+            return docs
+        except Exception as e:
+            logger.error(f"Error loading XML file {xml_file_path}: {e}")
+            return []
+
+    documents = []
     if os.path.isdir(file_path):
         logger.info(f"Loading XML documents from directory: {file_path}")
-        loader = DirectoryLoader(
-            file_path,
-            glob="**/*.xml",
-            loader_cls=UnstructuredXMLLoader
-        )
-        return loader.load()
+        xml_files = glob.glob(os.path.join(file_path, "**/*.xml"), recursive=True)
+        for xml_file in xml_files:
+            documents.extend(_load_xml_file(xml_file))
+        return documents
     elif os.path.isfile(file_path) and file_path.endswith(".xml"):
         logger.info(f"Loading XML document: {file_path}")
-        loader = UnstructuredXMLLoader(file_path)
-        return loader.load()
+        return _load_xml_file(file_path)
     else:
         logger.warning(f"Invalid XML file path: {file_path}")
         return []
 
 def load_yaml_documents(file_path: str) -> List[Document]:
     """
-    Load YAML documents from a file or directory.
+    Load YAML documents from a file or directory, chunking by changeSet if possible.
     
     Args:
         file_path: Path to a YAML file or directory containing YAML files.
@@ -161,7 +196,7 @@ def load_yaml_documents(file_path: str) -> List[Document]:
     """
     def _load_yaml_file(yaml_file_path: str) -> List[Document]:
         """
-        Load a single YAML file and convert it to Document objects.
+        Load a single YAML file and convert it to Document objects, chunking by changeSet if present.
         
         Args:
             yaml_file_path: Path to a YAML file.
@@ -172,16 +207,72 @@ def load_yaml_documents(file_path: str) -> List[Document]:
         try:
             with open(yaml_file_path, 'r', encoding='utf-8') as f:
                 content = f.read()
-                
-            # Parse YAML content
             yaml_data = yaml.safe_load(content)
-            
-            # Convert to string for storage in Document
-            yaml_str = yaml.dump(yaml_data, default_flow_style=False)
-            
-            # Create Document object
-            metadata = {"source": yaml_file_path}
-            return [Document(page_content=yaml_str, metadata=metadata)]
+            docs = []
+            # If this is a Liquibase changelog, chunk by changeSet
+            if isinstance(yaml_data, dict) and "databaseChangeLog" in yaml_data:
+                dbcl = yaml_data["databaseChangeLog"]
+                if isinstance(dbcl, list):
+                    for entry in dbcl:
+                        if isinstance(entry, dict) and "changeSet" in entry:
+                            changeSets = entry["changeSet"]
+                            if isinstance(changeSets, list):
+                                for cs in changeSets:
+                                    cs_str = yaml.dump(cs, default_flow_style=False)
+                                    cs_id = cs.get("id", "unknown")
+                                    cs_author = cs.get("author", "unknown")
+                                    metadata = {
+                                        "source": yaml_file_path,
+                                        "changeSet_id": cs_id,
+                                        "changeSet_author": cs_author
+                                    }
+                                    docs.append(Document(page_content=cs_str, metadata=metadata))
+                            elif isinstance(changeSets, dict):
+                                cs = changeSets
+                                cs_str = yaml.dump(cs, default_flow_style=False)
+                                cs_id = cs.get("id", "unknown")
+                                cs_author = cs.get("author", "unknown")
+                                metadata = {
+                                    "source": yaml_file_path,
+                                    "changeSet_id": cs_id,
+                                    "changeSet_author": cs_author
+                                }
+                                docs.append(Document(page_content=cs_str, metadata=metadata))
+                elif isinstance(dbcl, dict) and "changeSet" in dbcl:
+                    changeSets = dbcl["changeSet"]
+                    if isinstance(changeSets, list):
+                        for cs in changeSets:
+                            cs_str = yaml.dump(cs, default_flow_style=False)
+                            cs_id = cs.get("id", "unknown")
+                            cs_author = cs.get("author", "unknown")
+                            metadata = {
+                                "source": yaml_file_path,
+                                "changeSet_id": cs_id,
+                                "changeSet_author": cs_author
+                            }
+                            docs.append(Document(page_content=cs_str, metadata=metadata))
+                    elif isinstance(changeSets, dict):
+                        cs = changeSets
+                        cs_str = yaml.dump(cs, default_flow_style=False)
+                        cs_id = cs.get("id", "unknown")
+                        cs_author = cs.get("author", "unknown")
+                        metadata = {
+                            "source": yaml_file_path,
+                            "changeSet_id": cs_id,
+                            "changeSet_author": cs_author
+                        }
+                        docs.append(Document(page_content=cs_str, metadata=metadata))
+                else:
+                    # Fallback: treat the whole file as one document
+                    yaml_str = yaml.dump(yaml_data, default_flow_style=False)
+                    metadata = {"source": yaml_file_path}
+                    docs.append(Document(page_content=yaml_str, metadata=metadata))
+            else:
+                # Not a Liquibase changelog, treat the whole file as one document
+                yaml_str = yaml.dump(yaml_data, default_flow_style=False)
+                metadata = {"source": yaml_file_path}
+                docs.append(Document(page_content=yaml_str, metadata=metadata))
+            return docs
         except Exception as e:
             logger.error(f"Error loading YAML file {yaml_file_path}: {e}")
             return []

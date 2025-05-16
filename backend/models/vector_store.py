@@ -189,7 +189,7 @@ def get_retriever(
     
     # Set default search kwargs if not provided
     if search_kwargs is None:
-        search_kwargs = {"k": NUM_RETRIEVAL_RESULTS}
+        search_kwargs = {"k": 10}
     
     # Return the retriever
     return vector_store.as_retriever(search_kwargs=search_kwargs)
