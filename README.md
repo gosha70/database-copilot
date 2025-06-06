@@ -48,7 +48,22 @@ There are two ways to set up Database Copilot:
    cd database-copilot
    ```
 
-2. Run the setup script to install dependencies and download necessary documentation:
+2. **Create and activate a Python environment (recommended):**
+
+   Using `venv` (built-in, cross-platform):
+   ```bash
+   python3 -m venv database_copilot_env
+   source database_copilot_env/bin/activate  # On macOS/Linux
+   # .\database_copilot_env\Scripts\activate  # On Windows
+   ```
+
+   Or, using `conda` (if you prefer):
+   ```bash
+   conda create -n database_copilot python=3.9
+   conda activate database_copilot
+   ```
+
+3. Run the setup script to install dependencies and download necessary documentation:
    ```bash
    python setup.py
    ```
